@@ -558,9 +558,9 @@ void fix_weak_imports(void)
 	}
 
 	for(i=0; i<count; ++i) {
-		SceModule2 *pMod;
+		SceModule *pMod;
 
-		pMod = (SceModule2*)sceKernelFindModuleByUID(modids[i]);
+		pMod = (SceModule*)sceKernelFindModuleByUID(modids[i]);
 
 		if (pMod != NULL && (pMod->attribute & 0x1000) == 0) {
 			patch_drm_imports((SceModule*)pMod);

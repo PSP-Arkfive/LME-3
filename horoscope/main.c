@@ -27,8 +27,8 @@ void ClearCaches()
 	sceKernelDcacheWritebackInvalidateAll();	
 }
 
-int (* UtilityLoadModule)();
-int (* UtilityUnLoadModule)();
+int (* UtilityLoadModule)(int module);
+int (* UtilityUnLoadModule)(int module);
 
 int sceUtilityLoadModulePatch(int module) 	
 {
@@ -206,7 +206,7 @@ NORMAL:
 
 static void PatchInit()
 {
-	SceModule2 *mod = sceKernelFindModuleByName("sceInit");
+	SceModule *mod = sceKernelFindModuleByName("sceInit");
 	u32 text_addr = mod->text_addr;
 
 	//addu       $a3, $v0, $zr	
@@ -257,7 +257,7 @@ key_table decryptkey_table[] = {
 //	{ 0x457B8AF0, { 0x47, 0xEC, 0x60, 0x15, 0x12, 0x2C, 0xE3, 0xE0, 0x4A, 0x22, 0x6F, 0x31, 0x9F, 0xFA, 0x97, 0x3E }, 0x5B, 6}
 };
 
-int (* decrypt_next)() = NULL;
+int (* decrypt_next)(u8 *buff, int t0, int *t1, int t2) = NULL;
 int (* MesgLedDecrypt)(u32* a0/*tag*/,u8* a1/*key*/,int a2,u8 *buff,int t0/*size*/,int *t1/*ret*/,int t2/*flag*/,char *t3 ,
 						   int sp0 , int sp1/* type*/ , u8 *sp2 , u8 *sp3) = NULL;
 
@@ -302,7 +302,7 @@ static int IsHomebrewsRunlevel(void)
 	return 0;
 }
 
-static int HoroscopeModuleChain(SceModule2 *mod)
+static int HoroscopeModuleChain(SceModule *mod)
 {
 	if (previous)
 	{
@@ -336,7 +336,7 @@ static int HoroscopeModuleChain(SceModule2 *mod)
 static void patch_sceLoadExec(void)
 {
 	u32 k1 = pspSdkSetK1(0);
-	SceModule2 *mod = (SceModule2*) sceKernelFindModuleByName("sceLoadExec");
+	SceModule *mod = (SceModule*) sceKernelFindModuleByName("sceLoadExec");
 
 	if(mod != NULL)
 	{
@@ -363,7 +363,7 @@ int module_start()
 				PatchInit();
 			}
 
-			SceModule2 *mod = sceKernelFindModuleByName("scePspNpDrm_Driver");		
+			SceModule *mod = sceKernelFindModuleByName("scePspNpDrm_Driver");		
 			if(mod)
 			{
 				mod = sceKernelFindModuleByName("sceUtility_Driver");		
@@ -382,10 +382,10 @@ int module_start()
 
 	if( sceKernelBootFrom() == PSP_BOOT_DISC )
 	{
-		SceModule2 *mod = sceKernelFindModuleByName("sceMesgLed");
+		SceModule *mod = sceKernelFindModuleByName("sceMesgLed");
 		u32 text_addr = mod->text_addr;
 
-		decrypt_next = (void *)SystemCtrlForKernel_1F3037FB( opnssmp_decrypt_helper );	
+		decrypt_next = (void *)SystemCtrlForKernel_1F3037FB( (void *)opnssmp_decrypt_helper );	
 		MesgLedDecrypt =(void *)(text_addr + 0xE0);
 
 //		PatchLoadModule();

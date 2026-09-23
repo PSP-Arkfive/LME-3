@@ -12,12 +12,16 @@
 #include "main.h"
 #include "horoscope_patch_list.h"
 
-static SceUID (* KernelLoadModuleMs2_hook)() = NULL;
+#define sceKernelLoadModuleMs2 ModuleMgrForKernel_49C5B9E1
+
+extern SceUID ModuleMgrForKernel_49C5B9E1(int apitype, const char *path, int flags, SceKernelLMOption *option); 
+
+static SceUID (* KernelLoadModuleMs2_hook)(const char *path, int flags, SceKernelLMOption *option) = NULL;
 static int execute_apitype = 0;
 
 SceUID sceKernelLoadModuleMs2_bridge(const char *path, int flags, SceKernelLMOption *option)
 {
-	SceUID (* sceKernelLoadModuleMs2_k)() = sceKernelLoadModuleMs2;
+	SceUID (* sceKernelLoadModuleMs2_k)(int apitype, const char *path, int flags, SceKernelLMOption *option) = (void *)sceKernelLoadModuleMs2;
 	return sceKernelLoadModuleMs2_k( execute_apitype , path , flags , option);
 }
 
@@ -29,7 +33,7 @@ SceUID sceKernelLoadModuleMs2_patched(int apitype , const char *path, int flags,
 /*
 void hook_module_stub(void *addr)
 {
-	SceModule2 *pMod = sceKernelFindModuleByAddress((u32 )addr);
+	SceModule *pMod = sceKernelFindModuleByAddress((u32 )addr);
 	void *entTab = pMod ->stub_top;
 	int entLen = pMod->stub_size;
 	struct SceLibraryStubTable *current;
@@ -87,7 +91,7 @@ int get_addr(void *outbuf, u32 outcapacity, void *inbuf, void *unk)
 }
 
 STMOD_HANDLER leda_previous = NULL;
-int LedaModulePatch(SceModule2 *mod)
+int LedaModulePatch(SceModule *mod)
 {
 //	u32 text_addr = mod->text_addr;
 	char *modinfo=mod->modname;

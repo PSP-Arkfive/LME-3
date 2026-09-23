@@ -15,6 +15,8 @@ static char *g_blacklist[] = {
 	"game150",
 };
 
+extern int tolower(int s);
+
 int strcase_cmp(const char *s1, const char *s2, size_t n)
 {
 	const unsigned char *p1 = (const unsigned char *) s1;
