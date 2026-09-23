@@ -141,7 +141,7 @@ int loc_00001758(int stat , unsigned int timeout , int flag)
 			if(stat & 0x9)//(PSP_UMD_INITING | PSP_UMD_NOT_PRESENT)		
 			{
 			
-				int (* WaitSema)();
+				int (* WaitSema)(SceUID semaid, int signal, u32 *timeout) = NULL;
 
 				if(flag)
 					WaitSema = (void *)sceKernelWaitSemaCB;

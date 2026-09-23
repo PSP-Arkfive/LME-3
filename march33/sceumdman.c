@@ -80,7 +80,7 @@ int sceUmdMan_driver_26C75616(int a0,int a1, int a2)
 
 	if(data2798)
 	{
-		int (* func)() = (void*)data2798;
+		int (* func)(int, int, int) = (void*)data2798;
 
 		//$gp = data2794;
 		SET_GP( data2794 );

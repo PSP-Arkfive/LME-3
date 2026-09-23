@@ -140,7 +140,7 @@ int umd9660_init()
 
 	while(umd_open == 0)
 	{
-		OpenIso(0);
+		OpenIso();
 		sceKernelDelayThread(20000);
 	}
 
@@ -653,7 +653,7 @@ int GetIsoDiscSize()
 
 PspIoDrvFuncs umd9660_funcs =//
 {
-	umd9660_init,//cB0
+	(void *)umd9660_init,//cB0
 	umd9660_exit,//2e8
 	umd9660_open,//a78
 	umd9660_close,//250

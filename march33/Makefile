@@ -1,5 +1,5 @@
 release: all
-	psp-packer -d $(TARGET_FW) -i $(TARGET).prx
+	../psp-packer/psp-packer -d $(TARGET_FW) -i $(TARGET).prx
 	bin2c $(TARGET).prx $(TARGET)_bin.h $(TARGET)
 	sed -i "/int/d" $(TARGET)_bin.h
 	rm -f *.elf *.o
@@ -29,7 +29,7 @@ PRX_EXPORTS = exports$(TARGET_FW).exp
 USE_KERNEL_LIBC = 1
 USE_KERNEL_LIBS = 1
 
-LDFLAGS += -mno-crt0 -nostartfiles
+LDFLAGS += -nostartfiles
 LIBDIR = ../lib
 LIBS = -lpspsystemctrl_kernel
 
