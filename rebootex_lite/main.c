@@ -60,7 +60,7 @@ int memcpy(u8 *dst,u8 *src,int size)
 	{
 		*p1++ = *p2++;
 	}
-	return p1;
+	return (int)p1;
 }
 
 void memcpy_b(u8 *d, u8 *s, int len)
@@ -103,7 +103,7 @@ int memset(u8 *dst,u8 code,int size)
 	{
 		*p1++ = code;
 	}
-	return p1;
+	return (int)p1;
 }
 
 int strlen(char *str)
@@ -184,9 +184,9 @@ int memlmd_E42AFE2E_patched(PSP_Header *buf, int *check,int *s)//read & decrypt 
 {
 	if(buf->oe_tag == 0xC6BA41D3 )//0x55668D96
 	{
-		scramble_simple( (u32 *)(&(buf->main_data)) , (u32 *)buf->key_data1 , 0x10 );
+		scramble_simple( (unsigned int *)(&(buf->main_data)) , (unsigned int *)buf->key_data1 , 0x10 );
 		scramble( &(buf->main_data) , buf->comp_size , &(buf->scheck[0x38]) , 0x20 );
-		memcpy(buf,&(buf->main_data), buf->comp_size);
+		memcpy((u8 *)buf,&(buf->main_data), buf->comp_size);
 		*s = buf->comp_size;
 
 		MAKE_CALL(loadcore_text_addr + rebootex_patch_list.memlmd_list.DecryptPatchAddr , memlmd_E42AFE2E);
