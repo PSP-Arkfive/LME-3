@@ -21,7 +21,7 @@ PSP_MAIN_THREAD_ATTR(0);
 #define MAKE_SYSCALL(a, n) _sw(SC_OPCODE | (n << 6), a);
 #define JUMP_TARGET(x) ((x & 0x3FFFFFFF) << 2)
 
-int _sceKernelGzipDecompress();
+int _sceKernelGzipDecompress(u8 *dest, u32 destSize, const u8 *src, u8** src_out);
 
 //u8 *rebootex;
 
