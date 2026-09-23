@@ -42,7 +42,7 @@ int limit2(int val,int min,int max)
 	return val;
 }
 
-int itoa(int n, char* buf )
+int my_itoa(int n, char* buf )
 {
 	int p = 0, r;
 
@@ -102,7 +102,7 @@ int my_vsprintf(char *out,const char *format, va_list arg)
 
 			case 'd':
 				 p++;
-				 itoa( va_arg ( ap , int ), dbuf );
+				 my_itoa( va_arg ( ap , int ), dbuf );
 				 str = dbuf;
 				 while ( *str ) {
 					 *s++ = *str++;

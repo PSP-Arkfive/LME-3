@@ -55,7 +55,7 @@ int limit(int val,int min,int max);
 int limit2(int val,int min,int max);
 int my_vsprintf(char *out,const char *format, va_list arg);
 int my_sprintf(char *s, const char *format, ... );
-int itoa(int n, char* buf );
+int my_itoa(int n, char* buf );
 char *my_strtok_r(char *s1, const char *s2 , char **s3 );
 
 int ReadFile(const char *file, void *buf, int size);

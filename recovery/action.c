@@ -149,7 +149,7 @@ char *clock_control(int type ,int direction, int * current_clock , int *current_
 		*current_bus = len/2;
 
 		if(len)
-			itoa( len , str_buffer);
+			my_itoa( len , str_buffer);
 		else
 			strcpy( str_buffer , recovery_str.Default );
 
