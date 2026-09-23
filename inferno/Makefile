@@ -22,9 +22,9 @@ CFLAGS = -Os -G0 -Wall
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS) -D_PSP_FW_VERSION=$(TARGET_FW)
 
-LDFLAGS = -mno-crt0 -nostartfiles
+LDFLAGS = -nostartfiles
 LIBDIR = ../lib
-LIBS = -lpspsystemctrl_kernel -lpspsemaphore
+LIBS = -lpspsystemctrl_kernel -lpspsemaphore -lgcc
 
 PRX_EXPORTS = exports$(TARGET_FW).exp
 
