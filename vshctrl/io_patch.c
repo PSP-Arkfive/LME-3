@@ -210,14 +210,14 @@ int iso_ctrl(SceIoDirent *dir, int dev)
 
 	strcat(fullpath, dir->d_name);
 
-	if (IsCached(fullpath, &dir->d_stat.st_mtime, &vpbp))
+	if (IsCached(fullpath, &dir->d_stat.sce_st_mtime, &vpbp))
 	{
 		res2 = virtualpbp_fastadd(&vpbp);	
 		docache = 0;
 	}
 	else	
 	{
-		res2 = virtualpbp_add(fullpath, &dir->d_stat.st_mtime, &vpbp);	
+		res2 = virtualpbp_add(fullpath, &dir->d_stat.sce_st_mtime, &vpbp);	
 		docache = 1;
 	}
 
@@ -231,7 +231,7 @@ int iso_ctrl(SceIoDirent *dir, int dev)
 		dir->d_stat.st_size = 0;	
 							
 		// Change the modifcation time to creation time
-		memcpy(&dir->d_stat.st_mtime, &dir->d_stat.st_ctime, sizeof(ScePspDateTime));
+		memcpy(&dir->d_stat.sce_st_mtime, &dir->d_stat.sce_st_ctime, sizeof(ScePspDateTime));
 
 		if (docache)
 		{
@@ -248,8 +248,8 @@ static int iso_subfolder(SceUID fd, SceIoDirent *dir)
 {
 	int res;
 
-	SceFatMsDirentPrivateKernel *p_backup = dir->d_private;
-	dir->d_private = &d_private;
+	SceFatMsDirentPrivateKernel *p_backup = (SceFatMsDirentPrivateKernel *)dir->d_private;
+	dir->d_private = (void *)&d_private;
 	d_private.size = sizeof(SceFatMsDirentPrivateKernel);
 
 	if(!vpbpinited)
@@ -269,7 +269,7 @@ static int iso_subfolder(SceUID fd, SceIoDirent *dir)
 //	if( p_backup )
 //		printf("backup found 0x%08X \n", *(u32 *)p_backup);
 
-	dir->d_private = p_backup;
+	dir->d_private = (void *)p_backup;
 	
 	if (res > 0)
 	{
@@ -358,8 +358,8 @@ int sceIoDreadPatched(SceUID fd, SceIoDirent *dir)
 
 			if (isodfd >= 0)
 			{
-				SceFatMsDirentPrivateKernel *p_backup = dir->d_private;
-				dir->d_private = &d_private;
+				SceFatMsDirentPrivateKernel *p_backup = (SceFatMsDirentPrivateKernel *)dir->d_private;
+				dir->d_private = (void *)&d_private;
 				d_private.size = sizeof(SceFatMsDirentPrivateKernel);
 
 				while( (res = sceIoDread(isodfd, dir) ) > 0)
@@ -370,7 +370,7 @@ int sceIoDreadPatched(SceUID fd, SceIoDirent *dir)
 							strcmp( dir->d_name , "VIDEO") == 0)
 							continue;
 				
-						dir->d_private = p_backup;
+						dir->d_private = (void *)p_backup;
 						ApplyNamePatch(dir, "     ", device_flag);
 						pspSdkSetK1(k1);
 						return res;
@@ -391,7 +391,7 @@ int sceIoDreadPatched(SceUID fd, SceIoDirent *dir)
 //					printf("backup found 0x%08X \n", *(u32 *)p_backup);
 
 
-				dir->d_private = p_backup;
+				dir->d_private = (void *)p_backup;
 
 				if (res > 0)
 				{
@@ -838,7 +838,7 @@ static const IoFileMgr_patch_list io_patch_list[] = {
 #endif
 void IoPatches(void)
 {
-	SceModule2 *mod = sceKernelFindModuleByName("sceIOFileManager");
+	SceModule *mod = sceKernelFindModuleByName("sceIOFileManager");
 	u32 text_addr = mod->text_addr;
 
 	int i;

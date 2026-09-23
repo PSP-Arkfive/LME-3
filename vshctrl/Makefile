@@ -1,5 +1,5 @@
 release: all
-	psp-packer -d $(TARGET_FW) -x -t 0x4C94DAF0 -i $(TARGET).prx
+	../psp-packer/psp-packer -d $(TARGET_FW) -x -t 0x4C94DAF0 -i $(TARGET).prx
 	bin2c $(TARGET).prx $(BINFILE).h vshctrl
 	sed -i "/int/d" $(BINFILE).h
 	rm -f *.elf *.o
@@ -41,7 +41,7 @@ PRX_EXPORTS = exports.exp
 USE_KERNEL_LIBC = 1
 USE_KERNEL_LIBS = 1
 
-LDFLAGS += -mno-crt0 -nostartfiles
+LDFLAGS += -nostartfiles
 LIBDIR = ../lib
 LIBS = -lpsppower_driver -lpspusb_driver -lpsprtc_driver -lpspumd_driver -lpspusbdevice_driver -lpspsystemctrl_kernel
 # -lpspopenpsid

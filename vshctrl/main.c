@@ -34,7 +34,7 @@ static int psp_model;
 
 
 SceUID satelitedfd = -1;
-int (*vshmenu_kernel)() = NULL;
+int (*vshmenu_kernel)(SceCtrlData *pad_data, int count) = NULL;
 
 u32 iso_mount = 0;
 u32 clock_flag = 0;
@@ -44,7 +44,7 @@ u32	firsttime = 0;
 STMOD_HANDLER previous = NULL;
 SEConfig config;
 
-void *search_module_stub(SceModule2 *pMod, const char *szLib, u32 nid)
+void *search_module_stub(SceModule *pMod, const char *szLib, u32 nid)
 {
 	void *entTab = pMod ->stub_top;
 	int entLen = pMod->stub_size;
@@ -73,7 +73,7 @@ void *search_module_stub(SceModule2 *pMod, const char *szLib, u32 nid)
 	return NULL;
 }
 
-int (* get_sfo_param)() = NULL;
+int (* get_sfo_param)(int a0, const char *a1 ,char *a2, int a3) = NULL;
 
 int sfo_patch(int a0, const char *a1 ,char *a2, int a3 )
 {
@@ -440,7 +440,7 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 //			reboot150 = 1;
 			KXploitString(file);
 			KXploitString(param->argp);
-			Load150Module(file);
+			Load150Module();
 		}
 /*
 		else if (strstr( file, "0:/PSP/GAME/") == file_str )
@@ -458,7 +458,7 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 		{
 			KXploitString(file);
 			KXploitString(param->argp);
-			Load150Module(file);
+			Load150Module();
 		}
 */
 		param->args = strlen(param->argp) + 1; // update length
@@ -669,7 +669,7 @@ int sceUmdRegisterUMDCallBackPatch(int cbid)
 	return ret;
 }
 
-static void PatchVshMain(SceModule2 *mod )
+static void PatchVshMain(SceModule *mod )
 {
 	u32 buf = mod->text_addr;
 	//uncheck PBP Header
@@ -892,9 +892,9 @@ static void PatchNetUptate( u32 pos )
 	if(sceKernelFindModuleByName("sceVshNpSignin_Module") == NULL && 
 		sceKernelFindModuleByName("npsignup_plugin_module") == NULL )
 	{
-		pspTime tick;
+		ScePspDateTime tick;
 		sceRtcGetCurrentClockLocalTime (&tick);
-		u8 value = (tick.seconds)%5;
+		u8 value = (tick.second)%5;
 
 		//dest = ?0
 		_sw( 0x24020030 | value , pos + UPDATE_LIB_DEST_PATCH_ADDR1 );
@@ -915,7 +915,7 @@ static void PatchNetUptate( u32 pos )
 	}
 }
 
-int OnModuleRelocated(SceModule2 *mod)
+int OnModuleRelocated(SceModule *mod)
 {
 
 	u32 modbuf=mod->text_addr;
@@ -961,7 +961,7 @@ int OnModuleRelocated(SceModule2 *mod)
 
 static void LoadExecPatch()
 {
-	SceModule2 *mod = sceKernelFindModuleByName("sceLoadExec");
+	SceModule *mod = sceKernelFindModuleByName("sceLoadExec");
 	u32 text_addr = mod->text_addr;
 
 	if( psp_model != 4 )

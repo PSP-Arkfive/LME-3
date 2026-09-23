@@ -29,7 +29,6 @@ int GetIsoIndex(const char *file);
 void SetSpeed(int cpuspeed, int busspeed);
 
 int sceKernelQuerySystemCall(void* func );
-void *sceKernelGetGameInfo();
 int sceKernelCallSubIntrHandler(int unk1, u32 unk2, int unk3, int unk4);
 
 int PatchUsbStart(const char* driverName, int size, void *args);
