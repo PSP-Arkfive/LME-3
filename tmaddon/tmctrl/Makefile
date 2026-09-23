@@ -1,5 +1,5 @@
 release: all
-	../../psp-packer/psp-packer -t 0x4C9494F0 -x -d $(PSP_FW_VERSION) -i $(TARGET).prx
+	../../PSP_TOOLS/psp-packer/psp-packer -t 0x4C9494F0 -x -d $(PSP_FW_VERSION) -i $(TARGET).prx
 	bin2c $(TARGET).prx $(DATADIR)/$(TARGET)_bin.h $(TARGET)
 	sed -i "/int/d" $(DATADIR)/$(TARGET)_bin.h
 	rm -f *.elf *.o *.prx

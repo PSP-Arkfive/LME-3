@@ -1,5 +1,5 @@
 release: all
-	../psp-packer/psp-packer -d $(TARGET_FW) -t 0x4C94DAF0 -x -i $(TARGET).prx
+	../PSP_TOOLS/psp-packer/psp-packer -d $(TARGET_FW) -t 0x4C94DAF0 -x -i $(TARGET).prx
 	bin2c $(TARGET).prx $(TARGET)_bin.h $(TARGET)
 #	sed -i "/int/d" $(TARGET)_bin.h
 	sed -i "/int/c #if _PSP_FW_VERSION == $(TARGET_FW)" $(TARGET)_bin.h
