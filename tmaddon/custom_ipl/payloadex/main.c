@@ -100,17 +100,17 @@ char *strncpy(char *s1, const char *s2, int n)
     char  *p = s1;
     while (n) {
         n--;
-        if (!(*s1++ = *s2++)) break;    // '\0'‚ðŒ©‚Â‚¯‚½‚çI—¹ 
+        if (!(*s1++ = *s2++)) break;    // '\0'ï¿½ï¿½ï¿½ï¿½ï¿½Â‚ï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ 
     }
     while (n--)
-        *s1++ = '\0';                   // Žc‚è‚ð'\0'‚Å–„‚ß‚é 
+        *s1++ = '\0';                   // ï¿½cï¿½ï¿½ï¿½'\0'ï¿½Å–ï¿½ï¿½ß‚ï¿½ 
     return (p);
 }
 /*
 int strncmp(const char *s1, const char *s2 , int n )
 {
     while (n && *s1 && *s2) {
-        if (*s1 != *s2)         // “™‚µ‚­‚È‚¢ 
+        if (*s1 != *s2)         // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È‚ï¿½ 
             return ((unsigned char)*s1 - (unsigned char)*s2);
         s1++;
         s2++;
@@ -274,7 +274,7 @@ int memlmd_E42AFE2E_patched(PSP_Header *buf, int size,int *s)//decrypt patch
 {
 	if(buf->oe_tag == 0xC6BA41D3 )//0x55668D96
 	{
-		scramble_simple( (u32 *)(&(buf->main_data)) , (u32 *)buf->key_data1 , 0x10 );
+		scramble_simple( (unsigned int *)(&(buf->main_data)) , (unsigned int *)buf->key_data1 , 0x10 );
 		scramble( &(buf->main_data) , buf->comp_size , &(buf->scheck[0x38]) , 0x20 );
 		memcpy(buf,&(buf->main_data), buf->comp_size);
 		*s = buf->comp_size;

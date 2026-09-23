@@ -366,7 +366,7 @@ int memlmd_E42AFE2E_patched(PSP_Header *buf, int size,int *s)//decrypt patch
 	if(buf->oe_tag == 0xC6BA41D3 )//0x55668D96
 	{
 		int data_size = buf->comp_size;
-		scramble_simple( (u32 *)(&(buf->main_data)) , (u32 *)buf->key_data1 , 0x10 );
+		scramble_simple( (unsigned int *)(&(buf->main_data)) , (unsigned int *)buf->key_data1 , 0x10 );
 		scramble( &(buf->main_data) , data_size , &(buf->scheck[0x38]) , 0x20 );
 		memcpy(buf,&(buf->main_data), data_size );
 		*s = data_size;

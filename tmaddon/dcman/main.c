@@ -30,15 +30,10 @@
 PSP_MODULE_INFO("DesCemManager", 0x1007, 1, 0);
 
 u64 sceSysregGetFuseId();
-u32 sceSysregGetTachyonVersion();
 int sceSysconGetBaryonVersion(u32 *);
 int sceSysconGetPommelVersion(u32 *);
 u32 sceSysregGetFuseConfig();
 
-int sceNandReadExtraOnly(u32 ppn, void *buf, u32 count); // not in the sdk
-//int sceNandReadAccess(u32 ppn, void *buf, void *buf2, u32 count, u32 unk); // not in the sdk
-int sceNandWriteAccess(u32 ppn, void *buf, void *buf2, u32 count, u32 unk); // not in the sdk
-int sceNandReadPagesRawAll(u32 page, u8 *block, u32 count, u32 unk); // not in the sdk
 int sceNandEraseBlock(u32 page); // not in the sdk
 
 int sceLflashFatfmtStartFatfmt(int argc, char *argv[]); // not in the sdk
@@ -239,7 +234,7 @@ int dcLockNand(int flag)
 	return ret;
 }
 
-void *search_module_stub(SceModule2 *pMod, const char *szLib, u32 nid)
+void *search_module_stub(SceModule *pMod, const char *szLib, u32 nid)
 {
 	void *entTab = pMod ->stub_top;
 	int entLen = pMod->stub_size;
@@ -273,7 +268,7 @@ u32 dcFindModuleStub(char *modname, char *libname, u32 nid)
 	u32 ret = 0;
 	u32 k1 = pspSdkSetK1(0);
 
-	SceModule2 *mod = sceKernelFindModuleByName(modname);
+	SceModule *mod = sceKernelFindModuleByName(modname);
 	if( mod != NULL)
 	{
 		ret = (u32)search_module_stub(mod, libname, nid );
@@ -288,7 +283,7 @@ int dcPatchModuleString(char *modname, char *string, char *replace)
 	int ret = -1;
 	u32 k1 = pspSdkSetK1(0);
 
-	SceModule2 *mod = sceKernelFindModuleByName(modname);
+	SceModule *mod = sceKernelFindModuleByName(modname);
 	if( mod != NULL)
 	{
 		u32 len = strlen(string);
@@ -326,7 +321,7 @@ int dcPatchModule(char *modname, int type, u32 addr, u32 word)
 	int ret = -1;
 	u32 k1 = pspSdkSetK1(0);
 	
-	SceModule2 *mod = sceKernelFindModuleByName(modname);
+	SceModule *mod = sceKernelFindModuleByName(modname);
 	if( mod != NULL)
 	{
 		if( type == 0 )
@@ -383,7 +378,7 @@ void dcClearCache()
 
 STMOD_HANDLER previous = NULL;
 
-int sub_000010A0(SceModule2 *mod)
+int sub_000010A0(SceModule *mod)
 {
 //	u32 text_addr = mod->text_addr;
 	char *modinfo = mod->modname;

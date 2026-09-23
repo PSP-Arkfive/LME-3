@@ -17,31 +17,31 @@ int loc_0000029(int a0 , int a1 , int a2)
 
 PspIoDrvFuncs lflash_func  =
 {
-	loc_0000028C,/* init */
-	loc_0000028C,/* exit */
-	loc_0000028C,/* open */
-	loc_0000028C,/* close */
-	loc_0000028C,/* read */
-	loc_0000028C,/* write */
+	(void *)loc_0000028C,/* init */
+	(void *)loc_0000028C,/* exit */
+	(void *)loc_0000028C,/* open */
+	(void *)loc_0000028C,/* close */
+	(void *)loc_0000028C,/* read */
+	(void *)loc_0000028C,/* write */
 	(void *)loc_0000028C,/* lseek */
-	loc_0000028C,/* ioctl */
+	(void *)loc_0000028C,/* ioctl */
 
-	loc_00000294, /* remove */
-	loc_00000294, /* mkdir */
-	loc_00000294, /* rmdir */
-	loc_00000294, /* dopen */
-	loc_00000294, /* dclose */
+	(void *)loc_00000294, /* remove */
+	(void *)loc_00000294, /* mkdir */
+	(void *)loc_00000294, /* rmdir */
+	(void *)loc_00000294, /* dopen */
+	(void *)loc_00000294, /* dclose */
 
-	loc_00000294,/* dread */
+	(void *)loc_00000294,/* dread */
 	(void *)loc_0000029, /* getstat */
-	loc_00000294,/* chstat */
-	loc_00000294,/* rename */
-	loc_00000294,/* chdir */
+	(void *)loc_00000294,/* chstat */
+	(void *)loc_00000294,/* rename */
+	(void *)loc_00000294,/* chdir */
 
-	loc_00000294,/* mount */
-	loc_00000294,/* umount */
-	loc_0000028C,/* devctl */
-	loc_00000294 /* */
+	(void *)loc_00000294,/* mount */
+	(void *)loc_00000294,/* umount */
+	(void *)loc_0000028C,/* devctl */
+	(void *)loc_00000294 /* */
 };
 
 /*
@@ -413,7 +413,7 @@ int flashfat_devctl(PspIoDrvFileArg *arg, const char *devname, unsigned int cmd,
 //data4c40
 PspIoDrvFuncs flashfat_func =
 {
-	flashfat_init,//loc_00000B68
+	(void *)flashfat_init,//loc_00000B68
 	flashfat_exit,//loc_00000268
 	flashfat_open,//loc_00000640
 	flashfat_close,//loc_00000700
@@ -437,7 +437,7 @@ PspIoDrvFuncs flashfat_func =
 	flashfat_mount,//loc_00000270
 	flashfat_umount,//loc_00000278
 	flashfat_devctl,//loc_000009D4
-	loc_00000294
+	(void *)loc_00000294
 };
 
 

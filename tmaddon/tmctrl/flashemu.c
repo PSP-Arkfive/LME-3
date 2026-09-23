@@ -220,7 +220,7 @@ void FlashEmu_D780E25C()
 
 	sceKernelRegisterSysEventHandler( &event_handler );
 
-	int thid = sceKernelCreateThread("SceLfatfsAssign", flashemu_start /*sub_000014A4 */, 100 , 4096 , 0x100000 , 0);
+	int thid = sceKernelCreateThread("SceLfatfsAssign", (void *)flashemu_start /*sub_000014A4 */, 100 , 4096 , 0x100000 , 0);
 	assign_thid = thid;
 
 	if( thid >= 0)
@@ -229,7 +229,7 @@ void FlashEmu_D780E25C()
 
 int module_reboot_before(SceSize args, void *argp)
 {
-	u32 wait_sp = 500000;
+	SceUInt wait_sp = 500000;
 
 	sceKernelWaitSema( flashfat_sema , 1, &wait_sp );
 	sceKernelDeleteSema( flashfat_sema );

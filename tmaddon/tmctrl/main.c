@@ -26,7 +26,7 @@ void ClearCaches()
 	sceKernelIcacheInvalidateAll();	
 }
 
-void *search_module_stub(SceModule2 *pMod, const char *szLib, u32 nid)
+void *search_module_stub(SceModule *pMod, const char *szLib, u32 nid)
 {
 	void *entTab = pMod ->stub_top;
 	int entLen = pMod->stub_size;
@@ -161,7 +161,7 @@ SceUID sceIoOpenPatched(const char *file, int flags, SceMode mode)
 #endif
 
 
-int ApplyPatch(SceModule2 *mod)
+int ApplyPatch(SceModule *mod)
 {      
 	u32 text_addr = mod->text_addr;
 	char *modinfo=mod->modname;
@@ -172,7 +172,7 @@ int ApplyPatch(SceModule2 *mod)
 	if (strcmp(modinfo, "sceUtility_Driver") == 0) 
 //	if (strcmp(modinfo, "sceMSFAT_Driver") == 0) 
 	{   
-		SceModule2 *fat = sceKernelFindModuleByName("sceMSFAT_Driver");
+		SceModule *fat = sceKernelFindModuleByName("sceMSFAT_Driver");
 		text_addr = fat->text_addr;
 //		text_addr = mod->text_addr;
 			
@@ -235,14 +235,14 @@ int sceKernelGzipDecompressPatched(u8 *dest, int destSize, u8 *src, u32 unknown)
 
 static void rebootex_patch()
 {
-	SceModule2 *mod = (SceModule2 *)sceKernelFindModuleByName("SystemControl");
+	SceModule *mod = (SceModule *)sceKernelFindModuleByName("SystemControl");
 	u32 func = (u32)search_module_stub(mod, "UtilsForKernel", 0x78934841 );
 	MAKE_JUMP( func, sceKernelGzipDecompressPatched);
 }
 
 static void fix_sigcheck()
 {
-	SceModule2 *mod = sceKernelFindModuleByName("sceLoaderCore");
+	SceModule *mod = sceKernelFindModuleByName("sceLoaderCore");
 	u32 text_addr = mod->text_addr;
 	MAKE_CALL( text_addr + SIGCHECK_PATCH_ADDR, text_addr + SIGCHECK_FUNC_ADDR );
 }
