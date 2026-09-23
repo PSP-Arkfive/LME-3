@@ -15,8 +15,6 @@ PSP_MAIN_THREAD_ATTR(0);
 
 STMOD_HANDLER prev_handler = NULL;
 
-u32 sceKernelQuerySystemCall( void* address );
-
 static int icon_patch = 1;
 static int unofficial_game = 0;
 static int key_enabled = 0;
@@ -44,7 +42,7 @@ int WriteFile(char *file, void *buf, int size) {
 	return written;
 }
 
-void *search_module_stub(SceModule2 *pMod, const char *szLib, u32 nid)
+void *search_module_stub(SceModule *pMod, const char *szLib, u32 nid)
 {
 	void *entTab = pMod ->stub_top;
 	int entLen = pMod->stub_size;
@@ -68,9 +66,9 @@ void *search_module_stub(SceModule2 *pMod, const char *szLib, u32 nid)
 	return NULL;
 }
 
-int (* sub_0000266C)() = NULL;
-int (* sub_00000124)() = NULL;
-int (* sub_00000000)() = NULL;
+int (* sub_0000266C)(char *filename, void *thekeys , void *name) = NULL;
+int (* sub_00000124)(char *filename, char *keys, char *id) = NULL;
+int (* sub_00000000)(char *filename) = NULL;
 char dummy_id[48];
 
 int sub_0000266C_patch(char *filename, void *thekeys , void *name)
@@ -280,7 +278,7 @@ static void HookPopsManExitKernel()
 	scePopsManExitVSHKernel = (void *)sctrlHENFindFunction("scePops_Manager","scePopsMan", 0x0090B2C8 );
 }
 
-int OnPspRelSectionEvent(SceModule2 *mod)
+int OnPspRelSectionEvent(SceModule *mod)
 {
 	u32 text_addr =mod->text_addr; 
 	char *modinfo=mod->modname;
@@ -290,7 +288,7 @@ int OnPspRelSectionEvent(SceModule2 *mod)
 	{
 		if(unofficial_game)
 		{
-			int (* sceKernelSetCompiledSdkVersion_k)() = (void *)sctrlHENFindFunction("sceSystemMemoryManager", "SysMemUserForUser", 0x315AD3A0 );
+			int (* sceKernelSetCompiledSdkVersion_k)(int version) = (void *)sctrlHENFindFunction("sceSystemMemoryManager", "SysMemUserForUser", 0x315AD3A0 );
 			if(sceKernelSetCompiledSdkVersion_k)		
 				sceKernelSetCompiledSdkVersion_k( sceKernelDevkitVersion() );
 
