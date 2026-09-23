@@ -296,7 +296,7 @@ int CreateCacheBuff(const char *iso_name, int dev )
 	ReadCache( dev );
 	
 	scePaf_memset( &sp , 0 , sizeof(SceIoDirent));
-	sp.d_private = &d_private;
+	sp.d_private = (SceIoFatDirentPrivate *)&d_private;
 	d_private.size = sizeof(SceFatMsDirentPrivateKernel);
 
 	int iso_index = 0;
@@ -313,12 +313,12 @@ int CreateCacheBuff(const char *iso_name, int dev )
 				scePaf_strcpy( sp.d_name, d_private.FileName );
 		}
 
-		if( IsCached( sp.d_name, &(sp.d_stat.st_mtime) , &iso_index) )// , &cache_s 
+		if( IsCached( sp.d_name, &(sp.d_stat.sce_st_mtime) , &iso_index) )// , &cache_s 
 		{			
 			//my_print(logfile , "isCache\n");
 			video_cnt ++;
 		}
-		else if( MakeCache( sp.d_name ,  &(sp.d_stat.st_mtime), &iso_index, dev) > 0 )
+		else if( MakeCache( sp.d_name ,  &(sp.d_stat.sce_st_mtime), &iso_index, dev) > 0 )
 		{	
 			//my_print(logfile , "Makecache\n");
 			video_cnt ++;

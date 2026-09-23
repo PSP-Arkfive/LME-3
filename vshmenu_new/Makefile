@@ -1,5 +1,5 @@
 release: all
-	psp-packer -d $(TARGET_FW) -t 0x457BDAF0 -i $(TARGET).prx
+	../psp-packer/psp-packer -d $(TARGET_FW) -t 0x457BDAF0 -i $(TARGET).prx
 	bin2c $(TARGET).prx $(TARGET)_bin.h $(TARGET)
 	sed -i "/int/d" $(TARGET)_bin.h
 	rm -f *.elf *.o sfile/*.o

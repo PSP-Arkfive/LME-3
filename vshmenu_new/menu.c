@@ -76,7 +76,7 @@ int menu_ctrl( const Menu_pack *menu_list, int *switch_list,int menu_max_cnt)
 			func();
 			break;
 		case TMENU_FUNCTION_VALUE:
-			func = (void *)(menu_list[menu_sel].value);
+			void (*func)(u32, u32) = (void *)(menu_list[menu_sel].value);
 			func( FUNC_CHANGE_VALUE , direction );
 			break;
 		case TMENU_FUNCTION_EXIT:
@@ -102,7 +102,7 @@ extern int stop_flag ;
 int display_menu(const Menu_pack *menu_list, int *switch_list, int exit_type)
 {
 	int i;
-	void *(* surrent_get)();
+	void *(* surrent_get)(u32);
 	int menu_mode = 0;
 
 	int menu_max_cnt = 0;
