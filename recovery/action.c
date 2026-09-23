@@ -4,7 +4,6 @@
 #include <pspusbstor.h>
 #include <pspctrl.h>
 #include <psputility.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 

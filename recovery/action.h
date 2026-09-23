@@ -33,13 +33,13 @@ void activate_wma();
 void activate_flash();
 
 int toggle_usb_ms();
-void* toggle_usb_flash0();
-void* toggle_usb_flash1();
-void* toggle_usb_flash2();
-void* toggle_usb_flash3();
+void* toggle_usb_flash0(int type);
+void* toggle_usb_flash1(int type);
+void* toggle_usb_flash2(int type);
+void* toggle_usb_flash3(int type);
 int disable_usb();
 
-void* run_game();
+void* run_game(int type);
 int format_flash1();
 int format_flash2();
 

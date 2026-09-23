@@ -84,7 +84,7 @@ int DrawMenu(Menu_pack *menu_desu ,u8 sub ,const char *sub_title)
 	u8 i;
 	short cpos=0;
 	u32 pad_data;
-	char* (*surrent_get)() ;
+	char* (*surrent_get)(u32);
 	int spuit;
 
 	int menus = 0;
@@ -296,8 +296,8 @@ int DrawMenu(Menu_pack *menu_desu ,u8 sub ,const char *sub_title)
 			case TMENU_FUNCTION:
 				if( direction > 0)
 				{
-					surrent_get = (void *)(menu_desu[cpos].value);
-					surrent_get();
+					void (*menu_func)() = (void *)(menu_desu[cpos].value);
+					menu_func();
 				}
 				break;
 		
@@ -308,8 +308,8 @@ int DrawMenu(Menu_pack *menu_desu ,u8 sub ,const char *sub_title)
 			case TMENU_FUNCTION_VALUE_DISPLAY:
 			case TMENU_FUNCTION_VALUE:
 
-				surrent_get = (void *)(menu_desu[cpos].value);
-				surrent_get( FUNC_CHANGE_VALUE , direction );
+				void (*menu_func)(u32, u32) = (void *)(menu_desu[cpos].value);
+				menu_func( FUNC_CHANGE_VALUE , direction );
 				sceKernelDelayThread(1*1000*1000);
 				myDebugScreenClear();
 				break;

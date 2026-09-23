@@ -1,5 +1,4 @@
 #include <pspkernel.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -49,15 +48,15 @@ int itoa(int n, char* buf )
 
 	if ( n < 0 ) { buf[ 0 ] = '-'; n = -n; p++ ;}
 
-    // Œ…”•ª‚Ìƒ|ƒCƒ“ƒ^‚ði‚ß‚é
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìƒ|ï¿½Cï¿½ï¿½ï¿½^ï¿½ï¿½iï¿½ß‚ï¿½
     int t = n;
     while ( t /= 10 ) p++;
     
 	r = p;
-    // I’[‚ð•t‰Á
+    // ï¿½Iï¿½[ï¿½ï¿½tï¿½ï¿½
     buf[ p + 1 ] = '\0';
 
-    // Œ…”•ª‚ð‘‚«ž‚Þ
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     do
         buf[ p-- ] = n % 10 + '0';
     while ( n /= 10 );
@@ -183,7 +182,7 @@ char *my_strtok_r(char *s1, const char *s2 , char **s3 )
 	if(!pbegin)
 		return NULL;
 
-    pbegin += my_strspn(pbegin, s2);               /* strspn‚ð—˜—p */
+    pbegin += my_strspn(pbegin, s2);               /* strspnï¿½ð—˜—p */
     if (*pbegin == '\0')
 	{
         *s3 = NULL;
@@ -191,7 +190,7 @@ char *my_strtok_r(char *s1, const char *s2 , char **s3 )
         return (NULL);
     }
 
-    pend = pbegin + my_strcspn(pbegin, s2);        /* strcspn‚ð—˜—p */
+    pend = pbegin + my_strcspn(pbegin, s2);        /* strcspnï¿½ð—˜—p */
     if (*pend != '\0')
 	{
 		*pend = '\0';	

@@ -10,9 +10,6 @@
 #include <string.h>
 #include <pspsysmem.h>
 
-#define sceSysregGetTachyonVersion sceSysreg_driver_E2A5D1EE
-#define sceSysconGetBaryonVersion sceSyscon_driver_7EC5A957
-
 PSP_MODULE_INFO("bridge", 0x1006, 1, 3);
 PSP_MAIN_THREAD_ATTR(0);
 

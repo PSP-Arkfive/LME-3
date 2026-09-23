@@ -134,7 +134,7 @@ int main()
 	if(id >= 0)
 	{
 		sceKernelStartVTimer(id);	
-		sceKernelSetVTimerHandlerWide(id, 2*1000*1000, wakeup_timer, NULL);
+		sceKernelSetVTimerHandlerWide(id, 2*1000*1000, (void *)wakeup_timer, NULL);
 	}
 
 	myDebugScreenInit();

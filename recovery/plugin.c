@@ -3,7 +3,6 @@
 #include <pspkernel.h>
 //#include <pspdebug.h>
 #include <pspctrl.h>
-#include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
