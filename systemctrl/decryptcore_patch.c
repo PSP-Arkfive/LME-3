@@ -15,12 +15,12 @@
 #include "main.h"
 
 
-int (* ExtendDecryption)() = NULL;
-int (* MemlmdSigcheck)() = NULL;
+int (* ExtendDecryption)(u8 *buf, int size ,int *ret, int flag) = NULL;
+int (* MemlmdSigcheck)(void *buf,int size,int flag) = NULL;
 int (* MemlmdDecrypt)(u8 *buf, int size, int *ret, int u) = NULL;
 
 //int (* memlmd_FD379991)() = NULL;
-int (* memlmd_C071E9CA)() = NULL;
+int (* memlmd_C071E9CA)(u32 a0, u32 addr) = NULL;
 
 
 //if unofficial return 0
@@ -131,7 +131,7 @@ int CheckCompress(PSP_Header *header)
 	data_top ^= *((u16 *)header->key_data1);
 	if( data_top == 0x8B1F )
 	{
-		scramble_simple( (u32 *)data , (u32 *)header->key_data1 , 0x10 );
+		scramble_simple( (unsigned int *)data , (unsigned int *)header->key_data1 , 0x10 );
 
 MAIN_SCRAMBLE:
 		scramble( data , header->comp_size , &(header->scheck[0x38]) , 0x20 );
@@ -144,8 +144,8 @@ MAIN_SCRAMBLE:
 
 void *SystemCtrlForKernel_AC0E84D1(int (* func)())
 {
-	int (* r)() = ExtendDecryption;
-	ExtendDecryption = func;
+	int (* r)() = (void *)ExtendDecryption;
+	ExtendDecryption = (void *)func;
 	return r;
 }
 
@@ -281,7 +281,7 @@ void PatchMemlmd()
 #error decryptcore_memlmd
 #endif
 
-	SceModule2 *mod = sceKernelFindModuleByName("sceMemlmd");
+	SceModule *mod = sceKernelFindModuleByName("sceMemlmd");
 	u32 text_addr = mod->text_addr;
 
 	//tag check
@@ -308,8 +308,8 @@ void PatchMemlmd()
 }
 
 
-int (* MesgLedDecrypt)() = NULL;
-int (* MesgLedDecryptEX)() = NULL;
+int (* MesgLedDecrypt)(u32*, u8*, u32, u8*, u32, u32*, u32, u8*, u32, u32, u32, u32) = NULL;
+int (* MesgLedDecryptEX)(u8 *buf, u32 a1, u32 a2, u32 a3) = NULL;
 
 void *SystemCtrlForKernel_1F3037FB(int (* func)())
 {
@@ -327,7 +327,7 @@ int MesgLedDecryptPatched(u32* a0/*tag*/,u8* a1/*key*/,int a2,u8 *buff,int t0/*s
 
 		if( MesgLedDecryptEX )
 		{
-			int ret = MesgLedDecryptEX( buff , t0 , t1 , t2 );
+			int ret = MesgLedDecryptEX( buff , t0 , (u32)t1 , t2 );
 			if( ret >= 0 )
 				return ret;
 		}
@@ -347,14 +347,14 @@ int MesgLedDecryptPatched(u32* a0/*tag*/,u8* a1/*key*/,int a2,u8 *buff,int t0/*s
 		}
 	}
 
-	int i= MesgLedDecrypt( a0, a1, a2, buff, t0, t1,t2,t3, sp0 , sp1 , sp2 , sp3);
+	int i= MesgLedDecrypt( a0, a1, a2, buff, t0, (u32*)t1,t2,t3, sp0 , sp1 , sp2 , sp3);
 	if(i  >= 0 )
 		return i;
 
 	if( MemlmdSigcheckPatched( buff, t0, t2) < 0 )
 		return i;
 
-	return MesgLedDecrypt( a0, a1, a2, buff, t0, t1,t2,t3, sp0 , sp1 , sp2 , sp3);
+	return MesgLedDecrypt( a0, a1, a2, buff, t0, (u32*)t1,t2,t3, sp0 , sp1 , sp2 , sp3);
 }
 
 void PatchMesgLed()
@@ -471,7 +471,7 @@ void PatchMesgLed()
 #error decryptcore_mesgled
 #endif
 
-	SceModule2 *mod_ = sceKernelFindModuleByName("sceMesgLed");
+	SceModule *mod_ = sceKernelFindModuleByName("sceMesgLed");
 	u32 text_addr = mod_ ->text_addr;
 
 	MAKE_CALL(text_addr+ MesgLedDecryptPatchAddr1 , MesgLedDecryptPatched);

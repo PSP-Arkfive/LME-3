@@ -3,8 +3,6 @@
 
 #include <systemctrl_me.h>
 
-u32 sceKernelQuerySystemCall(void *func);
-
 PspModuleImport *sctrlFindImportLib(SceModule *mod, char *library)
 {
 	if(mod == NULL)

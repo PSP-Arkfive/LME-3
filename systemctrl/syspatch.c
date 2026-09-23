@@ -144,7 +144,7 @@ int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 	return DecompressReboot(dest, destSize, src, unk);
 }
 
-static void PatchLoadExec(SceModule2 *mod)
+static void PatchLoadExec(SceModule *mod)
 {
 #if _PSP_FW_VERSION == 620
 #if PSP_MODEL != 4
@@ -240,7 +240,7 @@ static void PatchLoadExec(SceModule2 *mod)
 }
 
 #if PSP_MODEL != 0
-int (* read_sfo)() = NULL;
+int (* read_sfo)(u32, u32, u32) = NULL;
 int PatchMemsize(u32 buff, u32 a1, u32 a2)
 {
 	int sp = 0;
@@ -460,7 +460,7 @@ static void OnImposeLoad()
 	}
 #endif	
 
-	SceModule2 *mod = sceKernelFindModuleByName("sceLoadExec");
+	SceModule *mod = sceKernelFindModuleByName("sceLoadExec");
 	if (mod)
 	{
 		PatchLoadExec(mod);
@@ -538,7 +538,7 @@ static void PatchWlan( u32 buf)
 }
 
 #if ( PSP_MODEL != 0 && PSP_MODEL != 4 )
-static void PatchUmdCache(SceModule2 *mod)
+static void PatchUmdCache(SceModule *mod)
 {
 	if (sceKernelInitKeyConfig() == PSP_INIT_KEYCONFIG_GAME)
 	{
@@ -582,7 +582,7 @@ static void PatchUmdMan( u32 text_addr )
 
 }
 
-static void PatchIsofsDriver(SceModule2 *mod )
+static void PatchIsofsDriver(SceModule *mod )
 {
 	// Patch StopModule to avoid crash at exit...
 	char *iso = sctrlSEGetUmdFile();
@@ -651,7 +651,7 @@ static void VshNpSigninPatch(u32 text_addr)
 //sub_00000FF4:
 int sceKernelApplyPspRelSectionPatched(void *buffer)
 {
-	SceModule2 *mod = buffer;	
+	SceModule *mod = buffer;	
 	u32 buf = mod->text_addr;
 	char *modinfo=mod->modname;
 
@@ -782,14 +782,14 @@ int (*StartModuleEX)(int , SceSize , void *, int *, SceKernelSMOption *) = NULL;
 void* sctrlSetStartModuleExtra(int (*func)() )
 {
 	void * ret = (void *)StartModuleEX;
-	StartModuleEX = func;
+	StartModuleEX = (void *)func;
 	return ret;
 }
 
 int sceKernelStartModulePatched(SceUID modid, SceSize argsize, void *argp, int *status, SceKernelSMOption *option)
 {
 	static int plugin_loaded = 0;
-	SceModule2 *mod = sceKernelFindModuleByUID(modid);
+	SceModule *mod = sceKernelFindModuleByUID(modid);
 	if (mod )
 	{
 		if(StartModuleEX ) 
@@ -912,7 +912,7 @@ int sceKernelStartModulePatched(SceUID modid, SceSize argsize, void *argp, int *
 	return sceKernelStartModule(modid, argsize, argp, status, option);	
 }
 
-int Patch_Init(int (* real_init)(),  u32 a1)//init patch
+int Patch_Init(int (* real_init)(u32, u32),  u32 a1)//init patch
 {
 #if _PSP_FW_VERSION == 620
 #define InitStartAddr		0x00001A4C//OK

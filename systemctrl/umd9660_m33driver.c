@@ -140,7 +140,7 @@ void DoAnyUmd()
 	umd9660_init();
 	sceKernelSetQTGP3(data7DE4);
 
-	SceModule2 *mod = sceKernelFindModuleByName("sceUmd9660_driver");
+	SceModule *mod = sceKernelFindModuleByName("sceUmd9660_driver");
 	if( mod == NULL )
 		return;
 
@@ -225,7 +225,7 @@ int sctrlSEMountUmdFromFile(char *file, int noumd, int isofs)
 		sceIoDelDrv("isofs");
 		sceIoAddDrv(getisofs_driver());
 
-		SceModule2 *mod =sceKernelFindModuleByName("sceIsofs_driver");
+		SceModule *mod =sceKernelFindModuleByName("sceIsofs_driver");
 		if(mod && !isof_backup)
 		{	
 			isof_backup = 1;

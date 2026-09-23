@@ -10,10 +10,10 @@
 int Patch_Init(int (* real_init)(),  u32 a1)//init patch
 ;
 //int sceKernelCheckExecFile(void *buf, int *check);
-u32 sceKernelCheckExecFile[4];
+u32 _sceKernelCheckExecFile[4];
 
 ;
-int (* LinkLibraryEntries)();
+int (* LinkLibraryEntries)(char* szMod, void *szLib, int a2, int a3);
 int (* ProbeExec1)(void *buf, u32 *check);
 int (* ProbeExec2)(u8 *buf, u32 *check);
 
@@ -129,7 +129,7 @@ int sceKernelCheckExecFilePatched(int *buf, int *check)
 		}
 	}
 
-	res = ((int(*)(void*,void*))sceKernelCheckExecFile)(buf, check);
+	res = ((int(*)(void*,void*))_sceKernelCheckExecFile)(buf, check);
 	return PatchExec3(buf, check, isPlain, res);
 }
 
@@ -358,10 +358,10 @@ int ProbeExec2Patched(u8 *buf, u32 *check)
 
 static inline void hijack_CheckExec(u32 func_addr, void *function)
 {
-	sceKernelCheckExecFile[0] = ((u32 *)func_addr)[0];
-	sceKernelCheckExecFile[1] = ((u32 *)func_addr)[1];
-	sceKernelCheckExecFile[2] = GENERATE_JUMP( (void *)(func_addr + 8) );
-	sceKernelCheckExecFile[3] = 0;
+	_sceKernelCheckExecFile[0] = ((u32 *)func_addr)[0];
+	_sceKernelCheckExecFile[1] = ((u32 *)func_addr)[1];
+	_sceKernelCheckExecFile[2] = GENERATE_JUMP( (void *)(func_addr + 8) );
+	_sceKernelCheckExecFile[3] = 0;
 
 	((u32 *)func_addr)[0] = GENERATE_JUMP( function );
 	((u32 *)func_addr)[1] = 0;
@@ -370,7 +370,7 @@ static inline void hijack_CheckExec(u32 func_addr, void *function)
 void PatchLoadCore()
 {
 //	u32 func_addr;
-	SceModule2 *mod = sceKernelFindModuleByName("sceLoaderCore");
+	SceModule *mod = sceKernelFindModuleByName("sceLoaderCore");
 	u32 text_addr = mod->text_addr;
 
 	create_DNR_list("LoadCoreForKernel", text_addr );

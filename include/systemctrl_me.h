@@ -123,7 +123,7 @@ int sctrlHENGetVersion();
 u32 sctrlHENFindFunction(const char* szMod, const char* szLib, u32 nid);
 #define FindProc sctrlHENFindFunction
 
-typedef int (* STMOD_HANDLER)(SceModule2 *);
+typedef int (* STMOD_HANDLER)(SceModule *);
 STMOD_HANDLER sctrlHENSetStartModuleHandler(STMOD_HANDLER handler);
 
 int sctrlHENSetMemory(u32 p2, u32 p8);

@@ -29,8 +29,8 @@ SceUID sceKernelCreateThreadPatched(const char *name,SceKernelThreadEntry entry,
 	return sceKernelCreateThread(name,entry,initPriority,stackSize,attr,option);
 }
 
-static int (* PrologueModule)(void *mod_params, SceModule2 *mod) = NULL;
-int PrologueModulePatched(void *mod_params, SceModule2 *mod)
+static int (* PrologueModule)(void *mod_params, SceModule *mod) = NULL;
+int PrologueModulePatched(void *mod_params, SceModule *mod)
 {
 	int ret = PrologueModule(mod_params, mod);
 	if (ret >= 0)
@@ -203,7 +203,7 @@ int PartitionCheckPatched(u32 *st0, u32 *check)
 
 void PatchModuleMgr()
 {
-	SceModule2 *mod = sceKernelFindModuleByName("sceModuleManager");
+	SceModule *mod = sceKernelFindModuleByName("sceModuleManager");
 	u32 text_addr = mod->text_addr;
 	
 	// Patch ModuleMgr sceKernelCheckExec calls 

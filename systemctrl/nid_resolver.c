@@ -22,7 +22,7 @@ void my_longjmp(int a0, int a1);
 static Module_list *get_nid_list(const char *name);
 static u32 get_Nid(Module_list *list , u32 nid);
 
-extern int (* LinkLibraryEntries)();
+extern int (* LinkLibraryEntries)(char* szMod, void *szLib, int a2, int a3);
 u32 FindPowerFunction(u32 nid);
 
 #if _PSP_FW_VERSION == 620
@@ -145,10 +145,10 @@ Module_list Mod_table[] =
 
 int nid_enable_flag[M_FILES] = { 0 };
 
-static int (* NidResolverEx)();
+static int (* NidResolverEx)(SceLibraryStubTable *stub);
 void SystemCtrlForKernel_6A5F76B5(int (* a0)())
 {
-	NidResolverEx = a0;
+	NidResolverEx = (void *)a0;
 }
 
 static Module_list *get_nid_list(const char *name)

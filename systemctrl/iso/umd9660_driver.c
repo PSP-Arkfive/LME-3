@@ -451,7 +451,7 @@ int umd9660_open(PspIoDrvFileArg *arg, char *file, int flags, SceMode mode)
 
 PspIoDrvFuncs umd9660_funcs =//dataA6F0
 {
-	umd9660_init,//4F54
+	(void *)umd9660_init,//4F54
 	umd9660_exit,//4ED4
 	umd9660_open,//50F4
 	umd9660_close,//4D10

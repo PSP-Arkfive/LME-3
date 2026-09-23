@@ -62,7 +62,7 @@ int sceUmdMan_driver_26C75616(int a0,int a1, int a2)
 	data27A0 = a2;
 	data2798 = a1;
 
-	SceModule2 *mod = sceKernelFindModuleByName("sceIsofs_driver");
+	SceModule *mod = sceKernelFindModuleByName("sceIsofs_driver");
 	u32 text_addr=mod->text_addr;
 /*
 #define ISOF_PATCH_ADDR1	0x00004020

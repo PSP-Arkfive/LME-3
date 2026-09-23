@@ -40,7 +40,7 @@ int LoadStartModule(const char *module)
 #if PSP_MODEL == 4
 	if(module[0] == 'e' && module[1] == 'f')
 	{
-		SceModule2 *mod = sceKernelFindModuleByUID(modid);
+		SceModule *mod = sceKernelFindModuleByUID(modid);
 		if(mod != NULL)
 		{
 			int i;
@@ -74,7 +74,7 @@ int LoadStartModule(const char *module)
 	return sceKernelStartModule(modid, strlen(module) + 1, (void *)module, NULL, NULL);
 }
 
-void *search_module_export(SceModule2 *pMod, const char *szLib, u32 nid)
+void *search_module_export(SceModule *pMod, const char *szLib, u32 nid)
 {
 	struct SceLibraryEntryTable *entry;
 	void *entTab;
@@ -117,7 +117,7 @@ void *search_module_export(SceModule2 *pMod, const char *szLib, u32 nid)
 
 u32 sctrlHENFindFunction(const char *szMod, const char *szLib, u32 nid)
 {
-	SceModule2 *pMod;
+	SceModule *pMod;
 	u32 ret = 0;
 	int k1 = pspSdkSetK1(0);
 

@@ -1,4 +1,4 @@
-PSPDEV = $(shell psp-config --pspsdk-path)
+PSPDEV = $(shell psp-config --pspdev-path)
 
 all: lib
 
@@ -9,7 +9,7 @@ lib:
 	mv SystemCtrlForKernel.S systemctrl_kernel/SystemCtrlForKernel.S
 	mv SystemCtrlForUser.S systemctrl_user/SystemCtrlForUser.S
 	mv VshCtrlLib.S vshctrl/VshCtrlLib.S
-	python2.7 make_lib.py
+	python3 make_lib.py
 	make -C zlibmini-1.2.8
 	mv zlibmini-1.2.8/libzm.a ../libzm.a
 	make -C zlib-1.2.8 -f Makefile.PSP

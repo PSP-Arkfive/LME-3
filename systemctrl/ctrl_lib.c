@@ -83,10 +83,10 @@ void *sctrlKernelGetPartition(int pid)
 PspIoDrv *sctrlHENFindDriver(char *drvname)
 {
 	int k1 = pspSdkSetK1(0);
-	SceModule2 *mod = sceKernelFindModuleByName("sceIOFileManager");
+	SceModule *mod = sceKernelFindModuleByName("sceIOFileManager");
 	PspIoDrv *ret = NULL;
 
-	u32 *(* GetDevice)() =(void *)( mod->text_addr + lib_list.FindDriverFuncAddr );
+	u32 *(* GetDevice)(char *name) =(void *)( mod->text_addr + lib_list.FindDriverFuncAddr );
 
 #if PSP_MODEL == 4
 FIND_DRIVER:;
@@ -123,7 +123,7 @@ int sctrlKernelSetUserLevel(int level)
 	int res = sceKernelGetUserLevel();
 	if( res >= 0)
 	{
-		SceModule2 *mod =sceKernelFindModuleByName("sceThreadManager");
+		SceModule *mod =sceKernelFindModuleByName("sceThreadManager");
 		u32 *thstruct = (u32 *)( mod->text_addr + lib_list.SetUserLevelPatchAddr );
 
 		u32 *struct_level = (u32 *)( thstruct[0] );
@@ -159,7 +159,7 @@ int sctrlKernelLoadExecVSHWithApitype(int apitype, const char *file, struct SceK
 	int (* LoadExecVSH)(int, const char *, struct SceKernelLoadExecVSHParam *, int);
 
 	int k1 = pspSdkSetK1(0);
-	SceModule2 *mod = sceKernelFindModuleByName("sceLoadExec");
+	SceModule *mod = sceKernelFindModuleByName("sceLoadExec");
 
 #if PSP_MODEL == 4
 	LoadExecVSH = (void *)( mod->text_addr + lib_list.LoadExecVshFuncAddr_05g	);
@@ -177,7 +177,7 @@ int sctrlKernelMsIsEf()
 #if PSP_MODEL == 4
 	int k1 = pspSdkSetK1(0);
 	int res = 0;
-	SceModule2 *mod = sceKernelFindModuleByName("sceFATFS_Driver");
+	SceModule *mod = sceKernelFindModuleByName("sceFATFS_Driver");
 	if( mod != NULL )
 	{
 		int (* DevFlag)() = (void *)( mod->text_addr + lib_list.FatfsDeviceFlagAddr );
@@ -315,13 +315,13 @@ char *my_strtok_r(char *s1, const char *s2 , char **s3 )
 	if(!pbegin)
 		return NULL;
 
-	pbegin += my_strspn(pbegin, s2);	/* strspn�𗘗p */
+	pbegin += my_strspn(pbegin, s2);	/* strspn�𗘗p */
 	if (*pbegin == '\0') {
 		*s3 = NULL;
 		return (NULL);
 	}
 
-	pend = pbegin + my_strcspn(pbegin, s2);	/* strcspn�𗘗p */
+	pend = pbegin + my_strcspn(pbegin, s2);	/* strcspn�𗘗p */
 	if(*pend != '\0') {
 		*pend = '\0';
 		pend++;

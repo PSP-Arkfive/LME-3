@@ -20,7 +20,7 @@ void sctrlHENLoadModuleOnReboot(char *module_after, void *buf, int size, int fla
 //hook sceKernelLoadModuleMs2
 void SystemCtrlForKernel_07232EA5(void *func)
 {
-	SceModule2 *mod = sceKernelFindModuleByName("sceInit");
+	SceModule *mod = sceKernelFindModuleByName("sceInit");
 	if( mod != NULL)
 	{
 		u32 data = mod->text_addr;

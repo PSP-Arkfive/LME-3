@@ -8,9 +8,12 @@ ifndef $(TARGET_FW)
 TARGET_FW = 150
 endif
 
-all: common cfw
+all: psp-packer common cfw
 lite: common lcfw
 double: common cfw lcfw
+
+psp-packer:
+	make -C psp-packer
 
 build_lib:
 	make -C lib/lib_build

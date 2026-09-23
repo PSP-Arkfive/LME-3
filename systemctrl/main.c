@@ -68,7 +68,7 @@ int WriteFile(char *file, void *buf, int size)
 
 static void PatchInterruptMgr()
 {
-	SceModule2 *mod = sceKernelFindModuleByName("sceInterruptManager");
+	SceModule *mod = sceKernelFindModuleByName("sceInterruptManager");
 	u32 text_addr = mod->text_addr;
 
 	// Allow execution of syscalls in kmode

@@ -197,7 +197,7 @@ u32 sctrlHENFindFunction(const char* szMod, const char* szLib, u32 nid);
 
 #define FindProc sctrlHENFindFunction
 
-typedef int (* STMOD_HANDLER)(SceModule2 *);
+typedef int (* STMOD_HANDLER)(SceModule *);
 
 /**
  * Sets a function to be called just before module_start of a module is gonna be called (useful for patching purposes)
@@ -212,14 +212,14 @@ typedef int (* STMOD_HANDLER)(SceModule2 *);
  *
  * STMOD_HANDLER previous = NULL;
  *
- * int OnModuleStart(SceModule2 *mod);
+ * int OnModuleStart(SceModule *mod);
  *
  * void somepointofmycode()
  * {
  *		previous = sctrlHENSetStartModuleHandler(OnModuleStart);
  * }
  *
- * int OnModuleStart(SceModule2 *mod)
+ * int OnModuleStart(SceModule *mod)
  * {
  *		if (strcmp(mod->modname, "vsh_module") == 0)
  *		{

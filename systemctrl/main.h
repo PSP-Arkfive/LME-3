@@ -56,7 +56,7 @@ int sceKernelGetSystemStatus(void);
 int sceKernelSetQTGP3(void *);
 int sceKernelQuerySystemCall(void *addr);
 
-void *search_module_export(SceModule2 *pMod, const char *szLib, u32 nid);
+void *search_module_export(SceModule *pMod, const char *szLib, u32 nid);
 void ClearCaches();
 void ClearCachesRange(void *start, unsigned int size);
 

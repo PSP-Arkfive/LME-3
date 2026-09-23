@@ -146,8 +146,8 @@ void SetSpeed(int cpu, int bus)
 
 #if PSP_MODEL != 0
 int (* scePowerIsBatteryCharging_k)() = NULL;
-int (* scePowerBatteryDisableUsbCharging_k)() = NULL;
-int (* scePowerBatteryEnableUsbCharging_k)() = NULL;
+int (* scePowerBatteryDisableUsbCharging_k)(u32 a0) = NULL;
+int (* scePowerBatteryEnableUsbCharging_k)(u32 a0) = NULL;
 
 u32 UsbChargePatch()
 {
@@ -194,9 +194,9 @@ void UsbChargeStart()
 		initUsbPowerFunc();
 
 		sceKernelStartVTimer(id);
-		sceKernelSetVTimerHandlerWide(id ,5*1000*1000, UsbChargePatch ,NULL);
+		sceKernelSetVTimerHandlerWide(id ,5*1000*1000, (void *)UsbChargePatch ,NULL);
 
-		SceModule2 *mod =sceKernelFindModuleByName("sceUSB_Driver");
+		SceModule *mod =sceKernelFindModuleByName("sceUSB_Driver");
 		if(mod)
 		{
 			u32 text_addr =mod->text_addr;
