@@ -66,7 +66,7 @@ void ClearCaches()
 	sceKernelIcacheClearAll();
 }
 
-int OnModuleStart(SceModule2 *mod)
+int OnModuleStart(SceModule *mod)
 {
 //	u32 text_addr = mod->text_addr;
 	char *modinfo=mod->modname;

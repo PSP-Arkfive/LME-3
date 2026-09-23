@@ -18,7 +18,7 @@ typedef struct
   int   read_size;
 } NP9660ReadParams;
 
-int sub_00000588();
+int sub_00000588(const char *path);
 int umd9660_read(int lba , u8 *buf, int read_size);
 int sceIoClosePatched(SceUID fd);
 
