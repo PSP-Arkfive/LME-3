@@ -8,12 +8,12 @@ ifndef $(TARGET_FW)
 TARGET_FW = 150
 endif
 
-all: psp-packer common cfw
+all: psp-tools common cfw
 lite: common lcfw
 double: common cfw lcfw
 
-psp-packer:
-	make -C psp-packer
+psp-tools:
+	make -C PSP_TOOLS
 
 build_lib:
 	make -C lib/lib_build
@@ -21,7 +21,7 @@ build_lib:
 cfw:
 	make -C vshctrl			TARGET_FW=$(TARGET_FW)
 	make -C custom_ipl		TARGET_FW=$(TARGET_FW)
-	make -C installer		TARGET_FW=$(TARGET_FW)
+#	make -C installer		TARGET_FW=$(TARGET_FW)
 ifeq ($(TARGET_FW), $(filter $(TARGET_FW), 660 661))
 	make -C tmaddon			TARGET_FW=$(TARGET_FW)
 endif
@@ -102,7 +102,7 @@ clean:
 	make clean -C horoscope
 	make clean -C idcanager
 	make clean -C custom_ipl
-	make clean -C installer
+#	make clean -C installer
 #ifeq ($(TARGET_FW), $(filter $(TARGET_FW), 660 661))
 	make clean -C tmaddon
 #endif
