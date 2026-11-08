@@ -104,6 +104,16 @@ static inline int CheckIsoPath(const char *path)
 		));
 }
 
+u8* custom_rebootex = NULL;
+u32 size_custom_rebootex = 0x4000;
+void sctrlHENSetRebootexOverride(void *rebootex, u32 size)
+{
+    if (rebootex != NULL) // override rebootex
+        custom_rebootex = rebootex;
+    if (size != 0) // override rebootex size
+        size_custom_rebootex = size;
+}
+
 int (* DecompressReboot)(u8 *dest, u32 destSize, const u8 *src, void *unk);
 int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 {
@@ -139,8 +149,18 @@ int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 	rebootex_param->on_reboot_flag	= on_reboot_flag;
 	
 	//memcpy((void *)0x88FC0000, rebootex , size_rebootex );
-	sceKernelGzipDecompress((void *)0x88FC0000, 0x4000 , rebootex ,0);
-
+	if (custom_rebootex && size_custom_rebootex){
+		if (custom_rebootex[0] == 0x1F && custom_rebootex[1] == 0x8B){
+			sceKernelGzipDecompress((void *)0x88FC0000, 0x4000 , custom_rebootex ,0);
+		}
+		else {
+			memcpy((void*)0x88FC0000, custom_rebootex, size_custom_rebootex);
+		}
+	}
+	else {
+		sceKernelGzipDecompress((void *)0x88FC0000, 0x4000 , rebootex ,0);
+	}
+	
 	return DecompressReboot(dest, destSize, src, unk);
 }
 

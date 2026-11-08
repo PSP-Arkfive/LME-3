@@ -262,7 +262,8 @@ extern int sctrlFindImportByNID;
 extern int sctrlHookImportByNID;
 extern int sctrlHENPatchSyscall;
 extern int sctrlKernelQuerySystemCall;
-static const unsigned int __SystemCtrlForKernel_exports[138] __attribute__((section(".rodata.sceResident"))) = {
+extern int sctrlHENSetRebootexOverride;
+static const unsigned int __SystemCtrlForKernel_exports[140] __attribute__((section(".rodata.sceResident"))) = {
 	0x8D5BE1F0,
 	0x128112C3,
 	0xCB76B778,
@@ -332,6 +333,7 @@ static const unsigned int __SystemCtrlForKernel_exports[138] __attribute__((sect
 	0x72F47790,
 	0x826668E9,
 	0x56CEAF00,
+	0xDCDC3891,
 	(unsigned int) &sctrlKernelSetInitApitype,
 	(unsigned int) &sctrlKernelSetInitFileName,
 	(unsigned int) &sctrlKernelSetInitKeyConfig,
@@ -401,6 +403,7 @@ static const unsigned int __SystemCtrlForKernel_exports[138] __attribute__((sect
 	(unsigned int) &sctrlHookImportByNID,
 	(unsigned int) &sctrlHENPatchSyscall,
 	(unsigned int) &sctrlKernelQuerySystemCall,
+	(unsigned int) &sctrlHENSetRebootexOverride,
 };
 
 const struct _PspLibraryEntry __library_exports[5] __attribute__((section(".lib.ent"), used)) = {
@@ -408,5 +411,5 @@ const struct _PspLibraryEntry __library_exports[5] __attribute__((section(".lib.
 	{ "KUBridge", 0x0000, 0x4001, 4, 0, 10, (unsigned int *) &__KUBridge_exports },
 	{ "MECtrl", 0x0000, 0x4001, 4, 0, 6, (unsigned int *) &__MECtrl_exports },
 	{ "SystemCtrlForUser", 0x0000, 0x4001, 4, 0, 41, (unsigned int *) &__SystemCtrlForUser_exports },
-	{ "SystemCtrlForKernel", 0x0000, 0x0001, 4, 0, 69, (unsigned int *) &__SystemCtrlForKernel_exports },
+	{ "SystemCtrlForKernel", 0x0000, 0x0001, 4, 0, 70, (unsigned int *) &__SystemCtrlForKernel_exports },
 };
