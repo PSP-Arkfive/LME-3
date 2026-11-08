@@ -59,7 +59,6 @@ endif
 	make -C recovery/kernel	TARGET_FW=$(TARGET_FW)
 	make -C recovery		TARGET_FW=$(TARGET_FW)
 	make -C vshmenu		    TARGET_FW=$(TARGET_FW)
-#	make -C usbdevice		TARGET_FW=$(TARGET_FW)
 	make -C dax9660			TARGET_FW=$(TARGET_FW)
 	make -C pspbtjnf		TARGET_FW=$(TARGET_FW)
 
@@ -86,7 +85,6 @@ clean:
 	make clean -C systemctrl PSP_MODEL=2 PERMANENT=1
 	make clean -C systemctrl PSP_MODEL=4 PERMANENT=1
 #endif
-#	make clean -C usbdevice
 	make clean -C vshctrl
 	make clean -C vshctrl HEN=1	
 	make clean -C vshmenu
