@@ -53,7 +53,7 @@ void SetConfig(SEConfig *newconfig)
 //SystemCtrlForKernel_2F157BAF
 void sctrlSEApplyConfig(SEConfig *add)
 {
-	memcpy(&config, add , /*112*/ sizeof(SEConfigLME) - 4 );
+	memcpy(&config, add , /*112*/ sizeof(SEConfigLME) );
 }
 
 void sctrlSESetBootConfFileIndex(int type)
