@@ -11,7 +11,7 @@
 #include <string.h>
 
 #include "main.h"
-#include "rebootex_config.h"
+#include <rebootexconfig.h>
 
 #include "iso/isofs_driver.h"
 
@@ -83,7 +83,7 @@ void sctrlHENSetRebootexOverride(void *rebootex, u32 size)
 int (* DecompressReboot)(u8 *dest, u32 destSize, const u8 *src, void *unk);
 int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 {
-	struct RebootexParam *rebootex_param = (void *)REBOOTEX_PARAM_OFFSET;
+	RebootexConfigLME *rebootex_param = (void *)REBOOTEX_CONFIG;
 
 	//char *theiso = sctrlSEGetUmdFile();
 	char *theiso = sctrlSEGetUmdFileEx( NULL );
@@ -94,7 +94,7 @@ int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 	if (theiso)
 	{	
 //		strcpy( (void *)0x88FB0000 , theiso );
-		strncpy( rebootex_param->file , theiso, REBOOTEX_FILELEN_MAX );
+		strncpy( rebootex_param->file , theiso, REBOOTEX_FILELEN_MAX_LME );
 	}
 
 //	memcpy((void *)0x88fb0050, &config,112/* sizeof(SEConfig)*/);

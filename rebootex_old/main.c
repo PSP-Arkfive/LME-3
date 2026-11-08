@@ -5,7 +5,7 @@
  */
 
 #include <pspsdk.h>
-#include <rebootex_config.h>
+#include <rebootexconfig.h>
 #include <systemctrl_se.h>
 
 #include "main.h"
@@ -371,7 +371,7 @@ int PatchLoadCore(void *a0, void *a1, void *a2, int (* module_start)(void *, voi
 
 static int Main(void *a0, void *a1, void *a2, void *a3, void *t0, void *t1, void *t2)
 {	
-	struct RebootexParam *rebootex_param = (void *)REBOOTEX_PARAM_OFFSET;
+	RebootexConfigLME *rebootex_param = (void *)REBOOTEX_CONFIG;
 
 	size_systemctrl = *(u32 *)0x88FB00F0;
 
