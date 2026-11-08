@@ -60,7 +60,7 @@ ifeq ($(TARGET_FW), 620)
 #	make -C rebooter		TARGET_FW=$(TARGET_FW) PSP_MODEL=2 PERMANENT=1
 	make -C rebooter		TARGET_FW=$(TARGET_FW) PSP_MODEL=4 PERMANENT=1
 endif
-	make -C light_installer	TARGET_FW=$(TARGET_FW)
+#	make -C light_installer	TARGET_FW=$(TARGET_FW)
 #	make -C kxploit			TARGET_FW=$(TARGET_FW) LITE=0
 #	make -C kxploit			TARGET_FW=$(TARGET_FW) LITE=1
 #	make -C launch			TARGET_FW=$(TARGET_FW)
