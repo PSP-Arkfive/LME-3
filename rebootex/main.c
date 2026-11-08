@@ -8,6 +8,7 @@ BootLoadExConfig bleconf = {
         .use_fatms371 = 1,
     },
     .UnpackBootConfig = &UnpackBootConfigLMEPSP,
+    .extraPRXDecrypt = &LMEPRXDecrypt,
 };
 
 // Entry Point
