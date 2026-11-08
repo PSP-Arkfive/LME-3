@@ -72,7 +72,7 @@ int sctrlHookImportByNID(SceModule *mod, char *library, u32 nid, void *func)
 			{
 				if(pImp->nidtable[j] == nid)
 				{
-					void *addr = (void *)(&pImp->stubtable[j * 2]);
+					void *addr = (void *)(pImp->stubtable + 8 * i);
 
 					if(func == NULL)
 					{
