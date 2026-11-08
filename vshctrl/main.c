@@ -335,6 +335,7 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 
 //	sctrlSESetUmdFile("");
 	sctrlSESetUmdFileEx("", NULL);
+	sctrlSESetBootConfFileIndex(MODE_UMD);
 
 	if (config.high_memory)
 	{
@@ -349,14 +350,8 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 		sctrlSESetUmdFile( iso_path );
 
 		int umd_mode = config.umdmode;
-		if ((unsigned)umd_mode < sizeof(lme_umd_boot_modes) / sizeof(lme_umd_boot_modes[0]))
-		{
-			enum SEUmdModes boot_mode = lme_umd_boot_modes[umd_mode];
-			if (boot_mode >= MODE_MARCH33)
-			{
-				sctrlSESetBootConfFileIndex(boot_mode);
-			}
-		}
+		int boot_mode = lme_umd_boot_modes[umd_mode];
+		sctrlSESetBootConfFileIndex(boot_mode);
 
 		u32 opn_type = virtualpbp_get_isotype(index);
 		u32 *info = (u32 *)sceKernelGetGameInfo();
@@ -389,7 +384,7 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 			}
 		}
 
-		if (umd_mode >= MODE_MARCH33)
+		if (boot_mode >= MODE_MARCH33)
 		{
 			if(psp_model == 4)
 			{

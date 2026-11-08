@@ -47,13 +47,13 @@ void sctrlPrepatchPartitions(void);
 /*
 void SetConfig(SEConfig *newconfig)
 {
-	memcpy(&config, newconfig, sizeof(SEConfig));
+	memcpy(&config, newconfig, sizeof(SEConfigLME));
 }*/
 
 //SystemCtrlForKernel_2F157BAF
 void sctrlSEApplyConfig(SEConfig *add)
 {
-	memcpy(&config, add , /*112*/ sizeof(SEConfig) - 4 );
+	memcpy(&config, add , /*112*/ sizeof(SEConfigLME) - 4 );
 }
 
 void sctrlSESetBootConfFileIndex(int type)
@@ -97,13 +97,15 @@ int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 		strncpy( rebootex_param->file , theiso, REBOOTEX_FILELEN_MAX_LME );
 	}
 
-//	memcpy((void *)0x88fb0050, &config,112/* sizeof(SEConfig)*/);
-	memcpy( rebootex_param->config, &config, /* 0x70 */ sizeof(SEConfig) - 4 );
+//	memcpy((void *)0x88fb0050, &config,112/* sizeof(SEConfigLME)*/);
+	memcpy( rebootex_param->config, &config, /* 0x70 */ sizeof(SEConfigLME) - 4 );
 
+	/*
 	if(size_systemctrl)
 		memcpy((void *)0x88FB0100 , systemctrl  , size_systemctrl);
 
 	*(u32 *)0x88FB00F0 = size_systemctrl;
+	*/
 
 	rebootex_param->reboot_index	= reboot_index;
 	rebootex_param->mem2			= memp2;

@@ -22,7 +22,7 @@ dist: all double
 	cp galaxy/pulsar.prx dist/flash0/kd/
 	cp march33/isotope.prx dist/flash0/kd/
 	cp inferno/inferno.prx dist/flash0/kd/
-	cp inferno/dax9660.prx dist/flash0/kd/
+	cp dax9660/dax9660.prx dist/flash0/kd/
 	cp recovery/recovery.prx dist/flash0/vsh/module/
 	cp vshmenu/satellite.prx dist/flash0/vsh/module/
 
