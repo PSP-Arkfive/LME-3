@@ -71,7 +71,7 @@ static inline int CheckIsoPath(const char *path)
 }
 
 u8* custom_rebootex = NULL;
-u32 size_custom_rebootex = 0x4000;
+u32 size_custom_rebootex = REBOOTEX_MAX_SIZE;
 void sctrlHENSetRebootexOverride(void *rebootex, u32 size)
 {
     if (rebootex != NULL) // override rebootex
@@ -84,11 +84,11 @@ int (* DecompressReboot)(u8 *dest, u32 destSize, const u8 *src, void *unk);
 int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 {
 	RebootexConfigLME *rebootex_param = (void *)REBOOTEX_CONFIG;
+	memset((char *)REBOOTEX_CONFIG, 0, sizeof(RebootexConfigLME));
 
 	//char *theiso = sctrlSEGetUmdFile();
 	char *theiso = sctrlSEGetUmdFileEx( NULL );
 	
-	rebootex_param->file[0] = '\0';
 //	*(char *)0x88FB0000 = 0;
 
 	if (theiso)
@@ -119,14 +119,14 @@ int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 	//memcpy((void *)0x88FC0000, rebootex , size_rebootex );
 	if (custom_rebootex && size_custom_rebootex){
 		if (custom_rebootex[0] == 0x1F && custom_rebootex[1] == 0x8B){
-			sceKernelGzipDecompress((void *)0x88FC0000, 0x4000 , custom_rebootex ,0);
+			sceKernelGzipDecompress((void *)0x88FC0000, REBOOTEX_MAX_SIZE , custom_rebootex ,0);
 		}
 		else {
 			memcpy((void*)0x88FC0000, custom_rebootex, size_custom_rebootex);
 		}
 	}
 	else {
-		sceKernelGzipDecompress((void *)0x88FC0000, 0x4000 , rebootex ,0);
+		sceKernelGzipDecompress((void *)0x88FC0000, REBOOTEX_MAX_SIZE , rebootex ,0);
 	}
 	
 	return DecompressReboot(dest, destSize, src, unk);
