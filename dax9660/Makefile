@@ -2,10 +2,10 @@ all:
 	../PSP_TOOLS/psp-packer/psp-packer -d $(TARGET_FW) -i $(TARGET)_$(TARGET_FW).prx -o $(TARGET).prx
 	bin2c $(TARGET).prx $(TARGET).h $(TARGET)
 	sed -i "s/static unsigned int size/\/\/static unsigned int size/g" $(TARGET).h
-	rm -f $(TARGET).prx
 
 clean: reset
 reset:
+	rm -f $(TARGET).prx
 	rm -f $(TARGET).h
 
 TARGET = dax9660
