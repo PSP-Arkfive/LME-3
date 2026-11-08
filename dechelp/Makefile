@@ -26,8 +26,8 @@ USE_KERNEL_LIBS = 1
 
 LDFLAGS += -mno-crt0 -nostartfiles
 LIBDIR = 
-LIBS = 
-#-lpspsystemctrl_kernel -lpspopenpsid
+LIBS = -lpspsystemctrl_kernel
+#-lpspopenpsid
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build_prx.mak

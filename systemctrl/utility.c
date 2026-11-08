@@ -2,6 +2,7 @@
 #include <pspkernel.h>
 #include <pspthreadman_kernel.h>
 #include <psploadexec_kernel.h>
+#include <psputilsforkernel.h>
 #include <pspcrypt.h>
 #include <stdio.h>
 #include <string.h>
@@ -23,11 +24,12 @@ void free(void *p)
 	sctrlKernelFree(p);
 }
 
-int sctrlKernelUncompress(u8 *dest, int destLen, const u8 *source, int sourceLen)
+/*int sctrlKernelUncompress(u8 *dest, int destLen, const u8 *source, int sourceLen)
 {
-	unsigned long dLen = destLen;
-	return uncompress(dest, &dLen, source, (unsigned long)sourceLen);
-}
+	//unsigned long dLen = destLen;
+	//return uncompress(dest, &dLen, source, (unsigned long)sourceLen);
+	return sceKernelDeflateDecompress(dest, destLen, source+2, NULL);
+}*/
 
 int LoadStartModule(const char *module)
 {
@@ -144,14 +146,14 @@ u32 sctrlHENFindFunction(const char *szMod, const char *szLib, u32 nid)
 	return ret;
 }
 
-void sctrlHENPatchSyscall(u32 funcaddr, void *newfunc)
+void sctrlHENPatchSyscall(void* func, void *newfunc)
 {
 	u32	*ptr;
 	int i;
 	asm("cfc0 %0, $12\n" : "=r"(ptr));
 
 	// printf("syscall 0x%08X  \n",funcaddr );
-	funcaddr &= 0x0FFFFFFF;
+	u32 funcaddr = (u32)func&0x0FFFFFFF;
 
 	while(ptr[1])
 	{

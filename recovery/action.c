@@ -10,13 +10,16 @@
 #include <psploadexec_kernel.h>
 #include <pspvshbridge.h>
 
-#include "pspusbdevice.h"
+#include <pspusbdevice.h>
+#include <systemctrl.h>
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 
 #include "main.h"
 #include "action.h"
 #include "text.h"
 
-extern SEConfig config;
+extern SEConfigLME config;
 extern VshConfig config_mini;
 extern int psp_model;
 

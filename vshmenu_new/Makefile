@@ -31,7 +31,7 @@ PRX_EXPORTS = exports.exp
 
 LIBDIR = ../lib
 LDFLAGS =
-LIBS = -lpsppower -lpspkubridge -lpspsystemctrl_user -lpspvshctrl
+LIBS = -lpsppower -lpspkubridge -lpspsystemctrl_user -lmectrl -lpspvshctrl
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build_prx.mak

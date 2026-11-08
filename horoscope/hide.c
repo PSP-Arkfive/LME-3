@@ -3,6 +3,7 @@
 #include <pspiofilemgr.h>
 #include <stdio.h>
 #include <string.h>
+#include <systemctrl.h>
 #include <systemctrl_me.h>
 
 #include "main.h"
@@ -74,5 +75,5 @@ int sceIoDreadPatched(SceUID fd, SceIoDirent * dir)
 
 void HideCFWDirs(SceModule * mod)
 {
-	sctrlHookImportByNid(mod, "IoFileMgrForUser", 0xE3EB004C, &sceIoDreadPatched, 1);
+	sctrlHookImportByNID(mod, "IoFileMgrForUser", 0xE3EB004C, &sceIoDreadPatched);
 }

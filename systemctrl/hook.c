@@ -3,7 +3,7 @@
 
 #include <systemctrl_me.h>
 
-PspModuleImport *sctrlFindImportLib(SceModule *mod, char *library)
+SceLibraryStubTable *sctrlFindImportLib(SceModule *mod, char *library)
 {
 	if(mod == NULL)
 	{
@@ -16,32 +16,32 @@ PspModuleImport *sctrlFindImportLib(SceModule *mod, char *library)
 
 	while(i < stubLen)
 	{
-		PspModuleImport *pImp = (PspModuleImport*)(stubTab + i);
+		SceLibraryStubTable *pImp = (SceLibraryStubTable*)(stubTab + i);
 
-		if((pImp->name) && (strcmp(pImp->name, library) == 0))
+		if((pImp->libname) && (strcmp(pImp->libname, library) == 0))
 		{
 			return pImp;
 		}
 
-		i += (pImp->entLen * 4);
+		i += (pImp->len * 4);
 	}
 
 	return NULL;
 }
 
-u32 sctrlFindImportByNid(SceModule *mod, char *library, u32 nid)
+u32 sctrlFindImportByNID(SceModule *mod, char *library, u32 nid)
 {
-	PspModuleImport *pImp = sctrlFindImportLib(mod, library);
+	SceLibraryStubTable *pImp = sctrlFindImportLib(mod, library);
 
 	if(pImp)
 	{
 		int i;
 
-		for(i = 0; i < pImp->funcCount; i++)
+		for(i = 0; i < pImp->stubcount; i++)
 		{
-			if(pImp->fnids[i] == nid)
+			if(pImp->nidtable[i] == nid)
 			{
-				return (u32) &pImp->funcs[i * 2];
+				return (u32) &pImp->stubtable[i * 2];
 			}
 		}
 	}
@@ -49,7 +49,7 @@ u32 sctrlFindImportByNid(SceModule *mod, char *library, u32 nid)
 	return 0;
 }
 
-int sctrlHookImportByNid(SceModule *mod, char *library, u32 nid, void *func, int syscall)
+int sctrlHookImportByNID(SceModule *mod, char *library, u32 nid, void *func)
 {
 	if(mod == NULL)
 	{
@@ -62,17 +62,17 @@ int sctrlHookImportByNid(SceModule *mod, char *library, u32 nid, void *func, int
 
 	while(i < stubLen)
 	{
-		PspModuleImport *pImp = (PspModuleImport*)(stubTab+i);
+		SceLibraryStubTable *pImp = (SceLibraryStubTable*)(stubTab+i);
 
-		if((pImp->name) && (strcmp(pImp->name, library) == 0))
+		if((pImp->libname) && (strcmp(pImp->libname, library) == 0))
 		{
 			int j;
 
-			for(j = 0; j < pImp->funcCount; j++)
+			for(j = 0; j < pImp->stubcount; j++)
 			{
-				if(pImp->fnids[j] == nid)
+				if(pImp->nidtable[j] == nid)
 				{
-					void *addr = (void *)(&pImp->funcs[j * 2]);
+					void *addr = (void *)(&pImp->stubtable[j * 2]);
 
 					if(func == NULL)
 					{
@@ -81,7 +81,7 @@ int sctrlHookImportByNid(SceModule *mod, char *library, u32 nid, void *func, int
 					}
 					else
 					{
-						if(syscall)
+						if (((u32)addr & 0x80000000) == 0 && ((u32)func & 0x80000000) != 0)
 						{
 							u32 syscall_num;
 
@@ -108,7 +108,7 @@ int sctrlHookImportByNid(SceModule *mod, char *library, u32 nid, void *func, int
 			}
 		}
 
-		i += (pImp->entLen * 4);
+		i += (pImp->len * 4);
 	}
 
 	return 0;

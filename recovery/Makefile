@@ -29,7 +29,7 @@ ASFLAGS = $(CFLAGS) -D_PSP_FW_VERSION=$(PSP_FW_VERSION)
 
 LIBDIR = ../lib
 LDFLAGS =
-LIBS = -lpspreg -lpspusb -lpspusbstor -lpspusbdevice -lpsppower -lpspsystemctrl_user
+LIBS = -lpspreg -lpspusb -lpspusbstor -lpspusbdevice -lpsppower -lpspsystemctrl_user -lmectrl
 #  -lpspaudiocodec -lstdc++ -lpsputility  
 
 

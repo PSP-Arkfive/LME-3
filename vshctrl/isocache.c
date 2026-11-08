@@ -10,7 +10,8 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 
 #include "virtualpbpmgr.h"
 #include "main.h"

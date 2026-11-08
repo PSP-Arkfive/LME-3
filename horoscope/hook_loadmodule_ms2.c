@@ -9,6 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <systemctrl.h>
+
 #include "main.h"
 #include "horoscope_patch_list.h"
 

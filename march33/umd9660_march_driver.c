@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl.h>
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 #include "isoread.h"
 #include "csoread.h"
 #include "daxread.h"

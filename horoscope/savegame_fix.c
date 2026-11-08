@@ -8,6 +8,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <systemctrl.h>
 #include <systemctrl_me.h>
 
 static int (*_scePowerSetClockFrequency)(int pllfreq, int cpufreq, int busfreq);
@@ -54,13 +55,13 @@ int scePower_A85880D0_Patched(void)
 void patch_for_old_fw(SceModule *mod)
 {
 #if _PSP_FW_VERSION < 660
-	sctrlHookImportByNid(mod, "SysMemUserForUser", 0x358CA1BB, &SysMemUserForUser_1B4217BC_Patched, 1);
+	sctrlHookImportByNID(mod, "SysMemUserForUser", 0x358CA1BB, &SysMemUserForUser_1B4217BC_Patched);
 #endif
 
 #if _PSP_FW_VERSION == 620
-	sctrlHookImportByNid(mod, "SysMemUserForUser", 0x1B4217BC, &SysMemUserForUser_1B4217BC_Patched, 1);
-	sctrlHookImportByNid(mod, "scePower", 0x469989AD, &scePower_469989AD_Patched, 1);
-	sctrlHookImportByNid(mod, "scePower", 0xA85880D0, &scePower_A85880D0_Patched, 1);
+	sctrlHookImportByNID(mod, "SysMemUserForUser", 0x1B4217BC, &SysMemUserForUser_1B4217BC_Patched);
+	sctrlHookImportByNID(mod, "scePower", 0x469989AD, &scePower_469989AD_Patched);
+	sctrlHookImportByNID(mod, "scePower", 0xA85880D0, &scePower_A85880D0_Patched);
 #endif
 }
 

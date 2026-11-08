@@ -71,7 +71,7 @@ USE_KERNEL_LIBC = 1
 USE_KERNEL_LIBS = 1
 
 LIBDIR = ../lib
-LIBS = -lpspsemaphore -lzm
+LIBS = -lpspsemaphore
 LDFLAGS = -nostdlib -nodefaultlibs -e module_bootstart
 
 PSPSDK=$(shell psp-config --pspsdk-path)

@@ -26,10 +26,7 @@ void unmount_iso();
 void Fix150Path(const char *file);
 int GetIsoIndex(const char *file);
 
-void SetSpeed(int cpuspeed, int busspeed);
-
-int sceKernelQuerySystemCall(void* func );
-int sceKernelCallSubIntrHandler(int unk1, u32 unk2, int unk3, int unk4);
+#define SetSpeed sctrlHENSetSpeed
 
 int PatchUsbStart(const char* driverName, int size, void *args);
 int PatchUsbStop(const char* driverName, int size, void *args);

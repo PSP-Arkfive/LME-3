@@ -7,7 +7,8 @@
 //#include <malloc.h>
 
 #include "virtualpbpmgr.h"
-#include "systemctrl_me.h"
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 
 #define MAX_FILES	128
 
@@ -23,7 +24,7 @@ static char psp_system_version[] = "1.00";
 static int version_str_flag = 0;
 
 
-extern SEConfig config;
+extern SEConfigLME config;
 
 /*
 u8 virtualsfo[408] =

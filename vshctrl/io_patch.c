@@ -14,7 +14,9 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl.h>
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 #include "main.h"
 
 #include "vshctrl_patch_list.h"
@@ -52,7 +54,7 @@ static const char *customdir_list[][2] = {
 	{"ms0:/seplugins",			"ef0:/seplugins"		},
 };
 
-extern SEConfig config;
+extern SEConfigLME config;
 extern u32 iso_mount;
 
 int CheckDevice(const char *path )
@@ -844,7 +846,7 @@ void IoPatches(void)
 	int i;
 	for(i = 0; i < (sizeof(io_patch_list) / sizeof(IoFileMgr_patch_list)); i++)
 	{
-		PatchSyscall(text_addr + io_patch_list[i].offset, io_patch_list[i].func);
+		PatchSyscall((void*)(text_addr + io_patch_list[i].offset), io_patch_list[i].func);
 	}
 /*
 	PatchSyscall(text_addr + io_patch_list.Io_dopen_offset, sceIoDopenPatched);

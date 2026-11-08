@@ -7,9 +7,12 @@
 #include <stdio.h>
 
 #include <psploadexec_kernel.h>
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
+#include <vshctrl.h>
 
 #include "common.h"
-#include "vshctrl.h"
+
 
 
 int TSRThread(SceSize args, void *argp);
@@ -34,8 +37,8 @@ int psp_model = 0;
 char full_buff[192];
 char umd_path[72];
 
-SEConfig cnf;
-SEConfig cnf_old;
+SEConfigLME cnf;
+SEConfigLME cnf_old;
 
 Menu_pack main_menu[] =
 {
@@ -178,8 +181,8 @@ int TSRThread(SceSize args, void *argp)
 	sceKernelChangeThreadPriority( thread_id,8);
 	vctrlVSHRegisterVshMenu(EatKey);
 
-	sctrlSEGetConfig(&cnf);
-	scePaf_memcpy(&cnf_old , &cnf , sizeof(SEConfig));
+	sctrlSEGetConfig((SEConfig*)&cnf);
+	scePaf_memcpy(&cnf_old , &cnf , sizeof(SEConfigLME));
 	init_videoCache( umd_path );
 
 	while( (cur_buttons & ALL_CTRL) != 0)
@@ -190,8 +193,8 @@ int TSRThread(SceSize args, void *argp)
 	stop_flag = display_menu( main_menu, main_menu_switch, 1 );
 
 
-	if(	scePaf_memcmp(&cnf_old , &cnf , sizeof(SEConfig)))
-		sctrlSESetConfig( &cnf);
+	if(	scePaf_memcmp(&cnf_old , &cnf , sizeof(SEConfigLME)))
+		sctrlSESetConfig( (SEConfig*)&cnf);
 
 	config_mini.vsh_color = color_cnt;
 	if( scePaf_memcmp( &config_mini_backup, &config_mini, sizeof(VshConfig) ) != 0)
@@ -201,7 +204,7 @@ int TSRThread(SceSize args, void *argp)
 
 	char *send = NULL;
 	int send_type = 0;
-	SEConfig *send_config = &cnf_old;
+	SEConfigLME *send_config = &cnf_old;
 
 	if ( stop_flag == 1)
 	{
@@ -219,7 +222,7 @@ int TSRThread(SceSize args, void *argp)
 			exit_func();
 	}
 
-	vctrlVSHExitVSHMenu( send_config , send , send_type );
+	vctrlVSHExitVSHMenu( (SEConfig*)send_config , send , send_type );
 
 	return sceKernelExitDeleteThread(0);
 }

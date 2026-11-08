@@ -2,7 +2,7 @@ release: all
 	../PSP_TOOLS/psp-packer/psp-packer -d $(TARGET_FW) -x -t 0x4C94DAF0 -i $(TARGET).prx
 	bin2c $(TARGET).prx $(BINFILE).h vshctrl
 	sed -i "/int/d" $(BINFILE).h
-	rm -f *.elf *.o
+#	rm -f *.elf *.o
 
 clean: reset
 reset:

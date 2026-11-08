@@ -5,9 +5,11 @@
 #include <psppower.h>
 
 #include "common.h"
-#include "vshctrl.h"
+#include <vshctrl.h>
+#include <systemctrl.h>
+#include <systemctrl_se.h>
 
-extern SEConfig cnf;
+extern SEConfigLME cnf;
 extern int psp_model;
 
 //const char *str_default = "Default";

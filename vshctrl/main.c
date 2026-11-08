@@ -14,7 +14,9 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl.h>
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 #include "main.h"
 #include "vshctrl_patch_list.h"
 
@@ -42,7 +44,7 @@ u32 real_time = 0;
 u32	firsttime = 0;
 
 STMOD_HANDLER previous = NULL;
-SEConfig config;
+SEConfigLME config;
 
 void *search_module_stub(SceModule *pMod, const char *szLib, u32 nid)
 {
@@ -144,7 +146,7 @@ int vctrlVSHExitVSHMenu(SEConfig *g_conf, char *videoiso, int disctype)
 	{
 		int old_cpu = config.vshcpuspeed;
 		memcpy(&config,g_conf,sizeof(config));
-		sctrlSEApplyConfig(&config);
+		sctrlSEApplyConfig((SEConfig*)&config);
 		
 		if(clock_flag && k1 != 0 )
 		{			
@@ -712,7 +714,7 @@ static void PatchVshMain(SceModule *mod )
 	if (!config.novshmenu) 
 	{ 
 		MAKE_CALL( text_addr + VSH_READ_KEY_PATCH_ADDR, sceCtrlReadBufferPositivePatched);
-		PatchSyscall(FindProc("sceController_Service", "sceCtrl", 0x1F803938), sceCtrlReadBufferPositivePatched);
+		PatchSyscall((void*)FindProc("sceController_Service", "sceCtrl", 0x1F803938), sceCtrlReadBufferPositivePatched);
 	}
 
 	if( config.skipgameboot)
@@ -732,12 +734,12 @@ static void PatchVshMain(SceModule *mod )
 	if(config.versiontxt)
 	{
 		u32 addr = FindProc("sceMesgLed", "sceResmgr", 0x9DC14891);
-		sctrlHENPatchSyscall(addr, PatchVer);//Version.txt
+		sctrlHENPatchSyscall((void*)addr, PatchVer);//Version.txt
 		sceResmgr_driver_9DC14891_k = (void *)addr;
 	}
 
-	PatchSyscall(FindProc("sceUSB_Driver", "sceUsb", 0xAE5DE6AF), PatchUsbStart);//sceUsbStart
-	PatchSyscall(FindProc("sceUSB_Driver", "sceUsb", 0xC2464FA0), PatchUsbStop);//sceUsbStop
+	PatchSyscall((void*)FindProc("sceUSB_Driver", "sceUsb", 0xAE5DE6AF), PatchUsbStart);//sceUsbStart
+	PatchSyscall((void*)FindProc("sceUSB_Driver", "sceUsb", 0xC2464FA0), PatchUsbStop);//sceUsbStop
 
 	ClearCaches();
 }
@@ -798,7 +800,7 @@ static void PatchSysconfPlugin(u32 text_addr)
 	// ori v0, v0, addrlow
 	_sw(0x34420000 | addrlow, text_addr+ SP_PATCH_ADDR + 4);
 
-	if(config.umdactivatedplaincheck)
+	if(config.hidemac)
 	{
 		memcpy((void *)(text_addr+ SYSCON_MAC_PATCH_ADDR ), fake_mac , sizeof(fake_mac));
 	}
@@ -998,7 +1000,7 @@ int module_start(SceSize args, void *argp)
 
 	LoadExecPatch();
 
-	sctrlSEGetConfig(&config);
+	sctrlSEGetConfig((SEConfig*)&config);
 	sctrlSESetUmdFileEx( "", vshmount);
 
 	if (config.vshcpuspeed != 0 )//|| !config.novshmenu

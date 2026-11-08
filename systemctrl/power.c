@@ -30,10 +30,10 @@ __attribute__((noinline)) u32 FindPowerFunction(u32 nid)
 	return FindProc("scePower_Service", "scePower_driver", nid);
 }
 
-int	sctrlHENSetSpeed(int cpu,int bus)
+void sctrlHENSetSpeed(int cpu,int bus)
 {	
 	scePowerSetClockFrequency_k = (void *)FindPowerFunction(0x545A7F3C);
-	return scePowerSetClockFrequency_k( cpu, cpu ,bus);
+	scePowerSetClockFrequency_k( cpu, cpu ,bus);
 }
 
 static int scePowerGetPllClockFrequencyIntFaked(void)

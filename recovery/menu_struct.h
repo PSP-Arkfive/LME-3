@@ -86,7 +86,7 @@ Menu_pack menu_config[] =
 //	{"GAME folder homebrew"	, TMENU_FUNCTION_VALUE , folder_change },
 	{""/*"Autorun program at /PSP/GAME/BOOT/EBOOT.PBP"*/, TMENU_FUNCTION_VALUE_DISPLAY , autorun_umdvideo_change },
 	{"UMD Mode"				, TMENU_FUNCTION_VALUE , umdmode_change },
-	{"Hide MAC Address", TMENU_SWITCH ,&config.umdactivatedplaincheck},
+	{"Hide MAC Address", TMENU_SWITCH ,&config.hidemac},
 	{"Fake region"			, TMENU_FUNCTION_VALUE , region_change },
 	{"Use VshMenu"			, TMENU_SWITCH2 , &config.novshmenu },
 	{"XMB Usb Device"		, TMENU_FUNCTION_VALUE , usb_change },

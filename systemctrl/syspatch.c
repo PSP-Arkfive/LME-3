@@ -51,7 +51,7 @@
 	#endif
 #endif
 
-SEConfig config;
+SEConfigLME config;
 
 static int reboot_index = 0;
 static STMOD_HANDLER previous = NULL;
@@ -431,7 +431,7 @@ void UsbChargeStart(void);
 
 static void OnImposeLoad()
 {
-	sctrlSEGetConfig(&config);	
+	sctrlSEGetConfig((SEConfig*)&config);	
 	PatchChkreg();
 
 //	if ( sceKernelInitKeyConfig() == PSP_INIT_KEYCONFIG_GAME)
@@ -779,10 +779,10 @@ STMOD_HANDLER sctrlHENSetStartModuleHandler(STMOD_HANDLER handler)
 }
 
 int (*StartModuleEX)(int , SceSize , void *, int *, SceKernelSMOption *) = NULL;
-void* sctrlSetStartModuleExtra(int (*func)() )
+void* sctrlSetStartModuleExtra(int (*func)(int , SceSize , void *, int *, SceKernelSMOption *) )
 {
 	void * ret = (void *)StartModuleEX;
-	StartModuleEX = (void *)func;
+	StartModuleEX = func;
 	return ret;
 }
 

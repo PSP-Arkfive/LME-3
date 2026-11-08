@@ -19,6 +19,7 @@
 #include <pspreg.h>
 #include <stdio.h>
 #include <string.h>
+#include <systemctrl_se.h>
 #include <systemctrl_me.h>
 #include <pspsysmem_kernel.h>
 #include <pspsysevent.h>
@@ -90,13 +91,13 @@ int init_inferno(void)
 int module_start(SceSize args, void* argp)
 {
 	int ret, key_config;
-	SEConfig config;
+	SEConfigLME config;
 
 	psp_model = sceKernelGetModel();
 	psp_fw_version = sceKernelDevkitVersion();
 
 	key_config = sceKernelApplicationType();
-	sctrlSEGetConfig(&config);
+	sctrlSEGetConfig((SEConfig*)&config);
 
 	if(config.iso_cache && psp_model != 0 && key_config == PSP_INIT_KEYCONFIG_GAME) {
 		int bufsize;

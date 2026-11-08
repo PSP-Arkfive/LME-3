@@ -22,7 +22,8 @@
 #include <stdio.h>
 
 #include <pspvshbridge.h>
-#include "systemctrl_me.h"
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 #include "text.h"
 #include "action.h"
 
@@ -32,8 +33,8 @@ PSP_MODULE_INFO("Recovery Menu", 0x800, 1, 0);
 /* Define the main thread's attribute value (optional) */
 PSP_MAIN_THREAD_ATTR(PSP_THREAD_ATTR_VSH);//| PSP_THREAD_ATTR_VFPU 
 
-SEConfig config;
-SEConfig backup_config;
+SEConfigLME config;
+SEConfigLME backup_config;
 
 VshConfig config_mini;
 VshConfig config_mini_backup;
@@ -64,8 +65,8 @@ u32 ctrlRead()
 
 static void load_config()
 {
-	sctrlSEGetConfig(&config);
-	memcpy(&backup_config, &config, sizeof(SEConfig));
+	sctrlSEGetConfig((SEConfig*)&config);
+	memcpy(&backup_config, &config, sizeof(SEConfigLME));
 
 	sctrlSEGetMiniConfig(&config_mini);
 	memcpy(&config_mini_backup, &config_mini, sizeof(VshConfig));
@@ -73,9 +74,9 @@ static void load_config()
 
 void save_config()
 {
-	if(memcmp(&backup_config, &config, sizeof(SEConfig)) != 0)
+	if(memcmp(&backup_config, &config, sizeof(SEConfigLME)) != 0)
 	{
-		sctrlSESetConfig(&config);
+		sctrlSESetConfig((SEConfig*)&config);
 	}
 
 	if(memcmp(&config_mini_backup, &config_mini, sizeof(VshConfig)) != 0)

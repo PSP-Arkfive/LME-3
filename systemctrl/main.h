@@ -1,9 +1,11 @@
 #ifndef ___MAIN_H___
 #define ___MAIN_H___
 
+#include <systemctrl.h>
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 
 #include "malloc.h"
-#include "systemctrl_me.h"
 #include "nid_resolver.h"
 #include "systemctrl_patch_list.h"
 
@@ -51,10 +53,8 @@ static inline void MAKE_DUMMY_FUNCTION1(u32 a)
 #define SCE_ERROR_ERRNO_ENAMETOOLONG	0x80010024
 #define SCE_ERROR_ERRNO_EFLAG			0x8001B004
 
-int sceKernelCallSubIntrHandler(int unk1, u32 unk2, int unk3, int unk4);
+
 int sceKernelGetSystemStatus(void);
-int sceKernelSetQTGP3(void *);
-int sceKernelQuerySystemCall(void *addr);
 
 void *search_module_export(SceModule *pMod, const char *szLib, u32 nid);
 void ClearCaches();

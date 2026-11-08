@@ -309,13 +309,13 @@ void PatchMemlmd()
 
 
 int (* MesgLedDecrypt)(u32*, u8*, u32, u8*, u32, u32*, u32, u8*, u32, u32, u32, u32) = NULL;
-int (* MesgLedDecryptEX)(u8 *buf, u32 a1, u32 a2, u32 a3) = NULL;
+KDEC_HANDLER MesgLedDecryptEX = NULL;
 
-void *SystemCtrlForKernel_1F3037FB(int (* func)())
+KDEC_HANDLER sctrlHENRegisterKDecryptHandler(KDEC_HANDLER func)
 {
-	int (* r)() = (void *)MesgLedDecryptEX;
-	MesgLedDecryptEX = (void *)func;
-	return (void *)r;
+	KDEC_HANDLER prev = MesgLedDecryptEX;
+	MesgLedDecryptEX = func;
+	return prev;
 }
 
 int MesgLedDecryptPatched(u32* a0/*tag*/,u8* a1/*key*/,int a2,u8 *buff,int t0/*size*/,int *t1/*ret*/,int t2/*flag*/,char *t3 ,
@@ -327,7 +327,7 @@ int MesgLedDecryptPatched(u32* a0/*tag*/,u8* a1/*key*/,int a2,u8 *buff,int t0/*s
 
 		if( MesgLedDecryptEX )
 		{
-			int ret = MesgLedDecryptEX( buff , t0 , (u32)t1 , t2 );
+			int ret = MesgLedDecryptEX( buff , t0 , (void*)t1 , t2 );
 			if( ret >= 0 )
 				return ret;
 		}

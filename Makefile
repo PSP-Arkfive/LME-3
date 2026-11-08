@@ -20,10 +20,10 @@ build_lib:
 
 cfw:
 	make -C vshctrl			TARGET_FW=$(TARGET_FW)
-	make -C custom_ipl		TARGET_FW=$(TARGET_FW)
+#	make -C custom_ipl		TARGET_FW=$(TARGET_FW)
 #	make -C installer		TARGET_FW=$(TARGET_FW)
 ifeq ($(TARGET_FW), $(filter $(TARGET_FW), 660 661))
-	make -C tmaddon			TARGET_FW=$(TARGET_FW)
+#	make -C tmaddon			TARGET_FW=$(TARGET_FW)
 endif
 
 lcfw:
@@ -61,11 +61,11 @@ ifeq ($(TARGET_FW), 620)
 	make -C rebooter		TARGET_FW=$(TARGET_FW) PSP_MODEL=4 PERMANENT=1
 endif
 	make -C light_installer	TARGET_FW=$(TARGET_FW)
-	make -C kxploit			TARGET_FW=$(TARGET_FW) LITE=0
-	make -C kxploit			TARGET_FW=$(TARGET_FW) LITE=1
-	make -C launch			TARGET_FW=$(TARGET_FW)
+#	make -C kxploit			TARGET_FW=$(TARGET_FW) LITE=0
+#	make -C kxploit			TARGET_FW=$(TARGET_FW) LITE=1
+#	make -C launch			TARGET_FW=$(TARGET_FW)
 ifeq ($(TARGET_FW), 620)
-	make -C permanent		TARGET_FW=$(TARGET_FW)
+#	make -C permanent		TARGET_FW=$(TARGET_FW)
 endif
 
 common:
@@ -90,7 +90,7 @@ endif
 	make -C recovery		TARGET_FW=$(TARGET_FW)
 #	make -C vshmenu_src		TARGET_FW=$(TARGET_FW)
 	make -C vshmenu_new		TARGET_FW=$(TARGET_FW)
-	make -C usbdevice		TARGET_FW=$(TARGET_FW)
+#	make -C usbdevice		TARGET_FW=$(TARGET_FW)
 	make -C dax9660			TARGET_FW=$(TARGET_FW)
 	make -C pspbtjnf		TARGET_FW=$(TARGET_FW)
 
@@ -101,15 +101,15 @@ clean:
 	make clean -C galaxy
 	make clean -C horoscope
 	make clean -C idcanager
-	make clean -C custom_ipl
+#	make clean -C custom_ipl
 #	make clean -C installer
 #ifeq ($(TARGET_FW), $(filter $(TARGET_FW), 660 661))
-	make clean -C tmaddon
+#	make clean -C tmaddon
 #endif
-	make clean -C kxploit LITE=0
-	make clean -C kxploit LITE=1
-	make clean -C launch
-	make clean -C light_installer
+#	make clean -C kxploit LITE=0
+#	make clean -C kxploit LITE=1
+#	make clean -C launch
+#	make clean -C light_installer
 	make clean -C march33
 	make clean -C inferno
 	make clean -C pspbtjnf
@@ -155,12 +155,12 @@ clean:
 	make clean -C systemctrl PSP_MODEL=2 PERMANENT=1
 	make clean -C systemctrl PSP_MODEL=4 PERMANENT=1
 #endif
-	make clean -C usbdevice
+#	make clean -C usbdevice
 	make clean -C vshctrl
 	make clean -C vshctrl HEN=1	
 	make clean -C vshmenu_new
 #ifeq ($(TARGET_FW), 620)
-	make clean -C permanent
+#	make clean -C permanent
 #endif
 	rm -rf dist
 #	@rm -f EBOOT.PBP

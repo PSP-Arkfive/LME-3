@@ -1,10 +1,13 @@
-#include <pspsdk.h>
-#include <pspkernel.h>
-#include <pspthreadman_kernel.h>
-
-#include <string.h>
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <pspkernel.h>
+#include <pspreg.h>
+#include <pspsysmem_kernel.h>
+#include <pspsysevent.h>
+#include <pspumd.h>
+#include <psprtc.h>
+#include <pspinit.h>
 
 #include "main.h"
 #include "systemctrl_me.h"
@@ -15,6 +18,7 @@ int umd9660_init();
 int umd9660_exit(PspIoDrvArg* arg);
 int umd_read_block(void *drvState, u8 *buf, SceInt64 read_size, LbaParams *lba_param);
 
+void sceKernelSetQTGP3(void *);
 
 int discFlag = 1;		//dataA6E8
 static int data7DE4[4] = {-1 , -1 , -1 , -1};	//

@@ -33,11 +33,6 @@ PSP_MAIN_THREAD_ATTR(0);
 
 u32 module_sdk_version = 0x03060010;
 
-void *SystemCtrlForKernel_1F3037FB( int(* func)() );
-char *sctrlSEGetUmdFile();
-//void *sctrlKernelMalloc(int);
-//int sctrlKernelFree(void *);
-
 typedef struct
 {
 	u32		signature;  // 0
@@ -174,7 +169,7 @@ int module_start()
 	SceModule2 *mod = sceKernelFindModuleByName("sceMesgLed");	
 	{
 		u32 text_addr = mod->text_addr;	
-		decrypt_next = (void *)SystemCtrlForKernel_1F3037FB( opnssmp_decrypt_helper );
+		decrypt_next = (void *)sctrlHENRegisterKDecryptHandler( opnssmp_decrypt_helper );
 
 //		MAKE_CALL( text_addr + 0x00003194 , opnssmp_decrypt_helper );
 //		MAKE_CALL( text_addr + sceMesgLedDecryptGame[ model ][0], opnssmp_decrypt_helper );

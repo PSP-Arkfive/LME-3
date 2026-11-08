@@ -19,6 +19,8 @@
 #include <pspreg.h>
 #include <stdio.h>
 #include <string.h>
+#include <systemctrl.h>
+#include <systemctrl_se.h>
 #include <systemctrl_me.h>
 #include <pspsysmem_kernel.h>
 #include <psprtc.h>
@@ -513,7 +515,8 @@ static int read_dax_sector(u8 *addr, int sector)
 		if (Is_NCArea(g_DAX_pos / 4, g_DAX_hdr.nNCareas)) {
 			memcpy(g_dec_buf, g_com_buf, DEC_BUFFER_SIZE);
 		} else {
-			ret = sctrlKernelUncompress(g_dec_buf, DEC_BUFFER_SIZE, g_com_buf, size);			
+			//ret = sctrlKernelUncompress(g_dec_buf, DEC_BUFFER_SIZE, g_com_buf, size);
+			ret = sceKernelDeflateDecompress(g_dec_buf, DEC_BUFFER_SIZE, g_com_buf+2, NULL);
 		}
 	}
 

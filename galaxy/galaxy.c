@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//#include <systemctrl.h>
+#include <systemctrl.h>
 #include <systemctrl_me.h>
 
 #include "addr_list.h"
