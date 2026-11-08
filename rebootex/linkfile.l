@@ -1,11 +1,11 @@
 OUTPUT_FORMAT("elf32-littlemips")
 OUTPUT_ARCH(mips)
 
-ENTRY(Reboot_Entry)
+ENTRY(main)
 
 SECTIONS
 {
-  . = 0x88fc0000;
+  . = 0x88FC0000;
   .text.startup : {
     *(.text.startup)
   }

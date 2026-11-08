@@ -44,6 +44,6 @@ void vctrlVSHGetSpeed(int *cpu, int *bus )
 void vctrlVSHSetRecovery()
 {
 //	int k1 = pspSdkSetK1(0);
-	sctrlSESetBootConfFileIndex( 4 );
+	sctrlSESetBootConfFileIndex(MODE_RECOVERY);
 //	pspSdkSetK1(k1);
 }

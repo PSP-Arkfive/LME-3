@@ -183,7 +183,7 @@ static char ** umd_mode[] =
 	&recovery_str.umd_mode_list.ME,
 	&recovery_str.umd_mode_list.INFERNO
 };
-#define UMD_MODE_CNT 6
+#define UMD_MODE_CNT (sizeof(umd_mode) / sizeof(umd_mode[0]))
 
 /*
 static const char * umd_mode[] =

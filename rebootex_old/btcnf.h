@@ -1,4 +1,6 @@
 
+#include <pspbtcnf.h>
+
 enum {
 	PATCH_ADD,
 	PATCH_OVERWRITE,
@@ -15,16 +17,16 @@ typedef struct ModuleList
 } ModuleList;
 
 ModuleList module_inferno[] = {
-	{ PATCH_OVERRIDE	,"/kd/np9660.prx", "/kd/inferno.prx",  0x42  , 0x8001 },
+	{ PATCH_OVERRIDE	,"/kd/np9660.prx", "/kd/inferno.prx",  UMDEMU_RUNLEVEL | GAME_RUNLEVEL  , 0x8001 },
 	{ -1		,NULL			, NULL					, 0  , 0}
 };
 ModuleList module_isotope[] = {
-	{ PATCH_OVERRIDE	,"/kd/np9660.prx", "/kd/isotope.prx",  0x42  , 0x8001 },
+	{ PATCH_OVERRIDE	,"/kd/np9660.prx", "/kd/isotope.prx",  UMDEMU_RUNLEVEL | GAME_RUNLEVEL  , 0x8001 },
 	{ -1		,NULL			, NULL					, 0  , 0}
 };
 
 ModuleList module_np9660[] = {
-	{ PATCH_ADD	,"/kd/np9660.prx", "/kd/pulsar.prx"		, 0x42  , 0x8001 },
+	{ PATCH_ADD	,"/kd/np9660.prx", "/kd/pulsar.prx"		, UMDEMU_RUNLEVEL | GAME_RUNLEVEL  , 0x8001 },
 	{ -1		,NULL			, NULL					, 0  , 0}
 };
 
@@ -40,54 +42,54 @@ ModuleList module_boot[] = {
 #if PERMANENT == 1
 #if PSP_MODEL != 4
 	ModuleList module_recovery[] = {
-		{ PATCH_OVERRIDE	,"/vsh/module/vshorig.prx","/vsh/module/recovery.prx"	,   1  , 4 },
-		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx","/kd/usbstorms.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx","/kd/usbstorboot.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"	,"/kd/usbdev.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx", "/kd/lflash_fatfmt.prx"		,   1  , 0x8001 },
+		{ PATCH_OVERRIDE	,"/vsh/module/vshorig.prx","/vsh/module/recovery.prx"	, VSH_RUNLEVEL  , 4 },
+		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx","/kd/usbstorms.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx","/kd/usbstorboot.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"	,"/kd/usbdev.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx", "/kd/lflash_fatfmt.prx"		, VSH_RUNLEVEL  , 0x8001 },
 		{ PATCH_OVERWRITE	,"/vsh/module/common_util.prx",	"/kd/usersystemlib.prx"		, 0xEF , 0x8002 },
-		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"	,	"/kd/usbstormgr.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"	,"/kd/usbstor.prx"		,   1  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"	,	"/kd/usbstormgr.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"	,"/kd/usbstor.prx"		, VSH_RUNLEVEL  , 0x8001 },
 		{ -1				, NULL			, NULL					, 0  , 0}
 	};
 #else
 	ModuleList module_recovery[] = {
-		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"			,"/kd/usbstor.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"			,"/kd/usbstormgr.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx"		,"/kd/usbstorms.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/mcore.prx"		,"/kd/usbstoreflash.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx"		,"/kd/usbstorboot.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"			,"/kd/usbdev.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx"	,"/kd/lflash_fatfmt.prx"		,   1  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"			,"/kd/usbstor.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"			,"/kd/usbstormgr.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx"		,"/kd/usbstorms.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/mcore.prx"		,"/kd/usbstoreflash.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx"		,"/kd/usbstorboot.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"			,"/kd/usbdev.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx"	,"/kd/lflash_fatfmt.prx"		, VSH_RUNLEVEL  , 0x8001 },
 		{ PATCH_OVERWRITE	,"/vsh/module/common_util.prx"	,"/kd/usersystemlib.prx"		, 0xEF , 0x8002 },
-		{ PATCH_OVERRIDE	,"/vsh/module/vshorig.prx"		,"/vsh/module/recovery.prx"	,   1  , 4 },
+		{ PATCH_OVERRIDE	,"/vsh/module/vshorig.prx"		,"/vsh/module/recovery.prx"	, VSH_RUNLEVEL  , 4 },
 		{ -1				, NULL			, NULL					, 0  , 0}
 	};
 #endif
 #else
 #if PSP_MODEL != 4
 	ModuleList module_recovery[] = {
-		{ PATCH_OVERRIDE	,"/vsh/module/vshmain.prx","/vsh/module/recovery.prx"	,   1  , 4 },
-		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx","/kd/usbstorms.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx","/kd/usbstorboot.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"	,"/kd/usbdev.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx", "/kd/lflash_fatfmt.prx"		,   1  , 0x8001 },
+		{ PATCH_OVERRIDE	,"/vsh/module/vshmain.prx","/vsh/module/recovery.prx"	, VSH_RUNLEVEL  , 4 },
+		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx","/kd/usbstorms.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx","/kd/usbstorboot.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"	,"/kd/usbdev.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx", "/kd/lflash_fatfmt.prx"		, VSH_RUNLEVEL  , 0x8001 },
 		{ PATCH_OVERWRITE	,"/vsh/module/common_util.prx",	"/kd/usersystemlib.prx"		, 0xEF , 0x8002 },
-		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"	,	"/kd/usbstormgr.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"	,"/kd/usbstor.prx"		,   1  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"	,	"/kd/usbstormgr.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"	,"/kd/usbstor.prx"		, VSH_RUNLEVEL  , 0x8001 },
 		{ -1				, NULL			, NULL					, 0  , 0}
 	};
 #else
 	ModuleList module_recovery[] = {
-		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"			,"/kd/usbstor.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"			,"/kd/usbstormgr.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx"		,"/kd/usbstorms.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/mcore.prx"		,"/kd/usbstoreflash.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx"		,"/kd/usbstorboot.prx"	,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"			,"/kd/usbdev.prx"		,   1  , 0x8001 },
-		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx"	,"/kd/lflash_fatfmt.prx"		,   1  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/mediasync.prx"			,"/kd/usbstor.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/vshctrl_02g.prx"			,"/kd/usbstormgr.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/usersystemlib.prx"		,"/kd/usbstorms.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/mcore.prx"		,"/kd/usbstoreflash.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/kd/libatrac3plus.prx"		,"/kd/usbstorboot.prx"	, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/paf.prx"			,"/kd/usbdev.prx"		, VSH_RUNLEVEL  , 0x8001 },
+		{ PATCH_OVERWRITE	,"/vsh/module/common_gui.prx"	,"/kd/lflash_fatfmt.prx"		, VSH_RUNLEVEL  , 0x8001 },
 		{ PATCH_OVERWRITE	,"/vsh/module/common_util.prx"	,"/kd/usersystemlib.prx"		, 0xEF , 0x8002 },
-		{ PATCH_OVERRIDE	,"/vsh/module/vshmain.prx"		,"/vsh/module/recovery.prx"	,   1  , 4 },
+		{ PATCH_OVERRIDE	,"/vsh/module/vshmain.prx"		,"/vsh/module/recovery.prx"	, VSH_RUNLEVEL  , 4 },
 		{ -1				, NULL			, NULL					, 0  , 0}
 	};
 #endif

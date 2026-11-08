@@ -144,10 +144,10 @@ static char **iso[] = {
 	&vshmenu_str.umd_mode_list.M33,
 	&vshmenu_str.umd_mode_list.NP9660,
 	&vshmenu_str.umd_mode_list.ME,
-	&vshmenu_str.umd_mode_list.INFERNO
+	&vshmenu_str.umd_mode_list.INFERNO,
 };
 
-#define UMD_MODE_CNT (sizeof(iso)/sizeof(char*))
+#define UMD_MODE_CNT (sizeof(iso) / sizeof(iso[0]))
 
 void *change_umd_mode(int type ,int dir )
 {

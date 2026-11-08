@@ -87,7 +87,7 @@ int sctrlSERstConfigEx(SEConfig *config, int size)
 	memset(config, 0, size);
 
 	config->lme.magic = CONFIG_MAGIC;
-	config->lme.umdmode = ME_MODE_NP9660;
+	config->lme.umdmode = MODE_NP9660;
 
 #if PSP_MODEL != 0
 	config->lme.usbcharge = 1;

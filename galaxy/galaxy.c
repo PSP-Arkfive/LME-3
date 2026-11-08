@@ -35,8 +35,6 @@
 PSP_MODULE_INFO("NP9660_Controller", 0x1006, 1, 0);
 PSP_MAIN_THREAD_ATTR(0);
 
-void sceKernelSetQTGP3(void *);
-
 STMOD_HANDLER previous = NULL;
 
 u32 module_sdk_version = 0x03060010;
@@ -175,7 +173,7 @@ int sub_00000588(const char *path)
 
 	ClearCaches();
 
-	sceKernelSetQTGP3( dataE10);
+	sceKernelSetQTGP3((void*)dataE10);
 
 	return 0;
 }

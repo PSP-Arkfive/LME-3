@@ -25,6 +25,7 @@
 #include <pspsysevent.h>
 #include <pspumd.h>
 #include <psprtc.h>
+#include <pspinit.h>
 
 #include "inferno.h"
 
@@ -35,9 +36,6 @@ u32 module_sdk_version =  0x03060010;
 
 u32 psp_model;
 u32 psp_fw_version;
-
-extern int sceKernelApplicationType(void);
-extern int sceKernelSetQTGP3(void *unk0);
 
 // 00002790
 const char *g_iso_fn = NULL;

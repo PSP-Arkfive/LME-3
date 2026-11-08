@@ -36,8 +36,6 @@ char *umdfilename;	//data2790
 
 UmdReadParams umd_read_params;//data2784
 
-void sceKernelSetQTGP3(void*);
-
 typedef struct
 {
 	int flag;
@@ -694,7 +692,7 @@ int march_init()
 		return r;
 	}
 
-	sceKernelSetQTGP3(data2248);
+	sceKernelSetQTGP3((void*)data2248);
 
 	return 0;
 }

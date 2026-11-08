@@ -33,6 +33,14 @@ PSP_MAIN_THREAD_ATTR(0);
 
 static char vshmount[128];
 static int psp_model;
+static const enum SEUmdModes lme_umd_boot_modes[] = {
+	MODE_UMD,
+	MODE_OE_LEGACY,
+	MODE_MARCH33,
+	MODE_NP9660,
+	MODE_ME,
+	MODE_INFERNO
+};
 
 
 SceUID satelitedfd = -1;
@@ -341,21 +349,13 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 		sctrlSESetUmdFile( iso_path );
 
 		int umd_mode = config.umdmode;
-		if(umd_mode == 2)//MODE_MARCH33
+		if ((unsigned)umd_mode < sizeof(lme_umd_boot_modes) / sizeof(lme_umd_boot_modes[0]))
 		{
-			sctrlSESetBootConfFileIndex(1);
-		}
-		else if(umd_mode == 3)//MODE_NP9660
-		{
-			sctrlSESetBootConfFileIndex(2);
-		}
-		else if(umd_mode == 4)//MODE_ME
-		{
-			sctrlSESetBootConfFileIndex(3);
-		}
-		else if(umd_mode == 5)//MODE_INFERNO
-		{
-			sctrlSESetBootConfFileIndex(5);
+			enum SEUmdModes boot_mode = lme_umd_boot_modes[umd_mode];
+			if (boot_mode >= MODE_MARCH33)
+			{
+				sctrlSESetBootConfFileIndex(boot_mode);
+			}
 		}
 
 		u32 opn_type = virtualpbp_get_isotype(index);
@@ -373,7 +373,7 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 			pboot_flag = 1;
 		}
 
-		if( pboot_flag == 0  )// || umd_mode < 2
+		if (pboot_flag == 0)
 		{
 			if ( CheckPrometheus() )
 			{
@@ -389,7 +389,7 @@ int LoadExecVSHCommonPatched(int apitype, char *file, struct SceKernelLoadExecVS
 			}
 		}
 
-		if(umd_mode >= 2)
+		if (umd_mode >= MODE_MARCH33)
 		{
 			if(psp_model == 4)
 			{

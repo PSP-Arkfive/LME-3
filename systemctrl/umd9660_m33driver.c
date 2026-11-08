@@ -18,8 +18,6 @@ int umd9660_init();
 int umd9660_exit(PspIoDrvArg* arg);
 int umd_read_block(void *drvState, u8 *buf, SceInt64 read_size, LbaParams *lba_param);
 
-void sceKernelSetQTGP3(void *);
-
 int discFlag = 1;		//dataA6E8
 static int data7DE4[4] = {-1 , -1 , -1 , -1};	//
 
@@ -142,7 +140,7 @@ void sctrlSESetDiscOut(int out)
 void DoAnyUmd()
 {
 	umd9660_init();
-	sceKernelSetQTGP3(data7DE4);
+	sceKernelSetQTGP3((void*)data7DE4);
 
 	SceModule *mod = sceKernelFindModuleByName("sceUmd9660_driver");
 	if( mod == NULL )
@@ -262,7 +260,7 @@ int sctrlSEUmountUmd()//Unmount iso
 	umd9660_exit(NULL);
 	sctrlSESetUmdFile("");
 
-	sceKernelSetQTGP3(data7DE4);
+	sceKernelSetQTGP3((void*)data7DE4);
 	discFlag =1;//dataA6E8disc out
 
 	sceKernelCallSubIntrHandler(4,26,0,0);//InterruptManagerForKernel_8BE96A2E

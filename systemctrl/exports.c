@@ -108,7 +108,9 @@ extern int sctrlFindImportByNID;
 extern int sctrlHookImportByNID;
 extern int sctrlHENPatchSyscall;
 extern int sctrlKernelQuerySystemCall;
-static const unsigned int __SystemCtrlForUser_exports[82] __attribute__((section(".rodata.sceResident"))) = {
+extern int sctrlSESetUmdFile;
+extern int sctrlSESetBootConfFileIndex;
+static const unsigned int __SystemCtrlForUser_exports[90] __attribute__((section(".rodata.sceResident"))) = {
 	0x8D5BE1F0,
 	0x128112C3,
 	0xCB76B778,
@@ -150,6 +152,10 @@ static const unsigned int __SystemCtrlForUser_exports[82] __attribute__((section
 	0x72F47790,
 	0x826668E9,
 	0x56CEAF00,
+	0x5A35C948,
+	0xBC939DC1,
+	0x5CB025F0,
+	0xF988C1DC,
 	(unsigned int) &sctrlKernelSetInitApitype,
 	(unsigned int) &sctrlKernelSetInitFileName,
 	(unsigned int) &sctrlKernelSetInitKeyConfig,
@@ -191,6 +197,10 @@ static const unsigned int __SystemCtrlForUser_exports[82] __attribute__((section
 	(unsigned int) &sctrlHookImportByNID,
 	(unsigned int) &sctrlHENPatchSyscall,
 	(unsigned int) &sctrlKernelQuerySystemCall,
+	(unsigned int) &sctrlSESetUmdFile,
+	(unsigned int) &sctrlSESetBootConfFileIndex,
+	(unsigned int) &sctrlSESetBootConfFileIndex,
+	(unsigned int) &sctrlHENPatchSyscall,
 };
 
 extern int sctrlKernelSetInitApitype;
@@ -263,7 +273,7 @@ extern int sctrlHookImportByNID;
 extern int sctrlHENPatchSyscall;
 extern int sctrlKernelQuerySystemCall;
 extern int sctrlHENSetRebootexOverride;
-static const unsigned int __SystemCtrlForKernel_exports[140] __attribute__((section(".rodata.sceResident"))) = {
+static const unsigned int __SystemCtrlForKernel_exports[150] __attribute__((section(".rodata.sceResident"))) = {
 	0x8D5BE1F0,
 	0x128112C3,
 	0xCB76B778,
@@ -334,6 +344,11 @@ static const unsigned int __SystemCtrlForKernel_exports[140] __attribute__((sect
 	0x826668E9,
 	0x56CEAF00,
 	0xDCDC3891,
+	0xBA21998E,
+	0x5A35C948,
+	0xBC939DC1,
+	0xF988C1DC,
+	0x02BFCB5F,
 	(unsigned int) &sctrlKernelSetInitApitype,
 	(unsigned int) &sctrlKernelSetInitFileName,
 	(unsigned int) &sctrlKernelSetInitKeyConfig,
@@ -404,12 +419,17 @@ static const unsigned int __SystemCtrlForKernel_exports[140] __attribute__((sect
 	(unsigned int) &sctrlHENPatchSyscall,
 	(unsigned int) &sctrlKernelQuerySystemCall,
 	(unsigned int) &sctrlHENSetRebootexOverride,
+	(unsigned int) &sctrlSEGetUmdFile,
+	(unsigned int) &sctrlSESetUmdFile,
+	(unsigned int) &sctrlSESetBootConfFileIndex,
+	(unsigned int) &sctrlHENPatchSyscall,
+	(unsigned int) &sctrlHENPatchSyscall,
 };
 
 const struct _PspLibraryEntry __library_exports[5] __attribute__((section(".lib.ent"), used)) = {
 	{ NULL, 0x0000, 0x8000, 4, 2, 1, (unsigned int *) &__syslib_exports },
 	{ "KUBridge", 0x0000, 0x4001, 4, 0, 10, (unsigned int *) &__KUBridge_exports },
 	{ "MECtrl", 0x0000, 0x4001, 4, 0, 6, (unsigned int *) &__MECtrl_exports },
-	{ "SystemCtrlForUser", 0x0000, 0x4001, 4, 0, 41, (unsigned int *) &__SystemCtrlForUser_exports },
-	{ "SystemCtrlForKernel", 0x0000, 0x0001, 4, 0, 70, (unsigned int *) &__SystemCtrlForKernel_exports },
+	{ "SystemCtrlForUser", 0x0000, 0x4001, 4, 0, 45, (unsigned int *) &__SystemCtrlForUser_exports },
+	{ "SystemCtrlForKernel", 0x0000, 0x0001, 4, 0, 75, (unsigned int *) &__SystemCtrlForKernel_exports },
 };

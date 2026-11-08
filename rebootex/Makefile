@@ -1,63 +1,32 @@
-PSPDEV=$(shell psp-config --pspsdk-path)
-INCLUDES=-I $(PSPDEV)/include -I ../include
+PSPSDK = $(shell psp-config --pspsdk-path)
+PSPDEV = $(shell psp-config --pspdev-path)
+PYTHON = $(shell which python3)
+CFWSDK = $(PSPDEV)/share/psp-cfw-sdk
 
-ifndef $(TARGET_FW)
-TARGET_FW = 150
-endif
+TARGET = reboot.bin
 
-ifndef $(PERMANENT)
-PERMANENT = 0
-endif
+all: $(TARGET)
 
-ifeq ($(PSP_MODEL),0)
-ifeq ($(PERMANENT),1)
-TARGET = rebootex_01g_p
-else
-TARGET = rebootex_01g
-endif
-endif
+C_OBJS = main.o
 
-ifeq ($(PSP_MODEL),1)
-ifeq ($(PERMANENT),1)
-TARGET = rebootex_02g_p
-else
-TARGET = rebootex_02g
-endif
-endif
+CC = psp-gcc
+LD = psp-ld
+STRIP = psp-strip
+OBJCOPY = psp-objcopy
+LINKFILE = $(CFWSDK)/build-tools/bootloadex.l
+INCDIR = $(PSPSDK)/include
+CFLAGS = -std=c99 -Wall -Os -G0 -fno-pic $(addprefix -I, $(INCDIR))
+LIBS = -L $(PSPSDK)/lib -lbootloadex -lansic
 
-#ifeq ($(PSP_MODEL),2)
-#ifeq ($(PERMANENT),1)
-#TARGET = rebootex_03g_p
-#else
-#TARGET = rebootex_03g
-#endif
-#endif
+main.elf: $(C_OBJS)
 
-ifeq ($(PSP_MODEL),4)
-ifeq ($(PERMANENT),1)
-TARGET = rebootex_05g_p
-else
-TARGET = rebootex_05g
-endif
-endif
+$(TARGET): main.elf
+	$(STRIP) -s $<
+	$(OBJCOPY) -O binary $< $@
+	bin2c $@ rebootex.h rebootex
+	@echo GET $@
 
-CFLAGS=$(INCLUDES) -W -Wall -G0 -Os -DPSP_MODEL=$(PSP_MODEL) -D_PSP_FW_VERSION=$(TARGET_FW) -DPERMANENT=$(PERMANENT)
+clean:
+	rm -rf *~ *.s *.o *.elf reboot.bin reboot.bin.gz rebootex.h $(EXTRA_CLEAN)
 
-all:	a.bin
-
-a.bin: 
-	psp-gcc $(CFLAGS) -fno-pic -mno-abicalls -S main.c -o main.s
-	psp-as main.s -o main.o
-	psp-ld -T linkfile.l main.o -o main.elf
-	psp-strip -s main.elf
-	psp-objcopy -O binary main.elf h.bin
-	gzip -f -n h.bin
-	bin2c h.bin.gz $(TARGET).h rebootex
-	sed -i "/int/c #if _PSP_FW_VERSION == $(TARGET_FW)" $(TARGET).h
-	sed -i "/#endif/i #endif" $(TARGET).h
-	rm -rf *~ *.o *.elf *.s *.gz
-
-clean: reset
-reset:
-	rm -f *.elf *.o *.s *.gz *.bin $(TARGET).h $(TARGET)_p.h
-	
+include $(CFWSDK)/build-tools/beauty_bin.mak

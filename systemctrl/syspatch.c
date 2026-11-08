@@ -15,45 +15,11 @@
 
 #include "iso/isofs_driver.h"
 
-#if PERMANENT == 1
-	#if PSP_MODEL == 0
-	#include "../rebootex/rebootex_01g_p.h"
-
-	#elif PSP_MODEL == 1
-	#include "../rebootex/rebootex_02g_p.h"
-
-	#elif PSP_MODEL == 2
-	#include "../rebootex/rebootex_02g_p.h"
-	//#include "../rebootex/rebootex_p_03g.h"
-
-	#elif PSP_MODEL == 4
-	#include "../rebootex/rebootex_05g_p.h"
-
-	#else
-	#error syspatch.c
-	#endif
-#else
-	#if PSP_MODEL == 0
-	#include "../rebootex/rebootex_01g.h"
-
-	#elif PSP_MODEL == 1
-	#include "../rebootex/rebootex_02g.h"
-
-	#elif PSP_MODEL == 2
-	#include "../rebootex/rebootex_02g.h"
-	//#include "../rebootex/rebootex_03g.h"
-
-	#elif PSP_MODEL == 4
-	#include "../rebootex/rebootex_05g.h"
-
-	#else
-	#error syspatch.c
-	#endif
-#endif
+#include "../rebootex/rebootex.h"
 
 SEConfigLME config;
 
-static int reboot_index = 0;
+static int reboot_index = MODE_UMD;
 static STMOD_HANDLER previous = NULL;
 
 extern u32 size_systemctrl;
@@ -379,11 +345,11 @@ static void PatchMediaSync(u32 text_addr )
 				_sw(0x5000001D, text_addr + MediaSyncDiscSfoPatchAddr1);
 				_sw(0x5000001D, text_addr + MediaSyncDiscSfoPatchAddr2);
 
-				if (config.umdmode == 0)
+				if (config.umdmode == MODE_UMD)
 				{
 					DoAnyUmd(); 
 				}
-				else if(config.umdmode == 1)//
+				else if (config.umdmode == MODE_OE_LEGACY)
 				{
 					_sw(0x34020000, text_addr + MediaSyncDiscAssignPatchAddr);
 
@@ -460,7 +426,7 @@ static void OnImposeLoad()
 		char *theiso = sctrlSEGetUmdFile();
 		if(CheckIsoPath(theiso))
 		{
-			if (config.umdmode == 1)
+			if(config.umdmode == MODE_OE_LEGACY)
 			{
 				sceIoDelDrv("umd");
 				sceIoAddDrv(getumd9660_driver());
@@ -470,7 +436,7 @@ static void OnImposeLoad()
 	else
 	{
 		sctrlSESetUmdFile("");
-		reboot_index = 0;
+		reboot_index = MODE_UMD;
 	}
 
 #if PSP_MODEL != 0
@@ -608,7 +574,7 @@ static void PatchIsofsDriver(SceModule *mod )
 	char *iso = sctrlSEGetUmdFile();
 	if( CheckIsoPath( iso ) )
 	{
-		if (config.umdmode == 1 )	
+		if (config.umdmode == MODE_OE_LEGACY)
 		{
 			/* make module exit inmediately */
 //			u32 module_start_addr = (u32)(mod->entry_addr);//search_module_export( mod, NULL, 0xD632ACDB );
