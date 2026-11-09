@@ -25,6 +25,7 @@ dist: all double
 	cp dax9660/dax9660.prx dist/flash0/kd/
 	cp recovery/recovery.prx dist/flash0/vsh/module/
 	cp vshmenu/satellite.prx dist/flash0/vsh/module/
+	cp pspbtjnf/$(TARGET_FW)/bin/*.bin dist/flash0/kd/
 
 
 psp-tools:
