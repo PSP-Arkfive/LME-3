@@ -1,11 +1,5 @@
-BUILD = 2.3
-
-ifeq ($(TARGET_FW), 639)
-BUILD = 10.3
-endif
-
 ifndef $(TARGET_FW)
-TARGET_FW = 150
+TARGET_FW = 661
 endif
 
 all: psp-tools common cfw
