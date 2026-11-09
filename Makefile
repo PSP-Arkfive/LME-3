@@ -1,3 +1,7 @@
+PY = $(shell which python3)
+PSPDEV = $(shell psp-config --pspdev-path)
+BUILDTOOLS = $(PSPDEV)/share/psp-cfw-sdk/build-tools
+
 ifndef $(TARGET_FW)
 TARGET_FW = 661
 endif
@@ -20,7 +24,8 @@ dist: all double
 	cp recovery/recovery.prx dist/flash0/vsh/module/
 	cp vshmenu/satellite.prx dist/flash0/vsh/module/
 	cp pspbtjnf/$(TARGET_FW)/bin/*.bin dist/flash0/kd/
-
+	mv dist/flash0/kd/pspbtjnf_01g.bin dist/flash0/kd/pspbtjnf.bin
+	$(PY) $(BUILDTOOLS)/pack/pack.py -p dist/FLASH$(TARGET_FW).LME flash0.txt -s
 
 psp-tools:
 	make -C PSP_TOOLS
