@@ -44,6 +44,10 @@ int PatchUsbStart(const char* driverName, int size, void *args)
 			usbdfd = sceKernelLoadModule("flash0:/kd/usbdev.prx",0,0);
 			if( usbdfd <0 )
 			{
+				usbdfd = sceKernelLoadModule("flash0:/kd/usbdevice.prx",0,0);
+			}
+			if( usbdfd <0 )
+			{
 				//usbdfd = sceKernelLoadModule("ms0:/cfw/usbdev.prx",0,0);
 				usbdfd = sceKernelLoadModule("ms0:/seplugins/usbdev.prx",0,0);
 			}
