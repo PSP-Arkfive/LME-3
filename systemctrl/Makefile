@@ -2,11 +2,11 @@ release: all
 	../PSP_TOOLS/psp-packer/psp-packer -d $(TARGET_FW) -t 0x4C94ACF0 -x -i $(TARGET).prx
 	bin2c $(TARGET).prx $(TARGET)_bin.h $(TARGET)
 	sed -i "/int/d" $(TARGET)_bin.h
-	rm -f *.elf *.o iso/*.o sfile/*.o
+	rm -f *.elf *.o iso/*.o sfile/*.o exports.c
 
 clean: reset
 reset:
-	rm -f *.elf *.o iso/*.o sfile/*.o $(TARGET).prx $(TARGET)_bin.h
+	rm -f *.elf *.o iso/*.o sfile/*.o $(TARGET).prx $(TARGET)_bin.h exports.c
 
 ifndef $(PERMANENT)
 PERMANENT = 0
