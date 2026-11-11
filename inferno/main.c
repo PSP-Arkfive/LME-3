@@ -19,11 +19,13 @@
 #include <pspreg.h>
 #include <stdio.h>
 #include <string.h>
+#include <systemctrl_se.h>
 #include <systemctrl_me.h>
 #include <pspsysmem_kernel.h>
 #include <pspsysevent.h>
 #include <pspumd.h>
 #include <psprtc.h>
+#include <pspinit.h>
 
 #include "inferno.h"
 
@@ -34,9 +36,6 @@ u32 module_sdk_version =  0x03060010;
 
 u32 psp_model;
 u32 psp_fw_version;
-
-extern int sceKernelApplicationType(void);
-extern int sceKernelSetQTGP3(void *unk0);
 
 // 00002790
 const char *g_iso_fn = NULL;
@@ -90,13 +89,13 @@ int init_inferno(void)
 int module_start(SceSize args, void* argp)
 {
 	int ret, key_config;
-	SEConfig config;
+	SEConfigLME config;
 
 	psp_model = sceKernelGetModel();
 	psp_fw_version = sceKernelDevkitVersion();
 
 	key_config = sceKernelApplicationType();
-	sctrlSEGetConfig(&config);
+	sctrlSEGetConfig((SEConfig*)&config);
 
 	if(config.iso_cache && psp_model != 0 && key_config == PSP_INIT_KEYCONFIG_GAME) {
 		int bufsize;

@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 #include "csoread.h"
 #include "umd9660_driver.h"
 

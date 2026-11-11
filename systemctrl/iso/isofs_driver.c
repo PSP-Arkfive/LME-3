@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <systemctrl_se.h>
+
 #include "../malloc.h"
 
 #include "psperror.h"

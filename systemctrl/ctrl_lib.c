@@ -80,7 +80,7 @@ void *sctrlKernelGetPartition(int pid)
 	return GetPartition( pid );
 }
 
-PspIoDrv *sctrlHENFindDriver(char *drvname)
+PspIoDrv *sctrlHENFindDriver(const char *drvname)
 {
 	int k1 = pspSdkSetK1(0);
 	SceModule *mod = sceKernelFindModuleByName("sceIOFileManager");
@@ -256,6 +256,7 @@ int sctrlKernelLoadExecVSHEf1(const char *file, struct SceKernelLoadExecVSHParam
 	return res;
 }
 */
+int sceKernelLoadExecVSHEf2(const char *file, struct SceKernelLoadExecVSHParam *param);
 int sctrlKernelLoadExecVSHEf2(const char *file, struct SceKernelLoadExecVSHParam *param)
 {
 	int k1 = pspSdkSetK1(0);	

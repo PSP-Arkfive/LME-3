@@ -3,7 +3,8 @@
 #include <psputilsforkernel.h>
 #include <string.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 #include "daxread.h"
 #include "umd9660_driver.h"
 
@@ -167,7 +168,8 @@ static int DaxReadOne(void *buf, int sector)
 		}
 		else
 		{
-			result = sctrlKernelUncompress(dax_dec_data_buf, DAX_FRAME_SIZE, dax_com_data_buf, size);
+			//result = sctrlKernelUncompress(dax_dec_data_buf, DAX_FRAME_SIZE, dax_com_data_buf, size);
+			result = sceKernelDeflateDecompress(dax_dec_data_buf, DAX_FRAME_SIZE, dax_com_data_buf+2, NULL);
 		}
 	}
 

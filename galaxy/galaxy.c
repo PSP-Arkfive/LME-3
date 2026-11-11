@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-//#include <systemctrl.h>
+#include <systemctrl.h>
 #include <systemctrl_me.h>
 
 #include "addr_list.h"
@@ -34,8 +34,6 @@
 
 PSP_MODULE_INFO("NP9660_Controller", 0x1006, 1, 0);
 PSP_MAIN_THREAD_ATTR(0);
-
-void sceKernelSetQTGP3(void *);
 
 STMOD_HANDLER previous = NULL;
 
@@ -175,7 +173,7 @@ int sub_00000588(const char *path)
 
 	ClearCaches();
 
-	sceKernelSetQTGP3( dataE10);
+	sceKernelSetQTGP3((void*)dataE10);
 
 	return 0;
 }

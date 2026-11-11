@@ -1,9 +1,9 @@
 #include <pspmoduleexport.h>
 #define NULL ((void *) 0)
 
-extern void module_bootstart;
-extern void module_info;
-extern void module_sdk_version;
+extern int module_bootstart;
+extern int module_info;
+extern int module_sdk_version;
 static const unsigned int __syslib_exports[6] __attribute__((section(".rodata.sceResident"))) = {
 	0xD3744BE0,
 	0xF01D73A7,
@@ -13,16 +13,16 @@ static const unsigned int __syslib_exports[6] __attribute__((section(".rodata.sc
 	(unsigned int) &module_sdk_version,
 };
 
-extern void kuKernelLoadModule;
-extern void kuKernelLoadModuleWithApitype2;
-extern void kuKernelInitApitype;
-extern void kuKernelInitFileName;
-extern void kuKernelBootFrom;
-extern void kuKernelInitKeyConfig;
-extern void kuKernelInitKeyConfig;
-extern void kuKernelGetUserLevel;
-extern void kuKernelSetDdrMemoryProtection;
-extern void kuKernelGetModel;
+extern int kuKernelLoadModule;
+extern int kuKernelLoadModuleWithApitype2;
+extern int kuKernelInitApitype;
+extern int kuKernelInitFileName;
+extern int kuKernelBootFrom;
+extern int kuKernelInitKeyConfig;
+extern int kuKernelInitKeyConfig;
+extern int kuKernelGetUserLevel;
+extern int kuKernelSetDdrMemoryProtection;
+extern int kuKernelGetModel;
 static const unsigned int __KUBridge_exports[20] __attribute__((section(".rodata.sceResident"))) = {
 	0x4C25EA72,
 	0x1E9F0498,
@@ -46,55 +46,71 @@ static const unsigned int __KUBridge_exports[20] __attribute__((section(".rodata
 	(unsigned int) &kuKernelGetModel,
 };
 
-extern void sctrlKernelSetInitApitype;
-extern void sctrlKernelSetInitFileName;
-extern void sctrlKernelSetInitKeyConfig;
-extern void sctrlKernelSetInitKeyConfig;
-extern void sctrlKernelSetUserLevel;
-extern void sctrlKernelSetDevkitVersion;
-extern void sctrlHENIsSE;
-extern void sctrlHENIsDevhook;
-extern void sctrlHENGetVersion;
-extern void sctrlHENFindDriver;
-extern void sctrlHENFindFunction;
-extern void sctrlHENSetMemory;
-extern void sctrlSEGetVersion;
-extern void sctrlKernelExitVSH;
-extern void sctrlKernelLoadExecVSHDisc;
-extern void sctrlKernelLoadExecVSHDiscUpdater;
-extern void sctrlKernelLoadExecVSHMs1;
-extern void sctrlKernelLoadExecVSHMs2;
-extern void sctrlKernelLoadExecVSHMs3;
-extern void sctrlKernelLoadExecVSHMs4;
-extern void sctrlKernelLoadExecVSHWithApitype;
-extern void sctrlKernelLoadExecVSHEf2;
-extern void sctrlSESetConfig;
-extern void sctrlSESetConfigEx;
-extern void sctrlSEGetConfig;
-extern void sctrlSEGetConfigEx;
-extern void sctrlSERstConfig;
-extern void sctrlSERstConfigEx;
-extern void sctrlSESetMiniConfig;
-extern void sctrlSESetMiniConfigEx;
-extern void sctrlSEGetMiniConfig;
-extern void sctrlSEGetMiniConfigEx;
-extern void sctrlSERstMiniConfig;
-extern void sctrlSERstMiniConfigEx;
-extern void sctrlHENSetStartModuleHandler;
-extern void sctrlSEMountUmdFromFile;
-extern void sctrlSEUmountUmd;
-extern void sctrlSESetDiscType;
-extern void sctrlSESetDiscOut;
-extern void sctrlKernelBootFrom;
-extern void sctrlKernelMsIsEf;
-extern void sctrlKernelRand;
-extern void sctrlKernelUncompress;
-extern void sctrlFindImportLib;
-extern void sctrlFindImportByNid;
-extern void sctrlHookImportByNid;
-extern void sctrlHENPatchSyscall;
-extern void sctrlKernelQuerySystemCall;
-static const unsigned int __SystemCtrlForUser_exports[96] __attribute__((section(".rodata.sceResident"))) = {
+extern int sctrlSESetMiniConfig;
+extern int sctrlSESetMiniConfigEx;
+extern int sctrlSEGetMiniConfig;
+extern int sctrlSEGetMiniConfigEx;
+extern int sctrlSERstMiniConfig;
+extern int sctrlSERstMiniConfigEx;
+static const unsigned int __MECtrl_exports[12] __attribute__((section(".rodata.sceResident"))) = {
+	0xEA85C82C,
+	0x27A0CE8A,
+	0x0A2C56A2,
+	0x1A0FB936,
+	0xEDB7E6AC,
+	0x78AE7B1D,
+	(unsigned int) &sctrlSESetMiniConfig,
+	(unsigned int) &sctrlSESetMiniConfigEx,
+	(unsigned int) &sctrlSEGetMiniConfig,
+	(unsigned int) &sctrlSEGetMiniConfigEx,
+	(unsigned int) &sctrlSERstMiniConfig,
+	(unsigned int) &sctrlSERstMiniConfigEx,
+};
+
+extern int sctrlKernelSetInitApitype;
+extern int sctrlKernelSetInitFileName;
+extern int sctrlKernelSetInitKeyConfig;
+extern int sctrlKernelSetInitKeyConfig;
+extern int sctrlKernelSetUserLevel;
+extern int sctrlKernelSetDevkitVersion;
+extern int sctrlHENIsSE;
+extern int sctrlHENIsDevhook;
+extern int sctrlHENGetVersion;
+extern int sctrlHENFindDriver;
+extern int sctrlHENFindFunction;
+extern int sctrlHENSetMemory;
+extern int sctrlSEGetVersion;
+extern int sctrlKernelExitVSH;
+extern int sctrlKernelLoadExecVSHDisc;
+extern int sctrlKernelLoadExecVSHDiscUpdater;
+extern int sctrlKernelLoadExecVSHMs1;
+extern int sctrlKernelLoadExecVSHMs2;
+extern int sctrlKernelLoadExecVSHMs3;
+extern int sctrlKernelLoadExecVSHMs4;
+extern int sctrlKernelLoadExecVSHWithApitype;
+extern int sctrlKernelLoadExecVSHEf2;
+extern int sctrlSESetConfig;
+extern int sctrlSESetConfigEx;
+extern int sctrlSEGetConfig;
+extern int sctrlSEGetConfigEx;
+extern int sctrlSERstConfig;
+extern int sctrlSERstConfigEx;
+extern int sctrlHENSetStartModuleHandler;
+extern int sctrlSEMountUmdFromFile;
+extern int sctrlSEUmountUmd;
+extern int sctrlSESetDiscType;
+extern int sctrlSESetDiscOut;
+extern int sctrlKernelBootFrom;
+extern int sctrlKernelMsIsEf;
+extern int sctrlKernelRand;
+extern int sctrlFindImportLib;
+extern int sctrlFindImportByNID;
+extern int sctrlHookImportByNID;
+extern int sctrlHENPatchSyscall;
+extern int sctrlKernelQuerySystemCall;
+extern int sctrlSESetUmdFile;
+extern int sctrlSESetBootConfFileIndex;
+static const unsigned int __SystemCtrlForUser_exports[90] __attribute__((section(".rodata.sceResident"))) = {
 	0x8D5BE1F0,
 	0x128112C3,
 	0xCB76B778,
@@ -123,12 +139,6 @@ static const unsigned int __SystemCtrlForUser_exports[96] __attribute__((section
 	0x8E426F09,
 	0x32414F2A,
 	0x649D290E,
-	0xEA85C82C,
-	0x27A0CE8A,
-	0x0A2C56A2,
-	0x1A0FB936,
-	0xEDB7E6AC,
-	0x78AE7B1D,
 	0x1C90BECB,
 	0x85B520C6,
 	0x512E0CD8,
@@ -137,12 +147,15 @@ static const unsigned int __SystemCtrlForUser_exports[96] __attribute__((section
 	0x053FAC1D,
 	0xAD9849FE,
 	0xB364FBB4,
-	0x5FA70BEE,
 	0xFAC22931,
-	0x74F087FC,
-	0x6555BEB2,
+	0x9EFDE773,
+	0x72F47790,
 	0x826668E9,
 	0x56CEAF00,
+	0x5A35C948,
+	0xBC939DC1,
+	0x5CB025F0,
+	0xF988C1DC,
 	(unsigned int) &sctrlKernelSetInitApitype,
 	(unsigned int) &sctrlKernelSetInitFileName,
 	(unsigned int) &sctrlKernelSetInitKeyConfig,
@@ -171,12 +184,6 @@ static const unsigned int __SystemCtrlForUser_exports[96] __attribute__((section
 	(unsigned int) &sctrlSEGetConfigEx,
 	(unsigned int) &sctrlSERstConfig,
 	(unsigned int) &sctrlSERstConfigEx,
-	(unsigned int) &sctrlSESetMiniConfig,
-	(unsigned int) &sctrlSESetMiniConfigEx,
-	(unsigned int) &sctrlSEGetMiniConfig,
-	(unsigned int) &sctrlSEGetMiniConfigEx,
-	(unsigned int) &sctrlSERstMiniConfig,
-	(unsigned int) &sctrlSERstMiniConfigEx,
 	(unsigned int) &sctrlHENSetStartModuleHandler,
 	(unsigned int) &sctrlSEMountUmdFromFile,
 	(unsigned int) &sctrlSEUmountUmd,
@@ -185,91 +192,88 @@ static const unsigned int __SystemCtrlForUser_exports[96] __attribute__((section
 	(unsigned int) &sctrlKernelBootFrom,
 	(unsigned int) &sctrlKernelMsIsEf,
 	(unsigned int) &sctrlKernelRand,
-	(unsigned int) &sctrlKernelUncompress,
 	(unsigned int) &sctrlFindImportLib,
-	(unsigned int) &sctrlFindImportByNid,
-	(unsigned int) &sctrlHookImportByNid,
+	(unsigned int) &sctrlFindImportByNID,
+	(unsigned int) &sctrlHookImportByNID,
 	(unsigned int) &sctrlHENPatchSyscall,
 	(unsigned int) &sctrlKernelQuerySystemCall,
+	(unsigned int) &sctrlSESetUmdFile,
+	(unsigned int) &sctrlSESetBootConfFileIndex,
+	(unsigned int) &sctrlSESetBootConfFileIndex,
+	(unsigned int) &sctrlHENPatchSyscall,
 };
 
-extern void sctrlKernelSetInitApitype;
-extern void sctrlKernelSetInitFileName;
-extern void sctrlKernelSetInitKeyConfig;
-extern void sctrlKernelSetInitKeyConfig;
-extern void sctrlKernelSetUserLevel;
-extern void sctrlKernelSetDevkitVersion;
-extern void sctrlHENIsSE;
-extern void sctrlHENIsDevhook;
-extern void sctrlHENGetVersion;
-extern void sctrlHENFindDriver;
-extern void sctrlHENFindFunction;
-extern void sctrlSEGetVersion;
-extern void sctrlKernelExitVSH;
-extern void sctrlKernelLoadExecVSHDisc;
-extern void sctrlKernelLoadExecVSHDiscUpdater;
-extern void sctrlKernelLoadExecVSHMs1;
-extern void sctrlKernelLoadExecVSHMs2;
-extern void sctrlKernelLoadExecVSHMs3;
-extern void sctrlKernelLoadExecVSHMs4;
-extern void sctrlKernelLoadExecVSHWithApitype;
-extern void sctrlKernelLoadExecVSHEf2;
-extern void sctrlSESetConfig;
-extern void sctrlSESetConfigEx;
-extern void sctrlSEGetConfig;
-extern void sctrlSEGetConfigEx;
-extern void sctrlSERstConfig;
-extern void sctrlSERstConfigEx;
-extern void sctrlSESetMiniConfig;
-extern void sctrlSESetMiniConfigEx;
-extern void sctrlSEGetMiniConfig;
-extern void sctrlSEGetMiniConfigEx;
-extern void sctrlSERstMiniConfig;
-extern void sctrlSERstMiniConfigEx;
-extern void sctrlHENSetStartModuleHandler;
-extern void sctrlSEMountUmdFromFile;
-extern void sctrlSEUmountUmd;
-extern void sctrlSESetDiscType;
-extern void sctrlSEGetDiscType;
-extern void sctrlSESetDiscOut;
-extern void sctrlHENSetSpeed;
-extern void sctrlHENSetMemory;
-extern void sctrlSEGetUmdFile;
-extern void sctrlSESetUmdFile;
-extern void sctrlSEGetUmdFileEx;
-extern void sctrlSESetUmdFileEx;
-extern void sctrlSESetBootConfFileIndex;
-extern void sctrlHENLoadModuleOnReboot;
-extern void sctrlKernelMalloc;
-extern void sctrlKernelFree;
-extern void isofs_init;
-extern void isofs_exit;
-extern void isofs_open;
-extern void isofs_read;
-extern void isofs_close;
-extern void isofs_lseek;
-extern void isofs_getstat;
-extern void isofs_fastinit;
-extern void SetSpeed;
-extern void sctrlSEApplyConfig;
-extern void SystemCtrlForKernel_6A5F76B5;
-extern void SystemCtrlForKernel_B86E36D1;
-extern void SystemCtrlForKernel_07232EA5;
-extern void SystemCtrlForKernel_AC0E84D1;
-extern void SystemCtrlForKernel_1F3037FB;
-extern void sctrlKernelBootFrom;
-extern void sctrlSetStartModuleExtra;
-extern void sctrlKernelSetNidResolver;
-extern void sctrlKernelMsIsEf;
-extern void sctrlKernelResolveNid;
-extern void sctrlKernelRand;
-extern void sctrlKernelUncompress;
-extern void sctrlFindImportLib;
-extern void sctrlFindImportByNid;
-extern void sctrlHookImportByNid;
-extern void sctrlHENPatchSyscall;
-extern void sctrlKernelQuerySystemCall;
-static const unsigned int __SystemCtrlForKernel_exports[152] __attribute__((section(".rodata.sceResident"))) = {
+extern int sctrlKernelSetInitApitype;
+extern int sctrlKernelSetInitFileName;
+extern int sctrlKernelSetInitKeyConfig;
+extern int sctrlKernelSetInitKeyConfig;
+extern int sctrlKernelSetUserLevel;
+extern int sctrlKernelSetDevkitVersion;
+extern int sctrlHENIsSE;
+extern int sctrlHENIsDevhook;
+extern int sctrlHENGetVersion;
+extern int sctrlHENFindDriver;
+extern int sctrlHENFindFunction;
+extern int sctrlSEGetVersion;
+extern int sctrlKernelExitVSH;
+extern int sctrlKernelLoadExecVSHDisc;
+extern int sctrlKernelLoadExecVSHDiscUpdater;
+extern int sctrlKernelLoadExecVSHMs1;
+extern int sctrlKernelLoadExecVSHMs2;
+extern int sctrlKernelLoadExecVSHMs3;
+extern int sctrlKernelLoadExecVSHMs4;
+extern int sctrlKernelLoadExecVSHWithApitype;
+extern int sctrlKernelLoadExecVSHEf2;
+extern int sctrlSESetConfig;
+extern int sctrlSESetConfigEx;
+extern int sctrlSEGetConfig;
+extern int sctrlSEGetConfigEx;
+extern int sctrlSERstConfig;
+extern int sctrlSERstConfigEx;
+extern int sctrlHENSetStartModuleHandler;
+extern int sctrlSEMountUmdFromFile;
+extern int sctrlSEUmountUmd;
+extern int sctrlSESetDiscType;
+extern int sctrlSEGetDiscType;
+extern int sctrlSESetDiscOut;
+extern int sctrlHENSetSpeed;
+extern int sctrlHENSetMemory;
+extern int sctrlSEGetUmdFile;
+extern int sctrlSESetUmdFile;
+extern int sctrlSEGetUmdFileEx;
+extern int sctrlSESetUmdFileEx;
+extern int sctrlSESetBootConfFileIndex;
+extern int sctrlHENLoadModuleOnReboot;
+extern int sctrlKernelMalloc;
+extern int sctrlKernelFree;
+extern int isofs_init;
+extern int isofs_exit;
+extern int isofs_open;
+extern int isofs_read;
+extern int isofs_close;
+extern int isofs_lseek;
+extern int isofs_getstat;
+extern int isofs_fastinit;
+extern int SetSpeed;
+extern int sctrlSEApplyConfig;
+extern int SystemCtrlForKernel_6A5F76B5;
+extern int SystemCtrlForKernel_B86E36D1;
+extern int SystemCtrlForKernel_07232EA5;
+extern int SystemCtrlForKernel_AC0E84D1;
+extern int sctrlHENRegisterKDecryptHandler;
+extern int sctrlKernelBootFrom;
+extern int sctrlSetStartModuleExtra;
+extern int sctrlKernelSetNidResolver;
+extern int sctrlKernelMsIsEf;
+extern int sctrlKernelResolveNid;
+extern int sctrlKernelRand;
+extern int sctrlFindImportLib;
+extern int sctrlFindImportByNID;
+extern int sctrlHookImportByNID;
+extern int sctrlHENPatchSyscall;
+extern int sctrlKernelQuerySystemCall;
+extern int sctrlHENSetRebootexOverride;
+static const unsigned int __SystemCtrlForKernel_exports[150] __attribute__((section(".rodata.sceResident"))) = {
 	0x8D5BE1F0,
 	0x128112C3,
 	0xCB76B778,
@@ -297,12 +301,6 @@ static const unsigned int __SystemCtrlForKernel_exports[152] __attribute__((sect
 	0x8E426F09,
 	0x32414F2A,
 	0x649D290E,
-	0xEA85C82C,
-	0x27A0CE8A,
-	0x0A2C56A2,
-	0x1A0FB936,
-	0xEDB7E6AC,
-	0x78AE7B1D,
 	0x1C90BECB,
 	0x85B520C6,
 	0x512E0CD8,
@@ -340,12 +338,17 @@ static const unsigned int __SystemCtrlForKernel_exports[152] __attribute__((sect
 	0xAD9849FE,
 	0x32677DD3,
 	0xB364FBB4,
-	0x5FA70BEE,
 	0xFAC22931,
-	0x74F087FC,
-	0x6555BEB2,
+	0x9EFDE773,
+	0x72F47790,
 	0x826668E9,
 	0x56CEAF00,
+	0xDCDC3891,
+	0xBA21998E,
+	0x5A35C948,
+	0xBC939DC1,
+	0xF988C1DC,
+	0x02BFCB5F,
 	(unsigned int) &sctrlKernelSetInitApitype,
 	(unsigned int) &sctrlKernelSetInitFileName,
 	(unsigned int) &sctrlKernelSetInitKeyConfig,
@@ -373,12 +376,6 @@ static const unsigned int __SystemCtrlForKernel_exports[152] __attribute__((sect
 	(unsigned int) &sctrlSEGetConfigEx,
 	(unsigned int) &sctrlSERstConfig,
 	(unsigned int) &sctrlSERstConfigEx,
-	(unsigned int) &sctrlSESetMiniConfig,
-	(unsigned int) &sctrlSESetMiniConfigEx,
-	(unsigned int) &sctrlSEGetMiniConfig,
-	(unsigned int) &sctrlSEGetMiniConfigEx,
-	(unsigned int) &sctrlSERstMiniConfig,
-	(unsigned int) &sctrlSERstMiniConfigEx,
 	(unsigned int) &sctrlHENSetStartModuleHandler,
 	(unsigned int) &sctrlSEMountUmdFromFile,
 	(unsigned int) &sctrlSEUmountUmd,
@@ -409,24 +406,30 @@ static const unsigned int __SystemCtrlForKernel_exports[152] __attribute__((sect
 	(unsigned int) &SystemCtrlForKernel_B86E36D1,
 	(unsigned int) &SystemCtrlForKernel_07232EA5,
 	(unsigned int) &SystemCtrlForKernel_AC0E84D1,
-	(unsigned int) &SystemCtrlForKernel_1F3037FB,
+	(unsigned int) &sctrlHENRegisterKDecryptHandler,
 	(unsigned int) &sctrlKernelBootFrom,
 	(unsigned int) &sctrlSetStartModuleExtra,
 	(unsigned int) &sctrlKernelSetNidResolver,
 	(unsigned int) &sctrlKernelMsIsEf,
 	(unsigned int) &sctrlKernelResolveNid,
 	(unsigned int) &sctrlKernelRand,
-	(unsigned int) &sctrlKernelUncompress,
 	(unsigned int) &sctrlFindImportLib,
-	(unsigned int) &sctrlFindImportByNid,
-	(unsigned int) &sctrlHookImportByNid,
+	(unsigned int) &sctrlFindImportByNID,
+	(unsigned int) &sctrlHookImportByNID,
 	(unsigned int) &sctrlHENPatchSyscall,
 	(unsigned int) &sctrlKernelQuerySystemCall,
+	(unsigned int) &sctrlHENSetRebootexOverride,
+	(unsigned int) &sctrlSEGetUmdFile,
+	(unsigned int) &sctrlSESetUmdFile,
+	(unsigned int) &sctrlSESetBootConfFileIndex,
+	(unsigned int) &sctrlHENPatchSyscall,
+	(unsigned int) &sctrlHENPatchSyscall,
 };
 
-const struct _PspLibraryEntry __library_exports[4] __attribute__((section(".lib.ent"), used)) = {
-	{ NULL, 0x0000, 0x8000, 4, 2, 1, &__syslib_exports },
-	{ "KUBridge", 0x0000, 0x4001, 4, 0, 10, &__KUBridge_exports },
-	{ "SystemCtrlForUser", 0x0000, 0x4001, 4, 0, 48, &__SystemCtrlForUser_exports },
-	{ "SystemCtrlForKernel", 0x0000, 0x0001, 4, 0, 76, &__SystemCtrlForKernel_exports },
+const struct _PspLibraryEntry __library_exports[5] __attribute__((section(".lib.ent"), used)) = {
+	{ NULL, 0x0000, 0x8000, 4, 2, 1, (unsigned int *) &__syslib_exports },
+	{ "KUBridge", 0x0000, 0x4001, 4, 0, 10, (unsigned int *) &__KUBridge_exports },
+	{ "MECtrl", 0x0000, 0x4001, 4, 0, 6, (unsigned int *) &__MECtrl_exports },
+	{ "SystemCtrlForUser", 0x0000, 0x4001, 4, 0, 45, (unsigned int *) &__SystemCtrlForUser_exports },
+	{ "SystemCtrlForKernel", 0x0000, 0x0001, 4, 0, 75, (unsigned int *) &__SystemCtrlForKernel_exports },
 };

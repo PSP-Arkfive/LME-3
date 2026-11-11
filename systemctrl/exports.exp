@@ -23,6 +23,15 @@ PSP_EXPORT_FUNC_HASH(kuKernelSetDdrMemoryProtection)
 PSP_EXPORT_FUNC_HASH(kuKernelGetModel)
 PSP_EXPORT_END
 
+PSP_EXPORT_START(MECtrl, 0, 0x4001)
+PSP_EXPORT_FUNC_HASH(sctrlSESetMiniConfig)
+PSP_EXPORT_FUNC_HASH(sctrlSESetMiniConfigEx)
+PSP_EXPORT_FUNC_HASH(sctrlSEGetMiniConfig)
+PSP_EXPORT_FUNC_HASH(sctrlSEGetMiniConfigEx)
+PSP_EXPORT_FUNC_HASH(sctrlSERstMiniConfig)
+PSP_EXPORT_FUNC_HASH(sctrlSERstMiniConfigEx)
+PSP_EXPORT_END
+
 # ---------------------------------------------------------------------
 PSP_EXPORT_START(SystemCtrlForUser, 0, 0x4001)
 PSP_EXPORT_FUNC_HASH(sctrlKernelSetInitApitype)
@@ -54,12 +63,6 @@ PSP_EXPORT_FUNC_HASH(sctrlSEGetConfig)
 PSP_EXPORT_FUNC_HASH(sctrlSEGetConfigEx)
 PSP_EXPORT_FUNC_HASH(sctrlSERstConfig)
 PSP_EXPORT_FUNC_HASH(sctrlSERstConfigEx)
-PSP_EXPORT_FUNC_HASH(sctrlSESetMiniConfig)
-PSP_EXPORT_FUNC_HASH(sctrlSESetMiniConfigEx)
-PSP_EXPORT_FUNC_HASH(sctrlSEGetMiniConfig)
-PSP_EXPORT_FUNC_HASH(sctrlSEGetMiniConfigEx)
-PSP_EXPORT_FUNC_HASH(sctrlSERstMiniConfig)
-PSP_EXPORT_FUNC_HASH(sctrlSERstMiniConfigEx)
 #PSP_EXPORT_FUNC_HASH(sctrlSECopyUmdFile)
 PSP_EXPORT_FUNC_HASH(sctrlHENSetStartModuleHandler)
 
@@ -71,10 +74,9 @@ PSP_EXPORT_FUNC_HASH(sctrlKernelBootFrom)
 PSP_EXPORT_FUNC_HASH(sctrlKernelMsIsEf)
 #PSP_EXPORT_FUNC_HASH(sctrlKernelResolveNid)
 PSP_EXPORT_FUNC_HASH(sctrlKernelRand)
-PSP_EXPORT_FUNC_HASH(sctrlKernelUncompress)
 PSP_EXPORT_FUNC_HASH(sctrlFindImportLib)
-PSP_EXPORT_FUNC_HASH(sctrlFindImportByNid)
-PSP_EXPORT_FUNC_HASH(sctrlHookImportByNid)
+PSP_EXPORT_FUNC_HASH(sctrlFindImportByNID)
+PSP_EXPORT_FUNC_HASH(sctrlHookImportByNID)
 
 
 PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall , 0x826668E9)
@@ -82,6 +84,10 @@ PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall , 0x826668E9)
 #PSP_EXPORT_FUNC_HASH(sctrlHENPatchSyscall)
 
 PSP_EXPORT_FUNC_HASH(sctrlKernelQuerySystemCall)
+PSP_EXPORT_FUNC_NID(sctrlSESetUmdFile, 0x5A35C948)
+PSP_EXPORT_FUNC_NID(sctrlSESetBootConfFileIndex, 0xBC939DC1)
+PSP_EXPORT_FUNC_NID(sctrlSESetBootConfFileIndex, 0x5CB025F0)
+PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall, 0xF988C1DC)
 
 PSP_EXPORT_END
 
@@ -116,12 +122,6 @@ PSP_EXPORT_FUNC_HASH(sctrlSEGetConfig)
 PSP_EXPORT_FUNC_HASH(sctrlSEGetConfigEx)
 PSP_EXPORT_FUNC_HASH(sctrlSERstConfig)
 PSP_EXPORT_FUNC_HASH(sctrlSERstConfigEx)
-PSP_EXPORT_FUNC_HASH(sctrlSESetMiniConfig)
-PSP_EXPORT_FUNC_HASH(sctrlSESetMiniConfigEx)
-PSP_EXPORT_FUNC_HASH(sctrlSEGetMiniConfig)
-PSP_EXPORT_FUNC_HASH(sctrlSEGetMiniConfigEx)
-PSP_EXPORT_FUNC_HASH(sctrlSERstMiniConfig)
-PSP_EXPORT_FUNC_HASH(sctrlSERstMiniConfigEx)
 PSP_EXPORT_FUNC_HASH(sctrlHENSetStartModuleHandler)
 
 PSP_EXPORT_FUNC_HASH(sctrlSEMountUmdFromFile)
@@ -161,7 +161,7 @@ PSP_EXPORT_FUNC_NID(SystemCtrlForKernel_07232EA5 ,0x07232EA5)
 # dec
 PSP_EXPORT_FUNC_NID(SystemCtrlForKernel_AC0E84D1 ,0xAC0E84D1)
 # dec
-PSP_EXPORT_FUNC_NID(SystemCtrlForKernel_1F3037FB ,0x1F3037FB)
+PSP_EXPORT_FUNC_NID(sctrlHENRegisterKDecryptHandler ,0x1F3037FB)
 #PSP_EXPORT_FUNC_NID(SystemCtrlForKernel_72F29A6E ,0x72F29A6E)
 #PSP_EXPORT_FUNC_NID(SystemCtrlForKernel_344A971E ,0x344A971E)
 PSP_EXPORT_FUNC_HASH(sctrlKernelBootFrom)
@@ -170,10 +170,9 @@ PSP_EXPORT_FUNC_HASH(sctrlKernelSetNidResolver)
 PSP_EXPORT_FUNC_HASH(sctrlKernelMsIsEf)
 PSP_EXPORT_FUNC_HASH(sctrlKernelResolveNid)
 PSP_EXPORT_FUNC_HASH(sctrlKernelRand)
-PSP_EXPORT_FUNC_HASH(sctrlKernelUncompress)
 PSP_EXPORT_FUNC_HASH(sctrlFindImportLib)
-PSP_EXPORT_FUNC_HASH(sctrlFindImportByNid)
-PSP_EXPORT_FUNC_HASH(sctrlHookImportByNid)
+PSP_EXPORT_FUNC_HASH(sctrlFindImportByNID)
+PSP_EXPORT_FUNC_HASH(sctrlHookImportByNID)
 
 PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall , 0x826668E9)
 #PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall , 0x02BFCB5F)
@@ -181,6 +180,13 @@ PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall , 0x826668E9)
 
 
 PSP_EXPORT_FUNC_HASH(sctrlKernelQuerySystemCall)
+
+PSP_EXPORT_FUNC(sctrlHENSetRebootexOverride)
+PSP_EXPORT_FUNC_NID(sctrlSEGetUmdFile, 0xBA21998E)
+PSP_EXPORT_FUNC_NID(sctrlSESetUmdFile, 0x5A35C948)
+PSP_EXPORT_FUNC_NID(sctrlSESetBootConfFileIndex, 0xBC939DC1)
+PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall, 0xF988C1DC)
+PSP_EXPORT_FUNC_NID(sctrlHENPatchSyscall, 0x02BFCB5F)
 
 PSP_EXPORT_END
 

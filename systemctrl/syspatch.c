@@ -11,49 +11,15 @@
 #include <string.h>
 
 #include "main.h"
-#include "rebootex_config.h"
+#include <rebootexconfig.h>
 
 #include "iso/isofs_driver.h"
 
-#if PERMANENT == 1
-	#if PSP_MODEL == 0
-	#include "../rebootex/rebootex_01g_p.h"
+#include "../rebootex/rebootex.h"
 
-	#elif PSP_MODEL == 1
-	#include "../rebootex/rebootex_02g_p.h"
+SEConfigLME config;
 
-	#elif PSP_MODEL == 2
-	#include "../rebootex/rebootex_02g_p.h"
-	//#include "../rebootex/rebootex_p_03g.h"
-
-	#elif PSP_MODEL == 4
-	#include "../rebootex/rebootex_05g_p.h"
-
-	#else
-	#error syspatch.c
-	#endif
-#else
-	#if PSP_MODEL == 0
-	#include "../rebootex/rebootex_01g.h"
-
-	#elif PSP_MODEL == 1
-	#include "../rebootex/rebootex_02g.h"
-
-	#elif PSP_MODEL == 2
-	#include "../rebootex/rebootex_02g.h"
-	//#include "../rebootex/rebootex_03g.h"
-
-	#elif PSP_MODEL == 4
-	#include "../rebootex/rebootex_05g.h"
-
-	#else
-	#error syspatch.c
-	#endif
-#endif
-
-SEConfig config;
-
-static int reboot_index = 0;
+static int reboot_index = MODE_UMD;
 static STMOD_HANDLER previous = NULL;
 
 extern u32 size_systemctrl;
@@ -81,13 +47,13 @@ void sctrlPrepatchPartitions(void);
 /*
 void SetConfig(SEConfig *newconfig)
 {
-	memcpy(&config, newconfig, sizeof(SEConfig));
+	memcpy(&config, newconfig, sizeof(SEConfigLME));
 }*/
 
 //SystemCtrlForKernel_2F157BAF
 void sctrlSEApplyConfig(SEConfig *add)
 {
-	memcpy(&config, add , /*112*/ sizeof(SEConfig) - 4 );
+	memcpy(&config, add , /*112*/ sizeof(SEConfigLME) );
 }
 
 void sctrlSESetBootConfFileIndex(int type)
@@ -104,30 +70,42 @@ static inline int CheckIsoPath(const char *path)
 		));
 }
 
+u8* custom_rebootex = NULL;
+u32 size_custom_rebootex = REBOOTEX_MAX_SIZE;
+void sctrlHENSetRebootexOverride(void *rebootex, u32 size)
+{
+    if (rebootex != NULL) // override rebootex
+        custom_rebootex = rebootex;
+    if (size != 0) // override rebootex size
+        size_custom_rebootex = size;
+}
+
 int (* DecompressReboot)(u8 *dest, u32 destSize, const u8 *src, void *unk);
 int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 {
-	struct RebootexParam *rebootex_param = (void *)REBOOTEX_PARAM_OFFSET;
+	RebootexConfigLME *rebootex_param = (void *)REBOOTEX_CONFIG;
+	memset((char *)REBOOTEX_CONFIG, 0, sizeof(RebootexConfigLME));
 
 	//char *theiso = sctrlSEGetUmdFile();
 	char *theiso = sctrlSEGetUmdFileEx( NULL );
 	
-	rebootex_param->file[0] = '\0';
 //	*(char *)0x88FB0000 = 0;
 
 	if (theiso)
 	{	
 //		strcpy( (void *)0x88FB0000 , theiso );
-		strncpy( rebootex_param->file , theiso, REBOOTEX_FILELEN_MAX );
+		strncpy( rebootex_param->file , theiso, REBOOTEX_FILELEN_MAX_LME );
 	}
 
-//	memcpy((void *)0x88fb0050, &config,112/* sizeof(SEConfig)*/);
-	memcpy( rebootex_param->config, &config, /* 0x70 */ sizeof(SEConfig) - 4 );
+//	memcpy((void *)0x88fb0050, &config,112/* sizeof(SEConfigLME)*/);
+	memcpy( rebootex_param->config, &config, /* 0x70 */ sizeof(SEConfigLME) - 4 );
 
+	/*
 	if(size_systemctrl)
 		memcpy((void *)0x88FB0100 , systemctrl  , size_systemctrl);
 
 	*(u32 *)0x88FB00F0 = size_systemctrl;
+	*/
 
 	rebootex_param->reboot_index	= reboot_index;
 	rebootex_param->mem2			= memp2;
@@ -139,8 +117,18 @@ int DecompressRebootPatched(u8 *dest, u32 destSize, const u8 *src, void *unk)
 	rebootex_param->on_reboot_flag	= on_reboot_flag;
 	
 	//memcpy((void *)0x88FC0000, rebootex , size_rebootex );
-	sceKernelGzipDecompress((void *)0x88FC0000, 0x4000 , rebootex ,0);
-
+	if (custom_rebootex && size_custom_rebootex){
+		if (custom_rebootex[0] == 0x1F && custom_rebootex[1] == 0x8B){
+			sceKernelGzipDecompress((void *)0x88FC0000, REBOOTEX_MAX_SIZE , custom_rebootex ,0);
+		}
+		else {
+			memcpy((void*)0x88FC0000, custom_rebootex, size_custom_rebootex);
+		}
+	}
+	else {
+		sceKernelGzipDecompress((void *)0x88FC0000, REBOOTEX_MAX_SIZE , rebootex ,0);
+	}
+	
 	return DecompressReboot(dest, destSize, src, unk);
 }
 
@@ -359,11 +347,11 @@ static void PatchMediaSync(u32 text_addr )
 				_sw(0x5000001D, text_addr + MediaSyncDiscSfoPatchAddr1);
 				_sw(0x5000001D, text_addr + MediaSyncDiscSfoPatchAddr2);
 
-				if (config.umdmode == 0)
+				if (config.umdmode == MODE_UMD)
 				{
 					DoAnyUmd(); 
 				}
-				else if(config.umdmode == 1)//
+				else if (config.umdmode == MODE_OE_LEGACY)
 				{
 					_sw(0x34020000, text_addr + MediaSyncDiscAssignPatchAddr);
 
@@ -431,7 +419,7 @@ void UsbChargeStart(void);
 
 static void OnImposeLoad()
 {
-	sctrlSEGetConfig(&config);	
+	sctrlSEGetConfig((SEConfig*)&config);	
 	PatchChkreg();
 
 //	if ( sceKernelInitKeyConfig() == PSP_INIT_KEYCONFIG_GAME)
@@ -440,7 +428,7 @@ static void OnImposeLoad()
 		char *theiso = sctrlSEGetUmdFile();
 		if(CheckIsoPath(theiso))
 		{
-			if (config.umdmode == 1)
+			if(config.umdmode == MODE_OE_LEGACY)
 			{
 				sceIoDelDrv("umd");
 				sceIoAddDrv(getumd9660_driver());
@@ -450,7 +438,7 @@ static void OnImposeLoad()
 	else
 	{
 		sctrlSESetUmdFile("");
-		reboot_index = 0;
+		reboot_index = MODE_UMD;
 	}
 
 #if PSP_MODEL != 0
@@ -588,7 +576,7 @@ static void PatchIsofsDriver(SceModule *mod )
 	char *iso = sctrlSEGetUmdFile();
 	if( CheckIsoPath( iso ) )
 	{
-		if (config.umdmode == 1 )	
+		if (config.umdmode == MODE_OE_LEGACY)
 		{
 			/* make module exit inmediately */
 //			u32 module_start_addr = (u32)(mod->entry_addr);//search_module_export( mod, NULL, 0xD632ACDB );
@@ -779,10 +767,10 @@ STMOD_HANDLER sctrlHENSetStartModuleHandler(STMOD_HANDLER handler)
 }
 
 int (*StartModuleEX)(int , SceSize , void *, int *, SceKernelSMOption *) = NULL;
-void* sctrlSetStartModuleExtra(int (*func)() )
+void* sctrlSetStartModuleExtra(int (*func)(int , SceSize , void *, int *, SceKernelSMOption *) )
 {
 	void * ret = (void *)StartModuleEX;
-	StartModuleEX = (void *)func;
+	StartModuleEX = func;
 	return ret;
 }
 

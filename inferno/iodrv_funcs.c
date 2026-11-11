@@ -19,6 +19,7 @@
 #include <pspreg.h>
 #include <stdio.h>
 #include <string.h>
+#include <systemctrl_se.h>
 #include <systemctrl_me.h>
 
 #include <pspsysmem_kernel.h>
@@ -647,7 +648,7 @@ static PspIoDrvFuncs g_drv_funcs = {
 PspIoDrv g_iodrv = {
 	.name = "umd",
 	.dev_type = 4, // block device
-	.unk2 = 0x800,
+	.size = 0x800,
 	.name2 = "UMD9660",
 	.funcs = &g_drv_funcs,
 };

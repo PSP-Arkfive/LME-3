@@ -3,12 +3,7 @@
 
 int sctrlSEGetVersion()
 {
-	int v = 0x00010023;
-#if _PSP_FW_VERSION == 639
-	v -= 0xDF80;
-#endif
-
-	return v;
+	return 0x00010030;
 }
 
 int	sctrlHENIsSE()

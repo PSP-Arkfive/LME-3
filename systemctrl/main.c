@@ -6,7 +6,7 @@
 #include <string.h>
 
 #include "main.h"
-#include "rebootex_config.h"
+#include <rebootexconfig.h>
 
 PSP_MODULE_INFO("SystemControl", 0x3007, 2, 5);
 PSP_MAIN_THREAD_ATTR(0);
@@ -155,7 +155,7 @@ static void PatchSystemMemoryMgr()
 
 int module_bootstart(SceSize args, void *argp)
 {	
-	size_systemctrl = *(u32 *)0x88FB00F0;
+	//size_systemctrl = *(u32 *)0x88FB00F0;
 	
 	PatchLoadCore();
 	PatchModuleMgr();
@@ -165,6 +165,7 @@ int module_bootstart(SceSize args, void *argp)
 
 	ClearCaches();
 
+	/*
 	if(size_systemctrl == 0xFFFFFFFF )
 		size_systemctrl = 0;
 
@@ -179,9 +180,9 @@ int module_bootstart(SceSize args, void *argp)
 			memset( systemctrl ,0 , size_systemctrl);
 			memcpy( systemctrl , (void *)0x88FB0100 , size_systemctrl );
 		}
-	}
+	}*/
 
-	struct RebootexParam *rebootex_param = (void *)REBOOTEX_PARAM_OFFSET;
+	RebootexConfigLME *rebootex_param = (void *)REBOOTEX_CONFIG;
 
 	sctrlSESetUmdFile( rebootex_param->file );//(char *)0x88fB0000
 	sctrlSEApplyConfig((SEConfig *)(rebootex_param->config));//0x88FB0050

@@ -6,6 +6,8 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <systemctrl.h>
+#include <systemctrl_se.h>
 #include <systemctrl_me.h>
 
 #include "main.h"
@@ -519,7 +521,7 @@ void patch_drm_imports(SceModule *mod)
 	u32 i;
 
 	for(i = 0; i < NELEMS(g_nodrm_hook_map); ++i) {
-		sctrlHookImportByNid(mod, g_nodrm_hook_map[i].libname, g_nodrm_hook_map[i].nid, g_nodrm_hook_map[i].addr, 1);
+		sctrlHookImportByNID(mod, g_nodrm_hook_map[i].libname, g_nodrm_hook_map[i].nid, g_nodrm_hook_map[i].addr);
 	}
 }
 

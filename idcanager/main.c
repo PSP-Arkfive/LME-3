@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <systemctrl.h>
 #include <systemctrl_me.h>
 #include "main.h"
 

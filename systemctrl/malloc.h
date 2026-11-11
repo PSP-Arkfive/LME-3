@@ -3,9 +3,6 @@
 #define ____MALLOC_H____
 
 int  mallocinit();
-
-void *sctrlKernelMalloc(size_t size);
-int sctrlKernelFree(void *p);
 int  mallocterminate();
 
 typedef struct _MemMgmtSubBlock

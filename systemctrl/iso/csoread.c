@@ -1,5 +1,8 @@
 #include <pspsdk.h>
 #include <pspkernel.h>
+
+#include <systemctrl_se.h>
+
 #include "../malloc.h"
 
 #include "csoread.h"

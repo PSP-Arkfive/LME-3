@@ -13,7 +13,8 @@
 #include <pspusb.h>
 #include <pspusbdevice.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 
 #include "main.h"
 
@@ -21,7 +22,7 @@ static u8 usb_umd=0;
 static SceUID usbdfd = -1;
 
 extern u8 iso_mount;
-extern SEConfig config;
+extern SEConfigLME config;
 
 
 int PatchUsbStart(const char* driverName, int size, void *args)
@@ -41,6 +42,10 @@ int PatchUsbStart(const char* driverName, int size, void *args)
 			}
 			
 			usbdfd = sceKernelLoadModule("flash0:/kd/usbdev.prx",0,0);
+			if( usbdfd <0 )
+			{
+				usbdfd = sceKernelLoadModule("flash0:/kd/usbdevice.prx",0,0);
+			}
 			if( usbdfd <0 )
 			{
 				//usbdfd = sceKernelLoadModule("ms0:/cfw/usbdev.prx",0,0);

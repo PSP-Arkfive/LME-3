@@ -8,6 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <systemctrl.h>
+#include <systemctrl_se.h>
+
 #include "main.h"
 #include "horoscope_patch_list.h"
 
@@ -16,9 +19,7 @@ PSP_MAIN_THREAD_ATTR(0);
 
 u32 module_sdk_version = 0x03060010;
 
-void *SystemCtrlForKernel_1F3037FB( int(* func)() );
-
-SEConfig config;
+SEConfigLME config;
 static STMOD_HANDLER previous;
 
 void ClearCaches()
@@ -79,7 +80,7 @@ static void PatchLoadModule(SceModule *mod)
 	REDIRECT_FUNCTION( (u32)text_addr, sceKernelLoadModuleUserPatched );
 	MAKE_JUMP( (u32)(sceKernelLoadModuleUser_buff + 1 ), (u32)(text_addr + 2 ) );*/
 
-	sctrlHookImportByNid(mod, "ModuleMgrForUser", 0x977DE386, &sceKernelLoadModuleUserPatched, 1);
+	sctrlHookImportByNID(mod, "ModuleMgrForUser", 0x977DE386, &sceKernelLoadModuleUserPatched);
 }
 
 static int get_param( const char *filename )
@@ -349,7 +350,7 @@ static void patch_sceLoadExec(void)
 
 int module_start()
 {	
-	sctrlSEGetConfig(&config);
+	sctrlSEGetConfig((SEConfig*)&config);
 //	int ret = 1;
 
 	char *umd_file = sctrlSEGetUmdFile();
@@ -385,7 +386,7 @@ int module_start()
 		SceModule *mod = sceKernelFindModuleByName("sceMesgLed");
 		u32 text_addr = mod->text_addr;
 
-		decrypt_next = (void *)SystemCtrlForKernel_1F3037FB( (void *)opnssmp_decrypt_helper );	
+		decrypt_next = (void *)sctrlHENRegisterKDecryptHandler( (void *)opnssmp_decrypt_helper );	
 		MesgLedDecrypt =(void *)(text_addr + 0xE0);
 
 //		PatchLoadModule();

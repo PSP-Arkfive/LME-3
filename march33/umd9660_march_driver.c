@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl.h>
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 #include "isoread.h"
 #include "csoread.h"
 #include "daxread.h"
@@ -33,8 +35,6 @@ char *umdfilename;	//data2790
 
 
 UmdReadParams umd_read_params;//data2784
-
-void sceKernelSetQTGP3(void*);
 
 typedef struct
 {
@@ -692,7 +692,7 @@ int march_init()
 		return r;
 	}
 
-	sceKernelSetQTGP3(data2248);
+	sceKernelSetQTGP3((void*)data2248);
 
 	return 0;
 }

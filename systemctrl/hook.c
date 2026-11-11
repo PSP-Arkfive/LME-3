@@ -3,7 +3,7 @@
 
 #include <systemctrl_me.h>
 
-PspModuleImport *sctrlFindImportLib(SceModule *mod, char *library)
+SceLibraryStubTable *sctrlFindImportLib(SceModule *mod, char *library)
 {
 	if(mod == NULL)
 	{
@@ -16,32 +16,32 @@ PspModuleImport *sctrlFindImportLib(SceModule *mod, char *library)
 
 	while(i < stubLen)
 	{
-		PspModuleImport *pImp = (PspModuleImport*)(stubTab + i);
+		SceLibraryStubTable *pImp = (SceLibraryStubTable*)(stubTab + i);
 
-		if((pImp->name) && (strcmp(pImp->name, library) == 0))
+		if((pImp->libname) && (strcmp(pImp->libname, library) == 0))
 		{
 			return pImp;
 		}
 
-		i += (pImp->entLen * 4);
+		i += (pImp->len * 4);
 	}
 
 	return NULL;
 }
 
-u32 sctrlFindImportByNid(SceModule *mod, char *library, u32 nid)
+u32 sctrlFindImportByNID(SceModule *mod, char *library, u32 nid)
 {
-	PspModuleImport *pImp = sctrlFindImportLib(mod, library);
+	SceLibraryStubTable *pImp = sctrlFindImportLib(mod, library);
 
 	if(pImp)
 	{
 		int i;
 
-		for(i = 0; i < pImp->funcCount; i++)
+		for(i = 0; i < pImp->stubcount; i++)
 		{
-			if(pImp->fnids[i] == nid)
+			if(pImp->nidtable[i] == nid)
 			{
-				return (u32) &pImp->funcs[i * 2];
+				return (u32) pImp->stubtable + 8 * i;
 			}
 		}
 	}
@@ -49,66 +49,47 @@ u32 sctrlFindImportByNid(SceModule *mod, char *library, u32 nid)
 	return 0;
 }
 
-int sctrlHookImportByNid(SceModule *mod, char *library, u32 nid, void *func, int syscall)
+int sctrlHookImportByNID(SceModule *mod, char *library, u32 nid, void *func)
 {
 	if(mod == NULL)
 	{
 		return -1;
 	}
 
-	void *stubTab = mod->stub_top;
-	int stubLen = mod->stub_size;
-	int i = 0;
+	void *addr = (void*)sctrlFindImportByNID(mod, library, nid);
 
-	while(i < stubLen)
+	if (addr)
 	{
-		PspModuleImport *pImp = (PspModuleImport*)(stubTab+i);
-
-		if((pImp->name) && (strcmp(pImp->name, library) == 0))
+		if(func == NULL)
 		{
-			int j;
-
-			for(j = 0; j < pImp->funcCount; j++)
+			_sw(0x03E00008, (u32)addr);
+			_sw(0, (u32)(addr + 4));
+		}
+		else
+		{
+			if (((u32)addr & 0x80000000) == 0 && ((u32)func & 0x80000000) != 0)
 			{
-				if(pImp->fnids[j] == nid)
+				u32 syscall_num;
+
+				syscall_num = sceKernelQuerySystemCall(func);
+
+				if(syscall_num == (u32)-1)
 				{
-					void *addr = (void *)(&pImp->funcs[j * 2]);
-
-					if(func == NULL)
-					{
-						_sw(0x03E00008, (u32)addr);
-						_sw(0, (u32)(addr + 4));
-					}
-					else
-					{
-						if(syscall)
-						{
-							u32 syscall_num;
-
-							syscall_num = sceKernelQuerySystemCall(func);
-
-							if(syscall_num == (u32)-1)
-							{
-								return -1;
-							}
-
-							_sw(0x03E00008, (u32)addr);
-							_sw(((syscall_num << 6) | 12), (u32)(addr + 4));
-						}
-						else
-						{
-							_sw((0x08000000 | (((u32)(func) >> 2) & 0x03FFFFFF)), (u32)addr);
-							_sw(0, (u32)(addr + 4));
-						}
-					}
-
-					sceKernelDcacheWritebackInvalidateRange(addr, 8);
-					sceKernelIcacheInvalidateRange(addr, 8);
+					return -1;
 				}
+
+				_sw(0x03E00008, (u32)addr);
+				_sw(((syscall_num << 6) | 12), (u32)(addr + 4));
+			}
+			else
+			{
+				_sw((0x08000000 | (((u32)(func) >> 2) & 0x03FFFFFF)), (u32)addr);
+				_sw(0, (u32)(addr + 4));
 			}
 		}
 
-		i += (pImp->entLen * 4);
+		sceKernelDcacheWritebackInvalidateRange(addr, 8);
+		sceKernelIcacheInvalidateRange(addr, 8);
 	}
 
 	return 0;

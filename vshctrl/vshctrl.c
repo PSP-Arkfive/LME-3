@@ -10,10 +10,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "systemctrl_me.h"
+#include <systemctrl_se.h>
+#include <systemctrl_me.h>
 
 extern int (*vshmenu_kernel)();
-extern SEConfig config;
+extern SEConfigLME config;
 
 int vctrlVSHRegisterVshMenu(int (* ctrl)())
 {
@@ -28,7 +29,7 @@ void vctrlVSHSetSpeed(int cpu, int bus )
 	int k1 = pspSdkSetK1(0);
 	config.vshcpuspeed = cpu;
 	config.vshbusspeed = bus;
-	sctrlSESetConfig(&config);
+	sctrlSESetConfig((SEConfig*)&config);
 	pspSdkSetK1(k1);
 }
 
@@ -43,6 +44,6 @@ void vctrlVSHGetSpeed(int *cpu, int *bus )
 void vctrlVSHSetRecovery()
 {
 //	int k1 = pspSdkSetK1(0);
-	sctrlSESetBootConfFileIndex( 4 );
+	sctrlSESetBootConfFileIndex(MODE_RECOVERY);
 //	pspSdkSetK1(k1);
 }
