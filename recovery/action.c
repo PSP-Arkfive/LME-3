@@ -37,15 +37,15 @@ static char *cache_policy[] = {"LRU", "Random"};
 
 char *iso_cache_policy(int type, int direction )
 {
-	char *bridge;
-	char buffer[256];
+	//char *bridge;
+	//char buffer[256];
 
 	if(type == FUNC_GET_STR)
 	{	
-		my_sprintf( buffer ,"%s", cache_policy[limit( config.iso_cache_policy , 0 , ISO_CACHE_POLICY_CNT - 1)]);	
-		bridge = buffer;
+		my_sprintf( str_buffer ,"%s", cache_policy[limit( config.iso_cache_policy , 0 , ISO_CACHE_POLICY_CNT - 1)]);	
+		//bridge = buffer;
 
-		return bridge;
+		return str_buffer;
 	}
 	
 	else if(type == FUNC_CHANGE_VALUE)
@@ -61,15 +61,11 @@ char *iso_cache_policy(int type, int direction )
 
 char *iso_cache_num(int type, int direction )
 {
-	char *bridge;
-	char buffer[256];
-
 	if(type == FUNC_GET_STR)
 	{	
-		my_sprintf( buffer ,"%d", cache_sels[limit( config.iso_cache_num , 0 , MAX_CACHE_SEL - 1)]);	
-		bridge = buffer;
+		my_sprintf( str_buffer ,"%d", cache_sels[limit( config.iso_cache_num , 0 , MAX_CACHE_SEL - 1)]);	
 		
-		return bridge;
+		return str_buffer;
 	}
 
 	else if(type == FUNC_CHANGE_VALUE)
@@ -85,15 +81,14 @@ char *iso_cache_num(int type, int direction )
 
 char *iso_cache_total_size(int type, int direction)
 {
-	char *bridge;
-	char buffer[256];
 
 	if(type == FUNC_GET_STR)
 	{	
-		my_sprintf( buffer ,"%d Mb", limit( config.iso_cache_total_size , 1 , 24));	
-		bridge = buffer;
+		int size = limit(config.iso_cache_total_size, 1, 24);
+		my_sprintf(str_buffer, "%d Mb", size);
+		//my_sprintf( buffer ,"%d Mb", limit( config.iso_cache_total_size , 1 , 24));	
 		
-		return bridge;
+		return str_buffer;
 	}
 
 	else if(type == FUNC_CHANGE_VALUE)
@@ -595,19 +590,19 @@ int toggle_usb_ms()
 	return 0;
 }
 
-void* toggle_usb_flash0(int type )
+char* toggle_usb_flash0(int type )
 {
 	return usb_ctrl_switch( type, PSP_USBDEVICE_FLASH0 +1);
 }
-void* toggle_usb_flash1(int type)
+char* toggle_usb_flash1(int type)
 {
 	return usb_ctrl_switch( type, PSP_USBDEVICE_FLASH1 +1);
 }
-void* toggle_usb_flash2(int type)
+char* toggle_usb_flash2(int type)
 {
 	return usb_ctrl_switch( type, PSP_USBDEVICE_FLASH2 +1);
 }
-void* toggle_usb_flash3(int type)
+char* toggle_usb_flash3(int type)
 {
 	return usb_ctrl_switch( type, PSP_USBDEVICE_FLASH3 +1);
 }

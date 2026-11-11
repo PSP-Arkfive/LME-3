@@ -166,10 +166,8 @@ int DrawMenu(Menu_pack *menu_desu ,u8 sub ,const char *sub_title)
 					printf("%s %s \t(%s: %s)\n",(cpos==i) ? ">" : " ", surrent_get(FUNC_GET_STR), recovery_str.Currently, surrent_get(FUNC_GET_STR2) );
 					break;
 				case TMENU_FUNCTION_VALUE:
-
 					surrent_get = (void *)(menu_desu[i].value);
 					printf("%s %s \t(%s: %s)\n",(cpos==i) ? ">" : " ", menu_desu[i].path, recovery_str.Currently, surrent_get(FUNC_GET_STR) );
-					break;
 				default:
 					break;
 				}	
@@ -296,7 +294,7 @@ int DrawMenu(Menu_pack *menu_desu ,u8 sub ,const char *sub_title)
 			case TMENU_FUNCTION:
 				if( direction > 0)
 				{
-					void (*menu_func)() = (void *)(menu_desu[cpos].value);
+					char (*menu_func)() = (void *)(menu_desu[cpos].value);
 					menu_func();
 				}
 				break;
@@ -308,11 +306,11 @@ int DrawMenu(Menu_pack *menu_desu ,u8 sub ,const char *sub_title)
 			case TMENU_FUNCTION_VALUE_DISPLAY:
 			case TMENU_FUNCTION_VALUE:
 
-				void (*menu_func)(u32, u32) = (void *)(menu_desu[cpos].value);
+				char (*menu_func)(u32, u32) = (void *)(menu_desu[cpos].value);
 				menu_func( FUNC_CHANGE_VALUE , direction );
 				sceKernelDelayThread(1*1000*1000);
 				myDebugScreenClear();
-				break;
+                break;
 			}
 
 			cpos -= display_item_offset;
