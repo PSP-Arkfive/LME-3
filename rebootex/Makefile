@@ -3,7 +3,7 @@ PSPDEV = $(shell psp-config --pspdev-path)
 PYTHON = $(shell which python3)
 CFWSDK = $(PSPDEV)/share/psp-cfw-sdk
 
-TARGET = reboot.bin
+TARGET = reboot.bin.gz
 
 all: $(TARGET)
 
@@ -22,7 +22,8 @@ main.elf: $(C_OBJS)
 
 $(TARGET): main.elf
 	$(STRIP) -s $<
-	$(OBJCOPY) -O binary $< $@
+	$(OBJCOPY) -O binary $< $(patsubst %.gz,%,$(TARGET))
+	$(PYTHON) $(CFWSDK)/build-tools/gz/gz.py $(patsubst %.gz,%,$(TARGET)) $@
 	bin2c $@ rebootex.h rebootex
 	@echo GET $@
 
