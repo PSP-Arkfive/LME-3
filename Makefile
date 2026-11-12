@@ -1,16 +1,11 @@
 PY = $(shell which python3)
-PSPDEV = $(shell psp-config --pspdev-path)
-BUILDTOOLS = $(PSPDEV)/share/psp-cfw-sdk/build-tools
-
-ifndef $(TARGET_FW)
-TARGET_FW = 661
-endif
+TARGET_FW ?= 660
 
 all: psp-tools common cfw
 lite: common lcfw
 double: common cfw lcfw
 
-dist: all double
+dist: psp-tools double installer
 	mkdir -p dist/flash0/kd
 	mkdir -p dist/flash0/vsh/module
 	cp systemctrl/systemctrl*.prx dist/flash0/kd/
@@ -25,12 +20,18 @@ dist: all double
 	cp vshmenu/satellite.prx dist/flash0/vsh/module/
 	cp pspbtjnf/$(TARGET_FW)/bin/*.bin dist/flash0/kd/
 	mv dist/flash0/kd/pspbtjnf_01g.bin dist/flash0/kd/pspbtjnf.bin
-	$(PY) $(BUILDTOOLS)/pack/pack.py -p dist/FLASH$(TARGET_FW).LME flash0.txt -s
+	$(PY) installer/pack.py $(TARGET_FW) flash0.txt dist/FLASH$(TARGET_FW).LME
+	mkdir -p dist/PSP/GAME/LMEINSTALLER
+	cp installer/EBOOT.PBP dist/FLASH$(TARGET_FW).LME dist/PSP/GAME/LMEINSTALLER/
+
+installer:
+	$(MAKE) -C installer
 
 psp-tools:
 	make -C PSP_TOOLS
 
 cfw:
+	$(MAKE) -C vshctrl clean
 	make -C vshctrl			TARGET_FW=$(TARGET_FW)
 
 lcfw:
@@ -40,6 +41,7 @@ ifeq ($(TARGET_FW), 620)
 	make -C systemctrl		TARGET_FW=$(TARGET_FW) PSP_MODEL=2 PERMANENT=1
 	make -C systemctrl 		TARGET_FW=$(TARGET_FW) PSP_MODEL=4 PERMANENT=1
 endif
+	$(MAKE) -C vshctrl clean HEN=1
 	make -C vshctrl 		TARGET_FW=$(TARGET_FW) HEN=1
 
 
@@ -63,6 +65,7 @@ endif
 	make -C pspbtjnf		TARGET_FW=$(TARGET_FW)
 
 clean:
+	$(MAKE) clean -C installer
 	make clean -C dax9660
 	make clean -C documents
 	make clean -C galaxy
@@ -89,3 +92,6 @@ clean:
 	make clean -C vshctrl HEN=1	
 	make clean -C vshmenu
 	rm -rf dist
+
+.PHONY: all lite double dist installer psp-tools cfw lcfw common clean
+.NOTPARALLEL: double dist

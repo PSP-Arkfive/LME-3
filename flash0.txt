@@ -18,3 +18,5 @@
 /kd/pulsar.prx,dist/flash0/kd/pulsar.prx
 /kd/horoscope.prx,dist/flash0/kd/horoscope.prx
 /kd/idmanager.prx,dist/flash0/kd/idmanager.prx
+/vsh/module/recovery.prx,dist/flash0/vsh/module/recovery.prx
+/vsh/module/satellite.prx,dist/flash0/vsh/module/satellite.prx
