@@ -52,7 +52,7 @@ jobs:
 
       - name: Build
         run: |
-          make CONFIG_661=1
+          make dist TARGET_FW=661
 
       - name: Compress
         run: |
