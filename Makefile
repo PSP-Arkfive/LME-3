@@ -1,11 +1,14 @@
 PY = $(shell which python3)
 TARGET_FW ?= 660
+LIBS_DIR = libs
+LIBS_ARCHIVE = $(LIBS_DIR).zip
+LIBS_URL = https://github.com/pspdev/psp-dynamic-libraries/releases/download/latest/LIBS.zip
 
 all: psp-tools common cfw
 lite: common lcfw
 double: common cfw lcfw
 
-dist: psp-tools double installer
+dist: psp-tools libs_latest double installer
 	mkdir -p dist/flash0/kd
 	mkdir -p dist/flash0/vsh/module
 	cp systemctrl/systemctrl*.prx dist/flash0/kd/
@@ -20,6 +23,7 @@ dist: psp-tools double installer
 	cp vshmenu/satellite.prx dist/flash0/vsh/module/
 	cp pspbtjnf/$(TARGET_FW)/bin/*.bin dist/flash0/kd/
 	mv dist/flash0/kd/pspbtjnf_01g.bin dist/flash0/kd/pspbtjnf.bin
+	cp $(LIBS_DIR)/usbdevice.prx dist/PSP/GAME/LMEINSTALLER/
 	$(PY) installer/pack.py $(TARGET_FW) flash0.txt dist/FLASH$(TARGET_FW).LME
 	mkdir -p dist/PSP/GAME/LMEINSTALLER
 	cp installer/EBOOT.PBP dist/FLASH$(TARGET_FW).LME dist/PSP/GAME/LMEINSTALLER/
@@ -64,6 +68,11 @@ endif
 	make -C dax9660			TARGET_FW=$(TARGET_FW)
 	make -C pspbtjnf		TARGET_FW=$(TARGET_FW)
 
+libs_latest:
+	mkdir -p $(LIBS_DIR)
+	curl --fail --location --silent --show-error "$(LIBS_URL)" -o "$(LIBS_ARCHIVE)"
+	unzip -o "$(LIBS_ARCHIVE)" -d "$(LIBS_DIR)"
+
 clean:
 	$(MAKE) clean -C installer
 	make clean -C dax9660
@@ -92,6 +101,8 @@ clean:
 	make clean -C vshctrl HEN=1	
 	make clean -C vshmenu
 	rm -rf dist
+	rm -rf $(LIBS_DIR)
+	rm -f $(LIBS_ARCHIVE)
 
-.PHONY: all lite double dist installer psp-tools cfw lcfw common clean
+.PHONY: all lite double dist installer psp-tools cfw lcfw common libs_latest clean
 .NOTPARALLEL: double dist

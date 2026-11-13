@@ -55,6 +55,7 @@ int lme_select_files(uint32_t firmware, int model, LmeFile files[LME_FILE_COUNT]
     strcpy(files[1].name, system);
     for (unsigned i = 0; i < sizeof(common) / sizeof(common[0]); ++i)
         strcpy(files[i + 2].name, common[i]);
+    strcpy(files[11].name, "/kd/usbdev.prx");
     return 0;
 }
 
