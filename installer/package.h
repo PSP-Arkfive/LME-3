@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#define LME_FILE_COUNT 12
+#define LME_FILE_COUNT 11
 #define LME_PATH_SIZE 64
 
 typedef struct {

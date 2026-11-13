@@ -1,7 +1,9 @@
 PY = $(shell which python3)
+PSPDEV = $(shell psp-config --pspdev-path)
+BUILDTOOLS = $(PSPDEV)/share/psp-cfw-sdk/build-tools
 TARGET_FW ?= 660
-LIBS_DIR = libs
-LIBS_ARCHIVE = $(LIBS_DIR).zip
+LIBS_DIR = .usbdevice-build
+LIBS_ARCHIVE = $(LIBS_DIR)/LIBS.zip
 LIBS_URL = https://github.com/pspdev/psp-dynamic-libraries/releases/download/latest/LIBS.zip
 
 all: psp-tools common cfw
@@ -23,9 +25,11 @@ dist: psp-tools libs_latest double installer
 	cp vshmenu/satellite.prx dist/flash0/vsh/module/
 	cp pspbtjnf/$(TARGET_FW)/bin/*.bin dist/flash0/kd/
 	mv dist/flash0/kd/pspbtjnf_01g.bin dist/flash0/kd/pspbtjnf.bin
-	cp $(LIBS_DIR)/usbdevice.prx dist/PSP/GAME/LMEINSTALLER/
 	$(PY) installer/pack.py $(TARGET_FW) flash0.txt dist/FLASH$(TARGET_FW).LME
 	mkdir -p dist/PSP/GAME/LMEINSTALLER
+	rm -f dist/PSP/GAME/LMEINSTALLER/usbdevice.prx
+	cd $(LIBS_DIR) && $(PY) $(BUILDTOOLS)/gz/pspgz.py $(abspath dist/PSP/GAME/LMEINSTALLER/usbdevice.prx) $(BUILDTOOLS)/gz/SystemControl.hdr usbdevice.prx pspUsbDev_Driver 0x1006
+	test -s dist/PSP/GAME/LMEINSTALLER/usbdevice.prx
 	cp installer/EBOOT.PBP dist/FLASH$(TARGET_FW).LME dist/PSP/GAME/LMEINSTALLER/
 
 installer:
@@ -71,7 +75,7 @@ endif
 libs_latest:
 	mkdir -p $(LIBS_DIR)
 	curl --fail --location --silent --show-error "$(LIBS_URL)" -o "$(LIBS_ARCHIVE)"
-	unzip -o "$(LIBS_ARCHIVE)" -d "$(LIBS_DIR)"
+	unzip -o "$(LIBS_ARCHIVE)" usbdevice.prx -d "$(LIBS_DIR)"
 
 clean:
 	$(MAKE) clean -C installer
@@ -102,7 +106,6 @@ clean:
 	make clean -C vshmenu
 	rm -rf dist
 	rm -rf $(LIBS_DIR)
-	rm -f $(LIBS_ARCHIVE)
 
 .PHONY: all lite double dist installer psp-tools cfw lcfw common libs_latest clean
 .NOTPARALLEL: double dist

@@ -43,8 +43,8 @@ int main(int argc, char **argv)
     switch (firmware) {
     case 0x06020010: package = "FLASH620.LME"; break;
     case 0x06030910: package = "FLASH639.LME"; break;
-    case 0x06060010:
-    case 0x06060110: package = "FLASH660.LME"; break;
+    case 0x06060010: package = "FLASH660.LME"; break;
+    case 0x06060110: package = "FLASH661.LME"; break;
     default:
         pspDebugScreenPrintf("Unsupported firmware: 0x%08lX\n", (unsigned long)firmware);
         goto exit;
